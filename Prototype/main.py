@@ -9,4 +9,17 @@
 #Project: Miura 2
 ##################################################################
 #   -- Imports & Housing Keeping --
-import RPi.GPIO as GPIO
+
+# Import code shared between threads
+import serial
+
+# Create serial object
+gnd_bus = serial.Serial(port="/dev/ttyUSB0", #user input
+			baudrate=4800, #user input
+			parity=serial.PARITY_NONE,
+			stopbits=serial.STOPBITS_ONE,
+			bytesize=serial.EIGHTBITS,
+			writeTimeout=None,
+			timeout=0)
+
+

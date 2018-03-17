@@ -1,8 +1,7 @@
 # Sample Uplink Code
 import serial
 
-#def uplink():
-# sets up serial object for use
+sets up serial object for use
 ser = serial.Serial(port='/dev/tty.KeySerial1',
                     baudrate=115200,
                     parity=serial.PARITY_NONE,
@@ -17,16 +16,14 @@ commands_usage = ['Ping Pi','Extend Structure','Retract Structure','Infinite Loo
 
 # prompts user for valid command
 
-print('Commands:\n')
-# for i in range(len(commands)):
-# 	print(commands[i] + ': ' + commands_usage + '\n')
-# print('\n')
+print('\nCommands:\r')
+for i in range(len(commands)-1):
+	print('\t' + commands[i] + ': ' + commands_usage[i] + '\r')
+
 while True:
-	cmd =bytes(input('Enter Command: '), 'utf-8')
-	ser.write(cmd)
-
-# while not any(cmd in command for command in commands):
-# 	cmd = input('Invalid Command\n\n Enter Command: ')
-
-ser.write(cmd)
-ser.close
+	cmd_str = input('\nEnter Command: ')
+	if not any(cmd_str in command for command in commands):
+		print('Invalid Command')
+	else: 
+		cmd = bytes(cmd_str, 'utf-8')
+		ser.write(cmd)

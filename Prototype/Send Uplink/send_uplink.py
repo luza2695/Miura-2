@@ -1,7 +1,7 @@
 # Sample Uplink Code
 import serial
 
-sets up serial object for use
+# sets up serial object for use
 ser = serial.Serial(port='/dev/tty.KeySerial1',
                     baudrate=115200,
                     parity=serial.PARITY_NONE,
@@ -11,8 +11,8 @@ ser = serial.Serial(port='/dev/tty.KeySerial1',
                     timeout=0)
 
 # sets list of valid commands
-commands = ['xAA','xAB','xAC','xAC','xAD']
-commands_usage = ['Ping Pi','Extend Structure','Retract Structure','Infinite Loop']
+commands = ['x01','x02']
+commands_usage = ['Ping Pi','Demo Motor']
 
 # prompts user for valid command
 

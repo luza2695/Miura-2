@@ -36,14 +36,10 @@ def main(ground):
 	    print(cmd)
 	    packet = hex(int.from_bytes((cmd), byteorder='big')) # Convert from hex into bytes
 	    print(packet)
-            if cmd == b"\xAA": # ping pi
+            if cmd == b"\x01": # ping pi
                 led()
                 pass
-            elif cmd == b"\xAB": # extend structure
-                pass
-            elif cmd == b"\xAC": # retract structure
-                pass
-            elif cmd == b"\xAD": # infinite motor loop
+            elif cmd == b"\x02": # demo motor
                 pass
             else:
                 print("invalid command")

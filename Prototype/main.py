@@ -15,13 +15,12 @@ import serial
 import uplink
 
 # Create serial object
-ground = serial.Serial(port="/dev/ttyAMA0", #user input
+ground = serial.Serial(port="/dev/ttyUSB0", #user input
 			baudrate=4800 #user input
 			parity=serial.PARITY_NONE,
 			stopbits=serial.STOPBITS_ONE,
 			bytesize=serial.EIGHTBITS,
-			writeTimeout=None,
-			timeout=0)
+			timeout=1)
 
 while True:
     uplink.main(ground)

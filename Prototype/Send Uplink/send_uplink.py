@@ -7,8 +7,7 @@ ser = serial.Serial(port='/dev/tty.KeySerial1',
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
-                    writeTimeout=None,
-                    timeout=0)
+                    timeout=1)
 
 # sets list of valid commands
 commands = ['x01','x02']
@@ -17,12 +16,12 @@ commands_usage = ['Ping Pi','Demo Motor']
 # prompts user for valid command
 
 print('\nCommands:\r')
-for i in range(len(commands)-1):
+for i in range(len(commands)):
 	print('\t' + commands[i] + ': ' + commands_usage[i] + '\r')
 
 while True:
 	cmd_str = input('\nEnter Command: ')
-	if not any(cmd_str in command for command in commands):
+	if not any(cmd_str in command for command in commands) and False:
 		print('Invalid Command')
 	else: 
 		cmd = bytes(cmd_str, 'utf-8')

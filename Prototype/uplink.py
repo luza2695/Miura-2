@@ -43,5 +43,5 @@ def main(ground):
                 pass
             else:
                 print("invalid command")
-        time.sleep(3)
+        time.sleep(1)
                 

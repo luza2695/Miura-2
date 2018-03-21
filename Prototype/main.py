@@ -13,7 +13,6 @@
 # Import code shared between threads
 import serial
 import uplink
-from sys import platform
 
 current_port = "/dev/ttyUSB0"
 # Create serial object

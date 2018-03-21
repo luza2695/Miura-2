@@ -1,5 +1,6 @@
 # Sample Uplink Code
 import serial
+from sys import platform
 
 if platform == "linux" or platform == "linux2":
     current_port = "/dev/ttyAMAO"

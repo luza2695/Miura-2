@@ -16,7 +16,7 @@ import uplink
 
 # Create serial object
 ground = serial.Serial(port="/dev/ttyUSB0", #user input
-			baudrate=4800 #user input
+			baudrate=4800, #user input
 			parity=serial.PARITY_NONE,
 			stopbits=serial.STOPBITS_ONE,
 			bytesize=serial.EIGHTBITS,

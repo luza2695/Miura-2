@@ -13,9 +13,11 @@
 # Import code shared between threads
 import serial
 import uplink
+from sys import platform
 
+current_port = "/dev/ttyUSB0"
 # Create serial object
-ground = serial.Serial(port="/dev/ttyUSB0", #user input
+ground = serial.Serial(port=current_port, #user input
 			baudrate=4800, #user input
 			parity=serial.PARITY_NONE,
 			stopbits=serial.STOPBITS_ONE,

@@ -1,9 +1,14 @@
 # Sample Uplink Code
 import serial
 
+if platform == "linux" or platform == "linux2":
+    current_port = "/dev/ttyAMAO"
+elif platform == "darwin":
+    current_port = "/dev/tty.KeySerial1"
+
 # sets up serial object for use
-ser = serial.Serial(port='/dev/tty.KeySerial1',
-                    baudrate=115200,
+ser = serial.Serial(port=current_port,
+                    baudrate=4800,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,

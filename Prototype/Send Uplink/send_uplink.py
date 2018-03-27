@@ -31,4 +31,5 @@ while True:
 		print('Invalid Command')
 	else: 
 		cmd = bytes(cmd_str, 'utf-8')
+		print(type(cmd))
 		ser.write(cmd)

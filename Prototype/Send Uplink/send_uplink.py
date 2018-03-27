@@ -30,6 +30,9 @@ while True:
 	if not any(cmd_str in command for command in commands) and False:
 		print('Invalid Command')
 	else: 
-		cmd = bytes(cmd_str, 'utf-8')
+		cmd = int(cmd_str,16)
+
+		cmd = bytes([cmd])#, 'utf-8')
+		print(cmd)
 		print(type(cmd))
 		ser.write(cmd)

@@ -37,7 +37,7 @@ def main(ground):
             print(packet)
             if cmd == b"\x01": # ping pi
                 cmdTime = time.asctime( time.localtime(time.time()) )
-                print("Command Recieved :", localtime)
+                print("Command Recieved :", cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor
                 pass

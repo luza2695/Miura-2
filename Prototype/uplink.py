@@ -33,11 +33,11 @@ def main(ground):
         #print(ground.inWaiting())
         if ground.inWaiting(): # Reads uplink command
             cmd = ground.read()  # gets command
-            print(cmd)
             packet = hex(int.from_bytes((cmd), byteorder='big')) # Convert from hex into bytes
             print(packet)
             if cmd == b"\x01": # ping pi
-                print('ping')
+                cmdTime = time.asctime( time.localtime(time.time()) )
+                print("Command Recieved :", localtime)
                 pass
             elif cmd == b"\x02": # demo motor
                 pass

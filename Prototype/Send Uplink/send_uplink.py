@@ -33,6 +33,5 @@ while True:
 		cmd = int(cmd_str,16)
 
 		cmd = bytes([cmd])#, 'utf-8')
-		print(cmd)
-		print(type(cmd))
+		
 		ser.write(cmd)

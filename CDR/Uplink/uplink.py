@@ -33,7 +33,6 @@ def led():
 def main(ground):
     ground.flushInput() # Clears the serial communication channel before attempting to use it
     while True:
-        #print(ground.inWaiting())
         if ground.inWaiting(): # Reads uplink command
             cmd = ground.read()  # gets command
             packet = hex(int.from_bytes((cmd), byteorder='big')) # Convert from hex into bytes

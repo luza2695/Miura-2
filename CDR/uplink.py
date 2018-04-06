@@ -7,13 +7,14 @@
 #Project: Miura 2
 ##################################################################
 #   -- Key Information --
-
+#!/usr/bin/python
 #   -- Imports & Housing Keeping --
 import subprocess
 import RPi.GPIO as GPIO
 import time
 import sys
 
+import Adafruit.examples.StepperTest
 
 led_pin = 33
 GPIO.setmode(GPIO.BOARD)
@@ -42,7 +43,7 @@ def main(ground):
                 print("Command Recieved :", cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor
-                pass
+                StepperTest.main()
             else:
                 print("invalid command")
         time.sleep(1)

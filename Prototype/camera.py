@@ -63,4 +63,3 @@ def main(downlink,cam_is_moving,cam_is_open,cam_reset):
 			prev_capture_time = time.time() # Update prev_capture_time to prevent nonstop image capture
 		time.sleep(1)
 
-

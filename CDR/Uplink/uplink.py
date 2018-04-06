@@ -9,7 +9,7 @@
 #   -- Key Information --
 #!/usr/bin/python
 #   -- Imports & Housing Keeping --
-import Downlink.testDownlink as testDownlink
+import testDownlink
 import subprocess
 import RPi.GPIO as GPIO
 import time

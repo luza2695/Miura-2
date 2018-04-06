@@ -3,7 +3,8 @@ import serial
 from sys import platform
 
 if platform == "linux" or platform == "linux2":
-    current_port = "/dev/ttyAMAO"
+    #current_port = "/dev/ttyAMA0"
+    current_port = "/dev/ttyUSB0"
 elif platform == "darwin":
     current_port = "/dev/tty.KeySerial1"
 

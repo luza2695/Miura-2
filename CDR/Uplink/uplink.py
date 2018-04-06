@@ -14,7 +14,7 @@ import RPi.GPIO as GPIO
 import time
 import sys
 
-import Adafruit.examples.StepperTest
+
 
 led_pin = 33
 GPIO.setmode(GPIO.BOARD)

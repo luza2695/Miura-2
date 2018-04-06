@@ -36,3 +36,8 @@ while True:
 		cmd = bytes([cmd])#, 'utf-8')
 		
 		ser.write(cmd)
+		
+	if ser.inWaiting():
+            cmd= ground.read()
+            packet = hex(int.from_bytes((cmd),byteorder = 'big'))
+            print(packet)

@@ -2,6 +2,7 @@
 import serial
 from sys import platform
 
+
 if platform == "linux" or platform == "linux2":
     current_port = "/dev/ttyUSB0"
 elif platform == "darwin":
@@ -16,8 +17,8 @@ ser = serial.Serial(port=current_port,
                     timeout=1)
 
 # sets list of valid commands
-commands = ['x01','x02']
-commands_usage = ['Ping Pi','Demo Motor']
+commands = ['x01','x02','x0C']
+commands_usage = ['Ping Pi','Demo Motor','Camera Demo']
 
 # prompts user for valid command
 

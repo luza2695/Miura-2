@@ -34,6 +34,8 @@ def main(downlink,ground):
         ck = adler32(a_data) & 0xffffffff # Use data to calculate checksum
         t = time.time()  # Unix time. Seconds since epoch.
         packet = "\x01CU MI %s %s %.2f %i %i\x02" % (sender, record, t, l, ck) + " " + data + "\x03\n" # Follows HASP guidelines
+        packet = "Nice picture!" # camera demo message
+
 #        with open("/home/pi/downlink.log", 'a') as log: # Keeps a central record of everything that was downlinked
 #            log.write(packet)
         ground.write(packet) # Downlink packet through serial

@@ -14,6 +14,8 @@ import subprocess
 import RPi.GPIO as GPIO
 import time
 import sys
+sys.path.append('../')
+from Camera import cameratest
 
 
 
@@ -46,6 +48,10 @@ def main(ground):
                 pass
             elif cmd == b"\x02": # demo motor
                 StepperTest.main()
+            elif cmd == b"\x0C":
+                cameratest.main()
+                cmd = bytes('Nice picture!', 'utf-8')
+                testDownlink.downlink(cmd)
             else:
                 print("invalid command")
         time.sleep(1)

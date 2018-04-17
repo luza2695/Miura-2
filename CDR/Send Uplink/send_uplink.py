@@ -38,9 +38,9 @@ else:
 		
 	ser.write(cmd)
 	
+complete = False
 
-#while True:
-while True:
+while (not complete):
 
 	# cmd_str = input('\nEnter Command: ')
 	# if not any(cmd_str in command for command in commands) and False:
@@ -56,4 +56,5 @@ while True:
 		cmd= ser.read()
             #packet = hex(int.from_bytes((cmd),byteorder = 'big'))
 		packet = cmd.decode("utf-8")
-		print(packet)#,end='')
+		print(packet)
+		complete = True

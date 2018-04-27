@@ -9,7 +9,6 @@
 #   -- Key Information --
 #!/usr/bin/python
 #   -- Imports & Housing Keeping --
-import testDownlink
 import subprocess
 import RPi.GPIO as GPIO
 import time
@@ -40,8 +39,9 @@ def main(ground):
             packet = hex(int.from_bytes((cmd), byteorder='big')) # Convert from hex into bytes
             print(packet)
             if cmd == b"\x01": # ping pi
-                cmdTime = time.asctime( time.localtime(time.time()))
-                testDownlink.downlink(cmdTime)
+                cmdTime = time.asctime(time.localtime(time.time()))
+                ground.write(bytes(5))
+                print(bytes(5))
                 print("Command Recieved :", cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor

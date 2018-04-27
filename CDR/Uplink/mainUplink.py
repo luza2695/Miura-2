@@ -25,5 +25,3 @@ ground = serial.Serial(port=current_port,
 # intializes loop to detect uplink
 while True:
     uplink.main(ground)
-
-

@@ -74,8 +74,10 @@ def read_sensors():
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):
 			print(("%.2f C ") % (temperature[i]), end="")
+	humidity = read_humid()
+	print(("Humidity: %.2f %%") % (humidity) end="")
 	print("")
         
 while True:
-	print(read_humid())
+	print(read_sensors())
 	time.sleep(0.5)

@@ -24,8 +24,6 @@ def read_pressure():
 	data = []
 	pressure = []
 	for i in range(0,1):
-		print(i)
-		print(pres_id[i])
 	    # MPL3115A2 address, 0x60(96)
 	    # Select control register, 0x26(38)
 	    #		0x39(57)	Active mode, OSR = 128, Barometer mode
@@ -59,13 +57,19 @@ def read_temp():
             current = float(temp_string) / 1000.0
             temp_c.append(current)
     return temp_c
+
+def read_humid():
+	humidity = []
+	data = bus.read_i2c_block_data(0x27, 0x00, 4)
+	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
+	return humidity
     
 def read_sensors():
 	print("Reading...")
 	pressure = read_pressure()
 	print("Pressure: ", end="")
 	for i in range(0,1):
-			print(("Pressure: %.2f kPa ") % (pressure[i]), end="")
+			print(("%.2f kPa ") % (pressure[i]), end="")
 	temperature = read_temp()
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):
@@ -73,5 +77,5 @@ def read_sensors():
 	print("")
         
 while True:
-	read_sensors()
+	print(read_humid())
 	time.sleep(0.5)

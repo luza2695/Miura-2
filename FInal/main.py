@@ -18,11 +18,13 @@
 import threading
 import time
 import utility
-
+import uplink
 #######################################################################
 # Main Script:
 utility_thread = threading.Thread(name = 'utility', target = utility.main)
 
 utility_thread.start()
 
-
+running = True
+while(running):
+	uplink.main()

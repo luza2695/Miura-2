@@ -1,1 +1,5 @@
-ssh pi@10.201.2.103
+
+ssh pi@10.201.85.62
+password is chase
+
+10.201.23.89

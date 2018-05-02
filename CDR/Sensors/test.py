@@ -10,7 +10,7 @@ base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
-num_temp = 2
+num_temp = 5
 device_file = []
 
 for i in range(0,num_temp):
@@ -65,6 +65,7 @@ def read_sensors():
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):
 			print(("%.2f C ") % (pressure), end="")
+	print("")
         
 while True:
 	read_sensors()

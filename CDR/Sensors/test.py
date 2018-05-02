@@ -25,15 +25,14 @@ def read_pressure():
 	pressure = []
 	for i in range(0,len(pres_id)):
 		print(i)
-		print(pres_id[i])
 	    # MPL3115A2 address, 0x60(96)
 	    # Select control register, 0x26(38)
 	    #		0x39(57)	Active mode, OSR = 128, Barometer mode
-		bus.write_byte_data(pres_id[i], 0x26, 0x39)
+		bus.write_byte_data(hex(pres_id[i]), 0x26, 0x39)
 	    # MPL3115A2 address, 0x60(96)
 		# Read data back from 0x00(00), 4 bytes
 		# status, pres MSB1, pres MSB, pres LSB
-		data.append(bus.read_i2c_block_data(pres_id[i], 0x00, 4))
+		data.append(bus.read_i2c_block_data(hex(pres_id[i]), 0x00, 4))
 
     # Convert the data to 20-bits
 	for i in range(0,2):

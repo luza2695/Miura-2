@@ -60,7 +60,7 @@ def read_temp():
 
 def read_humid():
 	humidity = []
-	data = bus.read_i2c_block_data(0x27, 0x00, 4)
+	data = bus.read_i2c_block_data(0x68, 0x00, 4)
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
     

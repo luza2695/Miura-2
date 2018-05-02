@@ -35,8 +35,7 @@ def read_pressure():
 		# status, pres MSB1, pres MSB, pres LSB
 		data.append(bus.read_i2c_block_data(pres_id[i], 0x00, 4))
 		temp = ((data[i][1] * 65536) + (data[i][2] * 256) + (data[i][3] & 0xF0)) / 16
-		pressure[i] = (temp / 4.0) / 1000.0
-		
+		pressure.append((temp / 4.0) / 1000.0)
 	return pressure
 
 def read_temp_raw():

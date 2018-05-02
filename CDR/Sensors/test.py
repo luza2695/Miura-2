@@ -10,7 +10,7 @@ base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
-num_temp = 2
+num_temp = 5
 device_file = []
 
 for i in range(0,num_temp):
@@ -48,7 +48,7 @@ def read_temp():
     for i in range(0,num_temp):
         lines = lines_list[i]
         while lines[0].strip()[-3:] != 'YES':
-            time.sleep(0.2)
+            #time.sleep(0.2)
             lines = read_temp_raw()
         equals_pos = lines[1].find('t=')
         if equals_pos != -1:
@@ -58,14 +58,15 @@ def read_temp():
     return temp_c
     
 def read_sensors():
-    pressure = read_pressure()
-    print(("Pressure: %.2f kPa ") % (pressure), end="")
-    temperature = read_temp()
-    print("Temperature: ", end="")
-    for i in range(0,num_temp):
-            print(("%.2f C ") % (pressure), end="")
+	print("Reading...")
+	pressure = read_pressure()
+	print(("Pressure: %.2f kPa ") % (pressure), end="")
+	temperature = read_temp()
+	print("Temperature: ", end="")
+	for i in range(0,num_temp):
+			print(("%.2f C ") % (temperature[i]), end="")
+	print("")
         
-    
 while True:
-    read_sensors()
-    time.sleep(0.5)
+	read_sensors()
+	time.sleep(0.5)

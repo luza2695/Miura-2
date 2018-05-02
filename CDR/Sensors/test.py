@@ -48,7 +48,7 @@ def read_temp():
     for i in range(0,num_temp):
         lines = lines_list[i]
         while lines[0].strip()[-3:] != 'YES':
-            time.sleep(0.2)
+            #time.sleep(0.2)
             lines = read_temp_raw()
         equals_pos = lines[1].find('t=')
         if equals_pos != -1:
@@ -64,7 +64,7 @@ def read_sensors():
 	temperature = read_temp()
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):
-			print(("%.2f C ") % (pressure), end="")
+			print(("%.2f C ") % (temperature[i]), end="")
 	print("")
         
 while True:

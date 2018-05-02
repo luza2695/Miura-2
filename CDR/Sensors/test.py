@@ -23,7 +23,7 @@ bus = smbus.SMBus(1)
 def read_pressure():
 	data = []
 	pressure = []
-	for i in range(0,len(pres_id)):
+	for i in range(0,1):
 		print(i)
 		print(pres_id[i])
 	    # MPL3115A2 address, 0x60(96)
@@ -34,11 +34,8 @@ def read_pressure():
 		# Read data back from 0x00(00), 4 bytes
 		# status, pres MSB1, pres MSB, pres LSB
 		data.append(bus.read_i2c_block_data(pres_id[i], 0x00, 4))
-
-    # Convert the data to 20-bits
-	for i in range(0,2):
-		pres[i] = ((data[i][1] * 65536) + (data[i][2] * 256) + (data[i][3] & 0xF0)) / 16
-		pressure[i] = (pres[i] / 4.0) / 1000.0
+		temp = ((data[i][1] * 65536) + (data[i][2] * 256) + (data[i][3] & 0xF0)) / 16
+		pressure.append((temp / 4.0) / 1000.0)
 	return pressure
 
 def read_temp_raw():
@@ -67,7 +64,7 @@ def read_sensors():
 	print("Reading...")
 	pressure = read_pressure()
 	print("Pressure: ", end="")
-	for i in range(0,num_temp):
+	for i in range(0,1):
 			print(("Pressure: %.2f kPa ") % (pressure[i]), end="")
 	temperature = read_temp()
 	print("Temperature: ", end="")

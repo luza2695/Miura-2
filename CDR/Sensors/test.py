@@ -35,10 +35,10 @@ def read_pressure():
 	data[1] = bus.read_i2c_block_data(0x68, 0x00, 4)
 
     # Convert the data to 20-bits
-    for i in range(0,2):
-    	pres[i] = ((data[i][1] * 65536) + (data[i][2] * 256) + (data[i][3] & 0xF0)) / 16
-    	pressure[i] = (pres[i] / 4.0) / 1000.0
-    return pressure
+	for i in range(0,2):
+		pres[i] = ((data[i][1] * 65536) + (data[i][2] * 256) + (data[i][3] & 0xF0)) / 16
+		pressure[i] = (pres[i] / 4.0) / 1000.0
+	return pressure
 
 def read_temp_raw():
     lines = []

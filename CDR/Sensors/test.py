@@ -64,7 +64,7 @@ def read_sensors():
 	print("Reading...")
 	pressure = read_pressure()
 	print("Pressure: ", end="")
-	for i in range(0,num_temp):
+	for i in range(0,1):
 			print(("Pressure: %.2f kPa ") % (pressure[i]), end="")
 	temperature = read_temp()
 	print("Temperature: ", end="")

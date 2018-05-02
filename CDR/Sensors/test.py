@@ -11,6 +11,7 @@ device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
 num_temp = 5
+pres_id = [0x60,0x68]
 device_file = []
 
 for i in range(0,num_temp):
@@ -22,17 +23,15 @@ bus = smbus.SMBus(1)
 def read_pressure():
 	data = []
 	pressure = []
-    # MPL3115A2 address, 0x60(96)
-    # Select control register, 0x26(38)
-    #		0x39(57)	Active mode, OSR = 128, Barometer mode
-	bus.write_byte_data(0x60, 0x26, 0x39)
-    # MPL3115A2 address, 0x60(96)
-	# Read data back from 0x00(00), 4 bytes
-	# status, pres MSB1, pres MSB, pres LSB
-	data[0] = bus.read_i2c_block_data(0x60, 0x00, 4)
-	bus.write_byte_data(0x68, 0x26, 0x39)
-
-	data[1] = bus.read_i2c_block_data(0x68, 0x00, 4)
+	for i in range(0,len(pres_id)):
+	    # MPL3115A2 address, 0x60(96)
+	    # Select control register, 0x26(38)
+	    #		0x39(57)	Active mode, OSR = 128, Barometer mode
+		bus.write_byte_data(pres_id[i], 0x26, 0x39)
+	    # MPL3115A2 address, 0x60(96)
+		# Read data back from 0x00(00), 4 bytes
+		# status, pres MSB1, pres MSB, pres LSB
+		data.append(bus.read_i2c_block_data(pres_id[i], 0x00, 4))
 
     # Convert the data to 20-bits
 	for i in range(0,2):

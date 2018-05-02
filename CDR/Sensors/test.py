@@ -60,13 +60,12 @@ def read_temp():
 def read_sensors():
 	print("Reading...")
 	pressure = read_pressure()
-    print(("Pressure: %.2f kPa ") % (pressure), end="")
-    temperature = read_temp()
-    print("Temperature: ", end="")
-    for i in range(0,num_temp):
-            print(("%.2f C ") % (pressure), end="")
+	print(("Pressure: %.2f kPa ") % (pressure), end="")
+	temperature = read_temp()
+	print("Temperature: ", end="")
+	for i in range(0,num_temp):
+			print(("%.2f C ") % (pressure), end="")
         
-    
 while True:
-    read_sensors()
-    time.sleep(0.5)
+	read_sensors()
+	time.sleep(0.5)

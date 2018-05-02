@@ -24,6 +24,8 @@ def read_pressure():
 	data = []
 	pressure = []
 	for i in range(0,len(pres_id)):
+		print(i)
+		print(pres_id[i])
 	    # MPL3115A2 address, 0x60(96)
 	    # Select control register, 0x26(38)
 	    #		0x39(57)	Active mode, OSR = 128, Barometer mode

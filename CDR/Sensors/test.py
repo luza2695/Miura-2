@@ -20,20 +20,27 @@ for i in range(0,num_temp):
 bus = smbus.SMBus(1)
 
 def read_pressure():
+	data = []
+	pressure = []
     # MPL3115A2 address, 0x60(96)
     # Select control register, 0x26(38)
     #		0x39(57)	Active mode, OSR = 128, Barometer mode
     bus.write_byte_data(0x60, 0x26, 0x39)
-
     # MPL3115A2 address, 0x60(96)
     # Read data back from 0x00(00), 4 bytes
     # status, pres MSB1, pres MSB, pres LSB
-    data = bus.read_i2c_block_data(0x60, 0x00, 4)
+    data[0] = bus.read_i2c_block_data(0x60, 0x00, 4)
+
+    bus.write_byte_data(0x68, 0x26, 0x39)
+
+    data[1] = bus.read_i2c_block_data(0x68, 0x00, 4)
 
     # Convert the data to 20-bits
-    pres = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
-    pressure = (pres / 4.0) / 1000.0
+    for i in range(0,2):
+    	pres[i] = ((data[i][1] * 65536) + (data[i][2] * 256) + (data[i][3] & 0xF0)) / 16
+    	pressure[i] = (pres[i] / 4.0) / 1000.0
     return pressure
+
 def read_temp_raw():
     lines = []
     for i in range(0,num_temp):
@@ -48,7 +55,6 @@ def read_temp():
     for i in range(0,num_temp):
         lines = lines_list[i]
         while lines[0].strip()[-3:] != 'YES':
-            #time.sleep(0.2)
             lines = read_temp_raw()
         equals_pos = lines[1].find('t=')
         if equals_pos != -1:
@@ -60,7 +66,9 @@ def read_temp():
 def read_sensors():
 	print("Reading...")
 	pressure = read_pressure()
-	print(("Pressure: %.2f kPa ") % (pressure), end="")
+	print("Pressure: ", end="")
+	for i in range(0,num_temp):
+			print(("Pressure: %.2f kPa ") % (pressure[i]), end="")
 	temperature = read_temp()
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):

@@ -1,5 +1,6 @@
 # Sample Uplink Code
 import serial
+import time
 from sys import platform
 
 
@@ -22,25 +23,27 @@ commands_usage = ['Ping Pi','Demo Motor','Camera Demo']
 
 # prompts user for valid command
 
-print('\nCommands:\r')
-for i in range(len(commands)):
-	print('\t' + commands[i] + ': ' + commands_usage[i] + '\r')
+# print('\nCommands:\r')
+# for i in range(len(commands)):
+# 	print('\t' + commands[i] + ': ' + commands_usage[i] + '\r')
 
 
 
-cmd_str = input('\nEnter Command: ')
-if not any(cmd_str in command for command in commands) and False:
-	print('Invalid Command')
-else: 
-	cmd = int(cmd_str,16)
+# cmd_str = input('\nEnter Command: ')
+# if not any(cmd_str in command for command in commands) and False:
+# 	print('Invalid Command')
+# else: 
+# 	cmd = int(cmd_str,16)
 
-	cmd = bytes([cmd])#, 'utf-8')
+# 	cmd = bytes([cmd])#, 'utf-8')
 		
-	ser.write(cmd)
+# 	ser.write(cmd)
 	
 complete = False
 
 while (not complete):
+	time.sleep(0.5)
+	#print (ser.inWaiting())
 
 	# cmd_str = input('\nEnter Command: ')
 	# if not any(cmd_str in command for command in commands) and False:
@@ -52,9 +55,10 @@ while (not complete):
 		
 	# 	ser.write(cmd)
 	while ser.inWaiting():
+		
 		#print("",end='')
-		cmd= ser.read()
+		cmd = ser.read()
             #packet = hex(int.from_bytes((cmd),byteorder = 'big'))
 		packet = cmd.decode("utf-8")
 		print(packet)
-		complete = True
+		#complete = True

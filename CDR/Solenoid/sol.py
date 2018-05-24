@@ -12,12 +12,3 @@ def openSolenoid():
 
 def closeSolenoid():
 	GPIO.output(solenoid_pin, False)
-
-def alternate():
-	while True:
-		openSolenoid()
-		time.sleep(1)
-		closeSolenoid()
-		time.sleep(1)
-
-alternate()

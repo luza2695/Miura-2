@@ -10,21 +10,21 @@
 #!/usr/bin/python
 #   -- Imports & Housing Keeping --
 import subprocess
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 import serial
 import sys
 sys.path.append('../')
+
 #from Camera import cameratest
-import examples.StepperTest
+import examples.StepperTest as StepperTest
 
-
-led_pin = 33
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
-GPIO.setup(led_pin,GPIO.OUT)
-GPIO.output(led_pin,GPIO.LOW)
-GPIO.cleanup()
+#led_pin = 33
+#GPIO.setmode(GPIO.BOARD)
+#GPIO.setwarnings(False)
+#GPIO.setup(led_pin,GPIO.OUT)
+#GPIO.output(led_pin,GPIO.LOW)
+#GPIO.cleanup()
 
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"
@@ -39,11 +39,11 @@ ground = serial.Serial(port=current_port,
 
 
 #LED ping when called
-def led():
-    GPIO.output(led_pin,GPIO.HIGH)
-    time.sleep(0.5)
-    GPIO.output(led_pin,GPIO.LOW)
-    GPIO.cleanup()
+#def led():
+#    GPIO.output(led_pin,GPIO.HIGH)
+#    time.sleep(0.5)
+#    GPIO.output(led_pin,GPIO.LOW)
+#    GPIO.cleanup()
 
 def main(ground):
     ground.flushInput() # Clears the serial communication channel before attempting to use it
@@ -60,7 +60,8 @@ def main(ground):
                 #print("Command Recieved :")#, cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor
-                StepperTest
+                print("This sucks")
+                StepperTest.main()
             elif cmd == b"\x0C":
                 #cameratest.main()
                 cmd = bytes('Nice picture!', 'utf-8')
@@ -68,5 +69,5 @@ def main(ground):
             else:
                 print("invalid command")
         time.sleep(1)
-                
+
 main(ground)

@@ -18,7 +18,7 @@ sys.path.append('../')
 
 #from Camera import cameratest
 import examples.StepperTest as StepperTest
-
+import solenoid
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
 #GPIO.setwarnings(False)
@@ -60,9 +60,16 @@ def main(ground):
                 #print("Command Recieved :")#, cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor
-                print("This sucks")
+                print("Begin Motor Command")
                 StepperTest.main()
+            elif cmd == b"\x03": 
+                print("Begin Close Solenoid Command")
+                solenoid.closeSolenoid()
+            elif cmd == b"\0x4":
+                print("Begin Open Solenoid Command") 
+                solenoid.openSolenoid()
             elif cmd == b"\x0C":
+                print("Begin Camera Command")
                 #cameratest.main()
                 cmd = bytes('Nice picture!', 'utf-8')
                 testDownlink.downlink(cmd)

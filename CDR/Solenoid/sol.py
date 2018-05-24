@@ -19,3 +19,5 @@ def alternate():
 		time.sleep(1)
 		closeSolenoid()
 		time.sleep(1)
+
+alternate()

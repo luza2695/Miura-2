@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import time
 import RPi.GPIO as GPIO
 
@@ -14,3 +15,19 @@ for x in range(20):
     time.sleep(0.5)
 
 GPIO.cleanup()   
+=======
+import RPi.GPIO as GPIO
+import time
+
+solenoid_pin = 18
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+GPIO.setup(solenoid_pin, GPIO.OUT)
+
+def openSolenoid():
+	GPIO.output(solenoid_pin, True)
+
+def closeSolenoid():
+	GPIO.output(solenoid_pin, False)
+>>>>>>> 07199942460ee8a9de3ef410ca6ff460e689055c

@@ -74,8 +74,8 @@ def main(ground):
                 print("Closing Exhaust Valve")
                 solenoid.closeExhaust()
             elif cmd == b"\x07":
-		print("Burping Exhaust Valve")
-		solenoid.burp()
+                print("Burping Exhaust Valve")
+                solenoid.burp()
             elif cmd == b"\x0C":
                 print("Begin Camera Command")
                 #cameratest.main()

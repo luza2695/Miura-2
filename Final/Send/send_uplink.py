@@ -7,7 +7,7 @@ from sys import platform
 if platform == "linux" or platform == "linux2":
     current_port = "/dev/ttyUSB0"
 elif platform == "darwin":
-    current_port = "/dev/tty.USA19H142P1.1"
+    current_port = "/dev/tty.USA19H141P1.1"
 
 # sets up serial object for use
 ser = serial.Serial(port=current_port,
@@ -18,8 +18,8 @@ ser = serial.Serial(port=current_port,
                     timeout=1)
 
 # sets list of valid commands
-commands = ['x01','x02','x0C','x03','x04']
-commands_usage = ['Ping Pi','Demo Motor','Camera Demo','Close Solenoid','Open Solenoid']
+commands = ['x01','x02','x03','x04','x05','x06','x0C']
+commands_usage = ['Ping Pi','Demo Motor','Open Pressurize','Close Pressurize','Open Exhaust','Close Exhaust','Camera Demo']
 
 # prompts user for valid command
 

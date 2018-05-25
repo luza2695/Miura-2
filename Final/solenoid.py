@@ -6,7 +6,7 @@ exhaust_pin = 12
 motor_pin = 18
 
 GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(pressurize_pin, GPIO.OUT)
 GPIO.setup(exhaust_pin, GPIO.OUT)
 GPIO.setup(motor_pin, GPIO.OUT)

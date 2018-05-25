@@ -7,7 +7,7 @@ from sys import platform
 if platform == "linux" or platform == "linux2":
     current_port = "/dev/ttyUSB0"
 elif platform == "darwin":
-    current_port = "/dev/tty.USA19H142P1.1"
+    current_port = "/dev/tty.USA19H141P1.1"
 
 # sets up serial object for use
 ser = serial.Serial(port=current_port,

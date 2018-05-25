@@ -64,10 +64,10 @@ def main(ground):
                 #StepperTest.main()
             elif cmd == b"\x03": 
                 print("Begin Close Solenoid Command")
-                solenoid.closeSolenoid()
-            elif cmd == b"\0x4":
+                solenoid.closePressurize()
+            elif cmd == b"\x04":
                 print("Begin Open Solenoid Command") 
-                solenoid.openSolenoid()
+                solenoid.openPressurize()
             elif cmd == b"\x0C":
                 print("Begin Camera Command")
                 #cameratest.main()

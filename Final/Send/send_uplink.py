@@ -18,8 +18,8 @@ ser = serial.Serial(port=current_port,
                     timeout=1)
 
 # sets list of valid commands
-commands = ['x01','x02','x0C','x03','x04']
-commands_usage = ['Ping Pi','Demo Motor','Camera Demo','Close Solenoid','Open Solenoid']
+commands = ['x01','x02','x03','x04','x05','x06','x0C']
+commands_usage = ['Ping Pi','Demo Motor','Open Pressurize','Close Pressurize','Open Exhaust','Close Exhaust','Camera Demo']
 
 # prompts user for valid command
 

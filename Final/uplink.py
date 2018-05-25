@@ -16,7 +16,7 @@ import serial
 import sys
 sys.path.append('../')
 #from Camera import cameratest
-import examples.StepperTest as StepperTest
+#import examples.StepperTest as StepperTest
 import solenoid
 
 #led_pin = 33
@@ -61,6 +61,7 @@ def main(ground):
                 pass
             elif cmd == b"\x02": # demo motor
                 print("Begin Motor Command")
+                #StepperTest.main()
             elif cmd == b"\x03": 
                 print("Begin Close Solenoid Command")
                 solenoid.closeSolenoid()

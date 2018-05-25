@@ -12,3 +12,10 @@ def openSolenoid():
 
 def closeSolenoid():
 	GPIO.output(solenoid_pin, False)
+
+for i in range(10):
+
+        openSolenoid()
+        time.sleep(1)
+        closeSolenoid()
+        time.sleep(1)

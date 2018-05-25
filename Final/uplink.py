@@ -16,7 +16,7 @@ import serial
 import sys
 sys.path.append('../')
 #from Camera import cameratest
-import examples.StepperTest
+#import examples.StepperTest
 
 
 led_pin = 33
@@ -60,9 +60,9 @@ def main(ground):
                 #print("Command Recieved :")#, cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor
-                StepperTest
+                #StepperTest
             elif cmd == b"\x0C":
-                #cameratest.main()
+             	#cameratest.main()
                 cmd = bytes('Nice picture!', 'utf-8')
                 testDownlink.downlink(cmd)
             else:

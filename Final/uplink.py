@@ -61,26 +61,18 @@ def main(ground):
             elif cmd == b"\x02": # demo motor
                 print("Begin Motor Command")
                 StepperTest.main()
-            elif cmd == b"\x03": 
-<<<<<<< HEAD
-                print("Begin Close Solenoid Command")
-                solenoid.closeSolenoid()
-            elif cmd == b"\x04":
-                print("Begin Open Solenoid Command") 
-                solenoid.openSolenoid()
-=======
+            elif cmd == b"\x03":
                 print("Opening Pressurize Valve")
                 solenoid.openPressurize()
             elif cmd == b"\x04":
-                print("Closing Pressurize Valve") 
+                print("Closing Pressurize Valve")
                 solenoid.closePressurize()
-            elif cmd == b"\x05": 
+            elif cmd == b"\x05":
                 print("Opening Exhaust Valve")
                 solenoid.openExhaust()
             elif cmd == b"\x06":
-                print("Closing Exhaust Valve") 
+                print("Closing Exhaust Valve")
                 solenoid.closeExhaust()
->>>>>>> c8b6f4ea265e6f35c57b2c00190503ff4f184934
             elif cmd == b"\x0C":
                 print("Begin Camera Command")
                 #cameratest.main()

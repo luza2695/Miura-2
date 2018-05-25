@@ -5,7 +5,7 @@ pressurize_pin = 18
 exhaust_pin = 16
 motor_pin = 12
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(solenoid_pin, GPIO.OUT)
+GPIO.setup(pressurize_pin, GPIO.OUT)
 GPIO.setwarnings(False)
 
 def setup():

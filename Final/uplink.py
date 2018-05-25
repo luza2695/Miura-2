@@ -15,10 +15,10 @@ import time
 import serial
 import sys
 sys.path.append('../')
-
 #from Camera import cameratest
-import examples.StepperTest as StepperTest
+#import examples.StepperTest as StepperTest
 import solenoid
+
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
 #GPIO.setwarnings(False)
@@ -61,7 +61,7 @@ def main(ground):
                 pass
             elif cmd == b"\x02": # demo motor
                 print("Begin Motor Command")
-                StepperTest.main()
+                #StepperTest.main()
             elif cmd == b"\x03": 
                 print("Begin Close Solenoid Command")
                 solenoid.closeSolenoid()
@@ -76,5 +76,3 @@ def main(ground):
             else:
                 print("invalid command")
         time.sleep(1)
-
-main(ground)

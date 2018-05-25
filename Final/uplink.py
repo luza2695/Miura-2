@@ -16,7 +16,7 @@ import serial
 import sys
 sys.path.append('../')
 #from Camera import cameratest
-#import examples.StepperTest as StepperTest
+import examples.StepperTest as StepperTest
 import solenoid
 
 #led_pin = 33
@@ -48,7 +48,6 @@ ground = serial.Serial(port=current_port,
 def main(ground):
     ground.flushInput() # Clears the serial communication channel before attempting to use it
     while True:
-        #print(ground.inWaiting())
         if ground.inWaiting(): # Reads uplink command
             cmd = ground.read()  # gets command
             packet = hex(int.from_bytes((cmd), byteorder='big')) # Convert from hex into bytes
@@ -61,7 +60,7 @@ def main(ground):
                 pass
             elif cmd == b"\x02": # demo motor
                 print("Begin Motor Command")
-                #StepperTest.main()
+                StepperTest.main()
             elif cmd == b"\x03": 
                 print("Opening Pressurize Valve")
                 solenoid.openPressurize()

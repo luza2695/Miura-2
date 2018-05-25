@@ -10,21 +10,27 @@
 #!/usr/bin/python
 #   -- Imports & Housing Keeping --
 import subprocess
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 import serial
 import sys
 sys.path.append('../')
+<<<<<<< HEAD:Final/uplink.py
 #from Camera import cameratest
 #import examples.StepperTest
 
+=======
+>>>>>>> 1ac6545c51b21a86d1f40e3ad9705898f030be67:Final/uplink.py
 
-led_pin = 33
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
-GPIO.setup(led_pin,GPIO.OUT)
-GPIO.output(led_pin,GPIO.LOW)
-GPIO.cleanup()
+#from Camera import cameratest
+import examples.StepperTest as StepperTest
+import solenoid
+#led_pin = 33
+#GPIO.setmode(GPIO.BOARD)
+#GPIO.setwarnings(False)
+#GPIO.setup(led_pin,GPIO.OUT)
+#GPIO.output(led_pin,GPIO.LOW)
+#GPIO.cleanup()
 
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"
@@ -39,11 +45,11 @@ ground = serial.Serial(port=current_port,
 
 
 #LED ping when called
-def led():
-    GPIO.output(led_pin,GPIO.HIGH)
-    time.sleep(0.5)
-    GPIO.output(led_pin,GPIO.LOW)
-    GPIO.cleanup()
+#def led():
+#    GPIO.output(led_pin,GPIO.HIGH)
+#    time.sleep(0.5)
+#    GPIO.output(led_pin,GPIO.LOW)
+#    GPIO.cleanup()
 
 def main(ground):
     ground.flushInput() # Clears the serial communication channel before attempting to use it
@@ -60,13 +66,31 @@ def main(ground):
                 #print("Command Recieved :")#, cmdTime)
                 pass
             elif cmd == b"\x02": # demo motor
+<<<<<<< HEAD:Final/uplink.py
                 #StepperTest
             elif cmd == b"\x0C":
              	#cameratest.main()
+=======
+                print("Begin Motor Command")
+                StepperTest.main()
+            elif cmd == b"\x03": 
+                print("Begin Close Solenoid Command")
+                solenoid.closeSolenoid()
+            elif cmd == b"\0x4":
+                print("Begin Open Solenoid Command") 
+                solenoid.openSolenoid()
+            elif cmd == b"\x0C":
+                print("Begin Camera Command")
+                #cameratest.main()
+>>>>>>> 1ac6545c51b21a86d1f40e3ad9705898f030be67:Final/uplink.py
                 cmd = bytes('Nice picture!', 'utf-8')
                 testDownlink.downlink(cmd)
             else:
                 print("invalid command")
         time.sleep(1)
+<<<<<<< HEAD:Final/uplink.py
                 
+=======
+
+>>>>>>> 1ac6545c51b21a86d1f40e3ad9705898f030be67:Final/uplink.py
 main(ground)

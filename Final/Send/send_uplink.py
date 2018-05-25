@@ -18,8 +18,8 @@ ser = serial.Serial(port=current_port,
                     timeout=1)
 
 # sets list of valid commands
-commands = ['x01','x02','x0C']
-commands_usage = ['Ping Pi','Demo Motor','Camera Demo']
+commands = ['x01','x02','x0C','x03','x04']
+commands_usage = ['Ping Pi','Demo Motor','Camera Demo','Close Solenoid','Open Solenoid']
 
 # prompts user for valid command
 
@@ -43,17 +43,17 @@ complete = False
 
 while (not complete):
 	time.sleep(0.5)
-	#print (ser.inWaiting())
+	print (ser.inWaiting())
 
-	# cmd_str = input('\nEnter Command: ')
-	# if not any(cmd_str in command for command in commands) and False:
-	# 	print('Invalid Command')
-	# else: 
-	# 	cmd = int(cmd_str,16)
+	cmd_str = input('\nEnter Command: ')
+	if not any(cmd_str in command for command in commands) and False:
+		print('Invalid Command')
+	else: 
+		cmd = int(cmd_str,16)
 
-	# 	cmd = bytes([cmd])#, 'utf-8')
+		cmd = bytes([cmd])#, 'utf-8')
 		
-	# 	ser.write(cmd)
+		ser.write(cmd)
 	while ser.inWaiting():
 		
 		#print("",end='')

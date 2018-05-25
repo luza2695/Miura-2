@@ -65,7 +65,7 @@ def main(ground):
             elif cmd == b"\x03": 
                 print("Begin Close Solenoid Command")
                 solenoid.closeSolenoid()
-            elif cmd == b"\0x4":
+            elif cmd == b"\x04":
                 print("Begin Open Solenoid Command") 
                 solenoid.openSolenoid()
             elif cmd == b"\x0C":

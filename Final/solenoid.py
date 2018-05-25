@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
-pressurize_pin = 16
-exhaust_pin = 12
+pressurize_pin = 12
+exhaust_pin = 16
 motor_pin = 18
 
 GPIO.setwarnings(False)

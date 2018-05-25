@@ -14,7 +14,7 @@ GPIO.setup(motor_pin, GPIO.OUT)
 def openPressurize():
 	GPIO.output(motor_pin, False)
 	time.sleep(0.3)
-	GPIO.output(pressurize_pin, True)	
+	GPIO.output(pressurize_pin, True)
 
 def closePressurize():
 	GPIO.output(pressurize_pin, False)
@@ -25,3 +25,10 @@ def openExhaust():
 
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
+
+def burp():
+	for i in range(0,50):
+		GPIO.output(exhaust_pin, True)
+		time.sleep(0.05)
+		GPIO.output(exhaust_pin, False)
+

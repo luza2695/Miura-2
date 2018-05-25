@@ -4,9 +4,11 @@ import time
 pressurize_pin = 18
 exhaust_pin = 16
 motor_pin = 12
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pressurize_pin, GPIO.OUT)
-GPIO.setwarnings(False)
+GPIO.setup(motor_pin, GPIO.OUT)
+
 
 def setup():
 	GPIO.setmode(GPIO.BOARD)

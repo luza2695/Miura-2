@@ -13,6 +13,6 @@ ground = serial.Serial(port=current_port,
                        bytesize=serial.EIGHTBITS,
                        timeout=1)
 
-# downlinks given pakcet
+# downlinks given packet
 def downlink(packet):
     ground.write(packet)

@@ -1,10 +1,8 @@
 ##################################################################
-#Purpose:
-#   - Accept uplink commands
-#Created: 3/13/2018
-#Modified: 5/29/2018
-#Miura 2: Uplink Code (uplink.py)
-#Project: Miura 2
+# Miura 2: Uplink Code (uplink.py)
+# Created: 3/13/2018
+# Modified: 5/29/2018
+# Purpose: Accept uplink commands
 ##################################################################
 
 #import RPi.GPIO as GPIO

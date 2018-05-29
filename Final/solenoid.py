@@ -1,3 +1,10 @@
+##################################################################
+# Miura 2: Solenoid Control (solenoid.py)
+# Created: 5/24/2018
+# Modified: 5/29/2018
+# Purpose: Control solenoids for pressurization process
+##################################################################
+
 import RPi.GPIO as GPIO
 import time
 

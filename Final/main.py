@@ -74,7 +74,7 @@ stage = 1
 
 #pressure check loop
 while running:
-	uplink.main(serial)
+	uplink.main(serial, downlink_queue)
 	downlink.main(serial, downlink_queue)
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera

@@ -39,7 +39,7 @@ serial = serial.Serial(port=current_port,
 #    GPIO.output(led_pin,GPIO.LOW)
 #    GPIO.cleanup()
 
-def main(serial):
+def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
         cmd = serial.read()  # gets command
         packet = hex(int.from_bytes((cmd), byteorder='big')) # convert hex into bytes

@@ -21,6 +21,7 @@ import time
 import utility
 from uplink import uplink
 from downlink import downlink
+from heater import heaterPayload, heaterValve
 #######################################################################
 
 # start time for measuring time elapsed and for file naming
@@ -65,3 +66,71 @@ while(running):
 	uplink(serial)
 	donwlink(serial)
 
+##############################################################################
+#Variables
+maxInflationTime = 30
+time_temp_start = 0
+time_temp_end = 0
+stage = 1
+
+#pressure check loop
+while(running):
+
+	#if it is stage 1 (ascent) ...
+	#	- Turn off camera
+	#	- Do not run any of the pressure checks
+	#	- Turn on heaters
+	if stage == 1: #ascent stage 1 
+		time_temp_start = time.time()
+
+
+	#if it is stage 2 (inflation) ...
+	#	- Starts when stage 1 or 5 is completed
+	#	- Open solenoid valve
+	#	- Motor given NO power
+	#	- Close exhaust valve
+	#	- Camera ON
+	#	- Stops ...
+	#		- when pressure has reached the maximum capacity
+	#		- When the inflation timer has been reached 
+	else if stage == 2: #infating // stage 2
+
+	#if it is stage 3 (inflated) ...
+	#	- Starts when inflation is completed
+	#	- Close solenoid valve
+	#	- Close Exhaust valve
+	#	- Motor given NO power
+	#	- Camera ON
+	#	- Stops when the inflated timer is done
+	else if stage == 3:
+	
+	#if it is stage 4 (deflating) ...
+	#	- Starts when inflated timer has been completed
+	#	- Close Solenoid valve
+	#	- Open Exhaust valve
+	#	- Motor ON
+	#	- Camera ON
+	#	- Stops when motor has fully retracted
+	else if stage == 4:
+
+	#if it is stage 5 (deflated) ...
+	#	- Starts when deflation is completed
+	#	- Close Solenoid Valve
+	#	- Close Exhaust valve
+	#	- Motor ON, but not moving (only torqued)
+	#	- Camera ON
+	#	- Stops when deflated timer is done
+	else if stage == 5:
+
+	#If it is stage 6 (emergency) ...
+	#	- Starts when pressure > 0.8 atms
+	#	- Close Solenoid Valve
+	#	- Open Exhaust Valve
+	#	- Motor OFF
+	#	- Camera ON
+	#	- Stops when pressure becomes less than 0.8 atm (stable)
+	else if value > 0.8 or stage == 6: #atm
+
+
+	#check data every 0.1 seconds
+	time.sleeo(0.1)

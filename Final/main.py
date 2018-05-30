@@ -63,7 +63,6 @@ utility_thread.start()
 # start checking uplink for commands
 running = True
 
-##############################################################################
 #Variables
 maxInflationTime = 30
 time_temp_start = 0
@@ -80,8 +79,6 @@ while running:
 	#	- Turn on heaters
 	if stage == 1: #ascent stage 1 
 		time_temp_start = time.time()
-
-
 	#if it is stage 2 (inflation) ...
 	#	- Starts when stage 1 or 5 is completed
 	#	- Open solenoid valve
@@ -91,8 +88,8 @@ while running:
 	#	- Stops ...
 	#		- when pressure has reached the maximum capacity
 	#		- When the inflation timer has been reached 
-	else if stage == 2: #infating // stage 2
-
+	elif stage == 2: #infating // stage 2
+		pass
 	#if it is stage 3 (inflated) ...
 	#	- Starts when inflation is completed
 	#	- Close solenoid valve
@@ -100,8 +97,8 @@ while running:
 	#	- Motor given NO power
 	#	- Camera ON
 	#	- Stops when the inflated timer is done
-	else if stage == 3:
-	
+	elif stage == 3:
+		pass
 	#if it is stage 4 (deflating) ...
 	#	- Starts when inflated timer has been completed
 	#	- Close Solenoid valve
@@ -109,8 +106,8 @@ while running:
 	#	- Motor ON
 	#	- Camera ON
 	#	- Stops when motor has fully retracted
-	else if stage == 4:
-
+	elif stage == 4:
+		pass
 	#if it is stage 5 (deflated) ...
 	#	- Starts when deflation is completed
 	#	- Close Solenoid Valve
@@ -118,8 +115,8 @@ while running:
 	#	- Motor ON, but not moving (only torqued)
 	#	- Camera ON
 	#	- Stops when deflated timer is done
-	else if stage == 5:
-
+	elif stage == 5:
+		pass
 	#If it is stage 6 (emergency) ...
 	#	- Starts when pressure > 0.8 atms
 	#	- Close Solenoid Valve
@@ -127,8 +124,8 @@ while running:
 	#	- Motor OFF
 	#	- Camera ON
 	#	- Stops when pressure becomes less than 0.8 atm (stable)
-	else if value > 0.8 or stage == 6: #atm
-
+	elif value > 0.8 or stage == 6: #atm
+		pass
 
 	#check data every 0.1 seconds
 	time.sleep(0.1)

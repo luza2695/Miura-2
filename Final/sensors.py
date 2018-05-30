@@ -13,21 +13,25 @@ import smbus
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
+# i2c sensor ids
 pres_id = 0x60
 hum_id = 0x68
 bus = smbus.SMBus(1)
 
+# defines number of temp sensors
+num_temp = 4
+
+# automatically finds temp sensor addresses
+device_file = []
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
-
-num_temp = 4
-device_file = []
 
 for i in range(0,num_temp):
     device_folder = glob.glob(base_dir + '28*')[i]
     device_file.append(device_folder + '/w1_slave')
 
+# reads external pressure sensor
 def read_pressure():
 	bus.write_byte_data(pres_id, 0x26, 0x39)
 	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
@@ -35,11 +39,13 @@ def read_pressure():
 	pressure = (temp / 4.0) / 1000.0
 	return pressure
 
+# reads external humidity
 def read_humid():
 	data = bus.read_i2c_block_data(hum_id, 0x00, 4)
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
 
+# reads raw value of each temperature sensor
 def read_temp_raw():
     lines = []
     for i in range(0,num_temp):
@@ -48,10 +54,14 @@ def read_temp_raw():
         f.close()
     return lines
 
+# reads temp from each sensor
 def read_temp():
-    lines_list = read_temp_raw()
+    lines_list = []
     temp_c = []
     for i in range(0,num_temp):
+    	f = open(device_file[i], 'r')
+        lines_list.append(f.readlines())
+        f.close()
         lines = lines_list[i]
         while lines[0].strip()[-3:] != 'YES':
             lines = read_temp_raw()
@@ -61,7 +71,8 @@ def read_temp():
             current = float(temp_string) / 1000.0
             temp_c.append(current)
     return temp_c
-    
+   
+# prints value of each sensor 
 def print_sensors():
 	print("Reading...")
 	pressure = read_pressure()
@@ -75,8 +86,11 @@ def print_sensors():
 	print("")
 	return
 
+# returns value of each sensor
 def read_sensors():
 	pressure = read_pressure()
 	humidity = read_humid()
 	temperature = read_temp()
 	return pressure, humidity, temperature
+
+	

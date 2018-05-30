@@ -4,6 +4,7 @@
 # Modified: 5/29/2018
 # Purpose: Downlink data and write to log file
 ##################################################################
+import serial
 
 def main(serial, downlink_queue):#, log_filename, log_lock):
 	if not downlink_queue.empty():

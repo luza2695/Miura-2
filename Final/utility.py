@@ -13,4 +13,5 @@ def main(downlink_queue,running):
 	downlink_queue.put('Starting utility thread: {}'.format(current_time))
 	while running:
 		print_sensors()
+		# add downlink of sensor data
 		time.sleep(0.5)

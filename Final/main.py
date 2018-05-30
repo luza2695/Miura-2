@@ -24,22 +24,21 @@ from downlink import downlink
 from heater import heaterPayload, heaterValve
 #######################################################################
 
-# start time for measuring time elapsed and for file naming
-start_timestamp = time.time()
+# announces start of main thread
 start_time = time.strftime('%b_%m_%H:%M:%S')
 print('Starting main thread: {}'.format(start_time))
 
 # creates directory where log file and data files will be saved
-file_index = 0
-while os.path.exists('/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)):
-	file_index += 1
-data_directory = '/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)
+# file_index = 0
+# while os.path.exists('/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)):
+# 	file_index += 1
+# data_directory = '/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)
 #os.mkdir(data_directory)
 
 # sets up the log file, initialize as empty
-log_filename = '{}/mission.log}'.format(data_directory)
-log_lock = threading.Lock()
-open(log_filename, 'w+').close()
+# log_filename = '{}/mission.log}'.format(data_directory)
+# log_lock = threading.Lock()
+# open(log_filename, 'w+').close()
 
 # sets up downlink queue
 downlink_queue = queue.Queue()
@@ -57,6 +56,9 @@ serial = serial.Serial(port=current_port,
 					  bytesize=serial.EIGHTBITS,
 					  timeout=1)
 
+# clears the serial communication channel
+serial.flushInput() 
+
 # start utilty thread
 utility_thread = threading.Thread(target=utility, args=(downlink_queue))
 utility_thread.start()
@@ -72,8 +74,8 @@ stage = 1
 
 #pressure check loop
 while running:
-	uplink(serial)
-	downlink(serial)
+	#uplink(serial)
+	#downlink(serial, downlink_queue)
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
 	#	- Do not run any of the pressure checks

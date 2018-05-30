@@ -25,12 +25,12 @@ import downlink
 from heater import heaterPayload, heaterValve
 #######################################################################
 
-# announces start of main thread
+# gets start time of main thread
 start_time = time.strftime('%b_%m_%H:%M:%S')
-print('Starting main thread: {}'.format(start_time))
+
 
 # creates directory where log file and data files will be saved
-# file_index = 0
+file_index = 0
 # while os.path.exists('/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)):
 # 	file_index += 1
 # data_directory = '/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)
@@ -44,7 +44,7 @@ print('Starting main thread: {}'.format(start_time))
 # sets up downlink queue
 downlink_queue = queue.Queue()
 downlink_queue.put('Data Log {}'.format(file_index))
-downlink_queue.put('Start Time: {}'.format(start_time))
+downlink_queue.put('Starting Main Thread: {}'.format(start_time))
 
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"

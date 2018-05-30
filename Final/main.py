@@ -62,9 +62,6 @@ utility_thread.start()
 
 # start checking uplink for commands
 running = True
-while(running):
-	uplink(serial)
-	donwlink(serial)
 
 ##############################################################################
 #Variables
@@ -74,8 +71,9 @@ time_temp_end = 0
 stage = 1
 
 #pressure check loop
-while(running):
-
+while running:
+	uplink(serial)
+	donwlink(serial)
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
 	#	- Do not run any of the pressure checks
@@ -133,4 +131,4 @@ while(running):
 
 
 	#check data every 0.1 seconds
-	time.sleeo(0.1)
+	time.sleep(0.1)

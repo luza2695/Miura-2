@@ -62,18 +62,21 @@ def read_temp():
             temp_c.append(current)
     return temp_c
     
-def read_sensors():
+def print_sensors():
 	print("Reading...")
 	pressure = read_pressure()
 	print(("Pressure: %.2f kPa ") % (pressure), end="")
 	humidity = read_humid()
-	print(("Humidity: %.2f %%") % (humidity), end="")
+	print(("Humidity: %.2f %% ") % (humidity), end="")
 	temperature = read_temp()
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):
 			print(("%.2f C ") % (temperature[i]), end="")
 	print("")
-        
-while True:
-	print(read_sensors())
-	time.sleep(0.5)
+	return
+
+def read_sensors():
+	pressure = read_pressure()
+	humidity = read_humid()
+	temperature = read_temp()
+	return pressure, humidity, temperature

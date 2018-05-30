@@ -19,8 +19,8 @@ import os
 import threading
 import time
 import utility
-from uplink
-from downlink
+import uplink
+import downlink
 from heater import heaterPayload, heaterValve
 #######################################################################
 

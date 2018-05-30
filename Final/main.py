@@ -27,6 +27,7 @@ from heater import heaterPayload, heaterValve
 # start time for measuring time elapsed and for file naming
 start_timestamp = time.time()
 start_time = time.strftime('%b_%m_%H:%M:%S')
+print('Starting main thread: {}'.format(start_time))
 
 # creates directory where log file and data files will be saved
 file_index = 0

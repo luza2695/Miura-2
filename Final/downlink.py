@@ -5,13 +5,11 @@
 # Purpose: Downlink data and write to log file
 ##################################################################
 
-def downlink(serial, downlink_queue, log_filename, log_lock):
-	while True:
-		while not downlink_queue.empty():
-			message = downlink_queue.get() + '\n'
-			serial.write(message.encode())
-			# with log_lock:
-			# 	with open(log_filename, 'a') as f:
-			# 		f.write(message)
-			print(message)
-		time.sleep(1)
+def downlink(serial, downlink_queue):#, log_filename, log_lock):
+	while not downlink_queue.empty():
+		message = downlink_queue.get() + '\n'
+		serial.write(message.encode())
+		# with log_lock:
+		# 	with open(log_filename, 'a') as f:
+		# 		f.write(message)
+		print(message)

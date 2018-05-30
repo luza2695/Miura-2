@@ -75,4 +75,5 @@ def main(serial):
             testDownlink.downlink(cmd)
         else:
             print("invalid command")
+    return
 

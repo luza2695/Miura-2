@@ -6,10 +6,11 @@
 ##################################################################
 
 def main(serial, downlink_queue):#, log_filename, log_lock):
-	while not downlink_queue.empty():
+	if not downlink_queue.empty():
 		message = downlink_queue.get() + '\n'
 		serial.write(message.encode())
 		# with log_lock:
 		# 	with open(log_filename, 'a') as f:
 		# 		f.write(message)
 		print(message)
+	return

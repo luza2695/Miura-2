@@ -29,7 +29,6 @@ from heater import heaterPayload, heaterValve
 # gets start time of main thread
 start_time = time.strftime('%b_%m_%H:%M:%S')
 
-
 # creates directory where log file and data files will be saved
 file_index = 0
 # while os.path.exists('/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)):

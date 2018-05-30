@@ -19,6 +19,7 @@ import os
 import threading
 import time
 import queue
+import serial
 import utility
 import uplink
 import downlink

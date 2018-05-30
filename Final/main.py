@@ -63,7 +63,7 @@ serial.flushInput()
 running = True
 
 # start utilty thread
-utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running))
+utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running),daemon=True)
 utility_thread.start()
 
 #Variables

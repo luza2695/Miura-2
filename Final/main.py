@@ -19,8 +19,8 @@ import os
 import threading
 import time
 import utility
-from uplink import uplink
-from downlink import downlink
+from uplink
+from downlink
 from heater import heaterPayload, heaterValve
 #######################################################################
 
@@ -74,8 +74,8 @@ stage = 1
 
 #pressure check loop
 while running:
-	#uplink(serial)
-	#downlink(serial, downlink_queue)
+	uplink.main(serial)
+	downlink.main(serial, downlink_queue)
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
 	#	- Do not run any of the pressure checks

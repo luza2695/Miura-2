@@ -9,7 +9,7 @@ import serial
 import time
 from sensors import read_sensors, print_sensors
 
-def utility(downlink_queue, log_filename, log_lock):
+def utility(downlink_queue):
 	while True:
 		print_sensors()
 		time.sleep(0.5)

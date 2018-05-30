@@ -57,7 +57,7 @@ serial = serial.Serial(port=current_port,
 					  timeout=1)
 
 # start utilty thread
-utility_thread = threading.Thread(name=utility, args=(downlink_queue, log_filename, log_lock))
+utility_thread = threading.Thread(name=utility, args=(downlink_queue))
 utility_thread.start()
 
 # start checking uplink for commands
@@ -72,7 +72,7 @@ stage = 1
 #pressure check loop
 while running:
 	uplink(serial)
-	donwlink(serial)
+	downlink(serial)
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
 	#	- Do not run any of the pressure checks

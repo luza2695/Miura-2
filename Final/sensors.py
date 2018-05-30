@@ -24,8 +24,6 @@ num_temp = 4
 # automatically finds temp sensor addresses
 device_file = []
 base_dir = '/sys/bus/w1/devices/'
-device_folder = glob.glob(base_dir + '28*')[0]
-device_file = device_folder + '/w1_slave'
 
 for i in range(0,num_temp):
 	device_folder = glob.glob(base_dir + '28*')[i]

@@ -60,12 +60,11 @@ serial = serial.Serial(port=current_port,
 # clears the serial communication channel
 serial.flushInput() 
 
-# start utilty thread
-utility_thread = threading.Thread(target=utility, args=(downlink_queue))
-utility_thread.start()
-
-# start checking uplink for commands
 running = True
+
+# start utilty thread
+utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running))
+utility_thread.start()
 
 #Variables
 maxInflationTime = 30

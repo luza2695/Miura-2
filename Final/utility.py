@@ -5,13 +5,12 @@
 # Purpose: Downlink data and write to log file
 ##################################################################
 
-import serial
 import time
 from sensors import read_sensors, print_sensors
 
-def utility(downlink_queue):
+def main(downlink_queue):
 	current_time = time.strftime('%b_%m_%H:%M:%S')
 	print('Starting utility thread: {}'.format(current_time))
-	while True:
+	while running:
 		print_sensors()
 		time.sleep(0.5)

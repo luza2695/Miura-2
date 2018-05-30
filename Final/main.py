@@ -55,10 +55,6 @@ serial = serial.Serial(port=current_port,
                       bytesize=serial.EIGHTBITS,
                       timeout=1)
 
-# start downlink thread
-downlink_thread = threading.Thread(target=downlink, args=(serial, downlink_queue, log_filename, log_lock), daemon=True)
-downlink_thread.start()
-
 # start utilty thread
 utility_thread = threading.Thread(name=utility, args=(downlink_queue, log_filename, log_lock))
 utility_thread.start()
@@ -66,5 +62,6 @@ utility_thread.start()
 # start checking uplink for commands
 running = True
 while(running):
-	uplink.main(serial)
+	uplink(serial)
+	donwlink(serial)
 

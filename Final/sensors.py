@@ -30,13 +30,13 @@ for i in range(0,num_temp):
 
 def read_pressure():
 	bus.write_byte_data(pres_id, 0x26, 0x39)
-	data = bus.read_i2c_block_data(pres_id[i], 0x00, 4)
+	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
 	temp = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
 	pressure = (temp / 4.0) / 1000.0
 	return pressure
 
 def read_humid():
-	data = bus.read_i2c_block_data(0x68, 0x00, 4)
+	data = bus.read_i2c_block_data(hum_id, 0x00, 4)
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
 

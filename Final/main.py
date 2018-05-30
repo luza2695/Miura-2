@@ -31,7 +31,7 @@ start_time = time.strftime('%b_%m_%H:%M:%S')
 # creates directory where log file and data files will be saved
 file_index = 0
 while os.path.exists('/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)):
-    file_index += 1
+	file_index += 1
 data_directory = '/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)
 #os.mkdir(data_directory)
 
@@ -50,11 +50,11 @@ current_port = "/dev/ttyUSB0"
 
 # creates serial object for uplink and downlink
 serial = serial.Serial(port=current_port,
-                      baudrate=4800,
-                      parity=serial.PARITY_NONE,
-                      stopbits=serial.STOPBITS_ONE,
-                      bytesize=serial.EIGHTBITS,
-                      timeout=1)
+					  baudrate=4800,
+					  parity=serial.PARITY_NONE,
+					  stopbits=serial.STOPBITS_ONE,
+					  bytesize=serial.EIGHTBITS,
+					  timeout=1)
 
 # start utilty thread
 utility_thread = threading.Thread(name=utility, args=(downlink_queue, log_filename, log_lock))

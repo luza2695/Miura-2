@@ -28,8 +28,8 @@ device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
 for i in range(0,num_temp):
-    device_folder = glob.glob(base_dir + '28*')[i]
-    device_file.append(device_folder + '/w1_slave')
+	device_folder = glob.glob(base_dir + '28*')[i]
+	device_file.append(device_folder + '/w1_slave')
 
 # reads external pressure sensor
 def read_pressure():
@@ -47,30 +47,30 @@ def read_humid():
 
 # reads raw value of each temperature sensor
 def read_temp_raw():
-    lines = []
-    for i in range(0,num_temp):
-        f = open(device_file[i], 'r')
-        lines.append(f.readlines())
-        f.close()
-    return lines
+	lines = []
+	for i in range(0,num_temp):
+		f = open(device_file[i], 'r')
+		lines.append(f.readlines())
+		f.close()
+	return lines
 
 # reads temp from each sensor
 def read_temp():
-    lines_list = []
-    temp_c = []
-    for i in range(0,num_temp):
-    	f = open(device_file[i], 'r')
-        lines_list.append(f.readlines())
-        f.close()
-        lines = lines_list[i]
-        while lines[0].strip()[-3:] != 'YES':
-            lines = read_temp_raw()
-        equals_pos = lines[1].find('t=')
-        if equals_pos != -1:
-            temp_string = lines[1][equals_pos+2:]
-            current = float(temp_string) / 1000.0
-            temp_c.append(current)
-    return temp_c
+	lines_list = []
+	temp_c = []
+	for i in range(0,num_temp):
+		f = open(device_file[i], 'r')
+		lines_list.append(f.readlines())
+		f.close()
+		lines = lines_list[i]
+		while lines[0].strip()[-3:] != 'YES':
+			lines = read_temp_raw()
+		equals_pos = lines[1].find('t=')
+		if equals_pos != -1:
+			temp_string = lines[1][equals_pos+2:]
+			current = float(temp_string) / 1000.0
+			temp_c.append(current)
+	return temp_c
    
 # prints value of each sensor 
 def print_sensors():
@@ -93,4 +93,3 @@ def read_sensors():
 	temperature = read_temp()
 	return pressure, humidity, temperature
 
-	

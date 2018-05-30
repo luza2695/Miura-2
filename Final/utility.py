@@ -1,4 +1,10 @@
-# imports
+##################################################################
+# Miura 2: Utility Thread (utility.py)
+# Created: 5/29/2018
+# Modified: 5/30/2018
+# Purpose: Downlink data and write to log file
+##################################################################
+
 import serial
 import time
 import downlink

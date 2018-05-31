@@ -14,6 +14,10 @@ sys.path.append('../')
 import examples.StepperTest as StepperTest
 import solenoid
 import queue
+<<<<<<< HEAD
+=======
+
+>>>>>>> 352c96d8533f9774e1c01a3aef7c609d990711b5
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
 #GPIO.setwarnings(False)
@@ -41,9 +45,15 @@ serial = serial.Serial(port=current_port,
 
 def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
-        cmd = serial.read()  # gets command
-        #packet = hex(int.from_bytes((cmd), byteorder='big')) # convert hex into bytes
-        packet = cmd.decode()
+        soh = ground.read()  # Start of Heading (SOH)
+        stx = ground.waitByte() # Start of Text (STX)
+        tar = ground.waitByte() # Command  Byte: Target (specifies which thread should receive the command)
+        cmd = ground.waitByte() # Command Byte: Contains actual uplink command
+        etx = ground.waitByte() # End of Text (ETX)
+        cr_ = ground.waitByte() # Carriage Return (CR)
+        lf_ = ground.waitByte() # Line Feed (LF)
+        print("2 byte command received: ", tar, cmd)
+        packet = hex(int.from_bytes((soh + stx + tar + cmd + etx), byteorder='big')) # Convert from hex into bytes
         print(packet)
         # if cmd == b"\x01": # ping pi
         #     cmdTime = time.asctime(time.localtime(time.time()))

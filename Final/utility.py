@@ -6,14 +6,17 @@
 ##################################################################
 
 import time
-from sensors import read_sensors, print_sensors
+import sensors
+
+# how often to get data
+time_delay = 0.5
 
 def main(downlink_queue,running,stage):
 	downlink_queue.put(['UT','BU', 0])
 	while running:
 		# gets list of downlink formatted data
-		data_set = read_sensors()
+		data_set = sensors.read_sensors()
 		# downlinks each set of data
 		for data in data_set:
 			downlink_queue.put(data)
-		time.sleep(0.5)
+		time.sleep(time_delay)

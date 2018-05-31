@@ -18,13 +18,13 @@ import time
 def payload_heater(state):
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(7,GPIO.OUT)
-	while True:
-		GPIO.output(7,state)
+	GPIO.output(7,state)
+	return
 
 # Turns solenoid heater on or off
 def solenoid_heater(state):
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(8,GPIO.OUT)
-	while True:
-		GPIO.output(8,state)
+	GPIO.output(8,state)
+	return
 

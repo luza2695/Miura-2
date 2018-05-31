@@ -53,7 +53,7 @@ def main(serial, downlink_queue):
         if target == b'\x01':
             if command == b'\x01': # ping pi
                 commandTime = time.strftime('%b %m %G %H:%M:%S')
-                print('Command Recieved: {}'.format(commandTime))
+                print('Ping Command Recieved: {}\n'.format(commandTime))
                 pass
             elif command == b'\x02': # manual mode
                 pass
@@ -61,6 +61,7 @@ def main(serial, downlink_queue):
                 pass
             elif command == b'\x04': # retract motor
                 StepperTest.main()
+                downlink_queue.put(['MO','RE',0])
             elif command == b'\x05': # take picture
                 #cameratest.main()
                 pass
@@ -78,18 +79,30 @@ def main(serial, downlink_queue):
             else:
                 print('invalid command')
         elif target == b'\x03': # manual pressure system control
-            if command == b'\x01': # open pressurization valve
-                print('Opening Pressurize Valve')
-                solenoid.openPressurize()
-            elif command == b'\x02': # close pressurization valve
-                print('Closing Pressurize Valve')
-                solenoid.closePressurize()
+            if command == b'\x01': # open pressurization valve 1
+                print('Opening Pressurize Valve 1')
+                solenoid.openPressurize(1)
+                downlink_queue.put(['SO','V1',1])
+            elif command == b'\x02': # close pressurization valve 1
+                print('Closing Pressurize Valve 1')
+                solenoid.closePressurize(1)
+                downlink_queue.put(['SO','V1',0])
+            if command == b'\x03': # open pressurization valve 2
+                print('Opening Pressurize Valve 2')
+                solenoid.openPressurize(2)
+                downlink_queue.put(['SO','V2',1])
+            elif command == b'\x04': # close pressurization valve 2
+                print('Closing Pressurize Valve 2')
+                solenoid.closePressurize(2)
+                downlink_queue.put(['SO','V2',0])
             elif command == b'\x05': # open exhaust valve
                 print('Opening Exhaust Valve')
                 solenoid.openExhaust()
+                downlink_queue.put(['SO','EX',1])
             elif command == b'\x06': # close exhaust valve
                 print('Closing Exhaust Valve')
                 solenoid.closeExhaust()
+                downlink_queue.put(['SO','EX',0])
             else:
                 print('invalid command')
         elif target == b'\x04': # pressure system enabling control
@@ -106,12 +119,16 @@ def main(serial, downlink_queue):
         elif target == b'\x05': # heater system control
             if command == b'\x01': # turn on solenoid heaters
                 heater.solenoid_heater(True)
+                downlink_queue.put(['HE','SO',1])
             elif command == b'\x02': # turn off solenoid heaters
                 heater.solenoid_heater(False)
+                downlink_queue.put(['HE','SO',0])
             elif command == b'\x03': # turn on payload heaters
                 heater.payload_heater(True)
+                downlink_queue.put(['HE','PA',1])
             elif command == b'\x04': # turn off payload heaters
                 heater.payload_heater(False)
+                downlink_queue.put(['HE','PA',0])
             else:
                 print('invalid command')
         else:

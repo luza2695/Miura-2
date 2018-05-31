@@ -92,6 +92,7 @@ def read_temp():
 # 	volts = value*5/65536
 # 	pressure = volts*10
 #	return pressure 
+
 # prints value of each sensor 
 def print_sensors():
 	print('Reading...')
@@ -109,9 +110,9 @@ def print_sensors():
 # returns value of each sensor in downlinking format
 def read_sensors():
 	pressure = read_pressure()
-	pres_downlink = ['SE','PR',pressure]
+	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 	humidity = read_humid()
-	hum_downlink = ['SE','HU',humidity]
+	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	temperature = read_temp()
 	temp_downlink = ['SE','TE',list_values(temperature)]
 	return [pres_downlink,hum_downlink,temp_downlink]

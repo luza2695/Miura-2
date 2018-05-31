@@ -23,8 +23,7 @@ import serial
 import utility
 import uplink
 import downlink
-#import sched
-import heater #heaterPayload, heaterValve
+import heater
 import sensors
 import solenoid
 #######################################################################
@@ -75,7 +74,7 @@ utility_thread.start()
 while running:
 	uplink.main(serial, downlink_queue)
 	downlink.main(serial, downlink_queue)
-	
+
 	current_time = time.time()
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
@@ -109,7 +108,7 @@ while running:
 		value2 = sensors.read_pressure_system()
 
 		#Open solenoid valve and Motor OFF
-		#solenoid.openPressurize()
+		#solenoid.openPressurize(1)
 
 		#Close exhaust valve
 		#solenoid.closeExhaust()
@@ -122,7 +121,7 @@ while running:
 		#	-if __ (time) goes by
 		# if value2 >= 0.75 or (current_time-stage_start_time) >= 300: #atm
 		# 	stage, stage_start_time = stagechange(3)
-		# 	solenoid.closePressurize()
+		# 	solenoid.closePressurize(1)
 
 	#if it is stage 3 (inflated) ...
 	#	- Starts when inflation is completed
@@ -136,7 +135,7 @@ while running:
 		value3 = sensors.read_pressure_system()
 
 		#close solenoid valve and motor OFF
-		#solenoid.closePressurize()
+		#solenoid.closePressurize(1)
 
 		#close exhaust
 		#solenoid.closeExhaust()
@@ -162,7 +161,7 @@ while running:
 		value4 = sensors.read_pressure_system()
 
 		#Close solenoid valve
-		# solenoid.closePressurize()
+		# solenoid.closePressurize(1)
 
 		#open exhaust and motor ON
 		#solenoid.openExhaust()

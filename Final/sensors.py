@@ -91,7 +91,7 @@ def read_temp():
 # 	value = adc.get_last_result()
 # 	volts = value*5/65536
 # 	pressure = volts*10
-   
+#	return pressure 
 # prints value of each sensor 
 def print_sensors():
 	print("Reading...")

@@ -42,8 +42,8 @@ serial = serial.Serial(port=current_port,
 
 def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
-        target = serial.read()
-        command = serial.read()
+        target = serial.read(1)
+        command = serial.read(1)
         print(target,command)
         packet1 = hex(int.from_bytes((target), byteorder='big')) # Convert from hex into bytes
         packet2 = hex(int.from_bytes((command), byteorder='big')) # Convert from hex into bytes

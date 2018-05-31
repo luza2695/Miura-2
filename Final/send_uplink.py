@@ -71,8 +71,8 @@ while (not complete):
 	else: 
 		target = hex(int(command_string[0:4],16))
 		command = hex(int(command_string[5:9],16))
-		ser.write(target)
-		ser.write(command)
+		ser.write(target.encode())
+		ser.write(command.encode())
 
 	while ser.inWaiting():
 		cmd = ser.read()

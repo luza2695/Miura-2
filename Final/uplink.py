@@ -42,13 +42,13 @@ serial = serial.Serial(port=current_port,
 
 def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
-        soh = ground.read()  # Start of Heading (SOH)
-        stx = ground.waitByte() # Start of Text (STX)
-        tar = ground.waitByte() # Command  Byte: Target (specifies which thread should receive the command)
-        cmd = ground.waitByte() # Command Byte: Contains actual uplink command
-        etx = ground.waitByte() # End of Text (ETX)
-        cr_ = ground.waitByte() # Carriage Return (CR)
-        lf_ = ground.waitByte() # Line Feed (LF)
+        soh = serial.read()  # Start of Heading (SOH)
+        stx = serial.waitByte() # Start of Text (STX)
+        tar = serial.waitByte() # Command  Byte: Target (specifies which thread should receive the command)
+        cmd = serial.waitByte() # Command Byte: Contains actual uplink command
+        etx = serial.waitByte() # End of Text (ETX)
+        cr_ = serial.waitByte() # Carriage Return (CR)
+        lf_ = serial.waitByte() # Line Feed (LF)
         print("2 byte command received: ", tar, cmd)
         packet = hex(int.from_bytes((soh + stx + tar + cmd + etx), byteorder='big')) # Convert from hex into bytes
         print(packet)

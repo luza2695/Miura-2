@@ -63,6 +63,7 @@ def main(serial, downlink_queue):
                 StepperTest.main()
             elif command == b'\x05': # take picture
                 #cameratest.main()
+                pass
             elif command == b'\x06': # reboot pi
                 pass
             else:

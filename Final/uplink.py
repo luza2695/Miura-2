@@ -44,8 +44,9 @@ def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
         target = serial.read()
         command = serial.read()
-        packet = hex(int.from_bytes((target + command), byteorder='big')) # Convert from hex into bytes
-        print(packet)
+        packet1 = hex(int.from_bytes((target), byteorder='big')) # Convert from hex into bytes
+        packet2 = hex(int.from_bytes((command), byteorder='big')) # Convert from hex into bytes
+        print(packet1, packet2)
         # if cmd == b"\x01": # ping pi
         #     cmdTime = time.asctime(time.localtime(time.time()))
         #     serial.write(bytes(5))

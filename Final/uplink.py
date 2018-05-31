@@ -50,7 +50,7 @@ def main(serial, downlink_queue):
         cr_ = ground.waitByte() # carriage return
         lf_ = ground.waitByte() # line feed
         downlink_queue.put(['UP','RE',target+command])
-        if target == b'\x01'
+        if target == b'\x01':
             if command == b'\x01': # ping pi
                 commandTime = time.strftime('%b_%m_%H:%M:%S')
                 print('Command Recieved: {}'.format(commandTime))

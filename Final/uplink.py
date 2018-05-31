@@ -13,6 +13,7 @@ sys.path.append('../')
 #from Camera import cameratest
 import examples.StepperTest as StepperTest
 import solenoid
+import queue
 
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)

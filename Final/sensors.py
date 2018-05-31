@@ -116,9 +116,12 @@ def read_sensors():
 	temp_downlink = ['SE','TE',list_values(temperature)]
 	return [pres_downlink,hum_downlink,temp_downlink]
 
+# makes a string for list of same data values from different sensors
 def list_values(values):
 	list_string = ''
+	# adds value in list to string
 	for value in values:
-		list_string += '{:.2f}'.format(value)
-	return list_string
+		list_string += '{:.2f} '.format(value)
+	# returns string with trailing whitespace removed
+	return list_string.rstrip()
 

@@ -8,7 +8,7 @@
 import time
 from sensors import read_sensors, print_sensors
 
-def main(downlink_queue,running):
+def main(downlink_queue,running,stage):
 	downlink_queue.put(['UT','BU', 0])
 	while running:
 		# gets list of downlink formatted data

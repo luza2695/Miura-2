@@ -8,11 +8,12 @@
 import time
 from sensors import read_sensors, print_sensors
 
-def main(downlink_queue,running):
-	current_time = time.strftime('%b_%m_%H:%M:%S')
-	print(current_time)
+def main(downlink_queue,running,stage):
 	downlink_queue.put(['UT','BU', 0])
 	while running:
-		print_sensors()
-		# add downlink of sensor data
+		# gets list of downlink formatted data
+		data_set = read_sensors()
+		# downlinks each set of data
+		for data in data_set:
+			downlink_queue.put(data)
 		time.sleep(0.5)

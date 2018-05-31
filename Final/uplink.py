@@ -14,10 +14,7 @@ sys.path.append('../')
 import examples.StepperTest as StepperTest
 import solenoid
 import queue
-<<<<<<< HEAD
-=======
 
->>>>>>> 352c96d8533f9774e1c01a3aef7c609d990711b5
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
 #GPIO.setwarnings(False)

@@ -7,12 +7,13 @@
 
 import serial
 import time
+import glob
 from sys import platform
 
 if platform == "linux" or platform == "linux2":
     current_port = "/dev/ttyUSB0"
 elif platform == "darwin":
-    current_port = "/dev/tty.USA19H142P1.1"
+    current_port = glob.glob("/dev/tty.USA*")[0]
 
 # sets up serial object for use
 ser = serial.Serial(port=current_port,

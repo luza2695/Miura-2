@@ -42,13 +42,13 @@ serial = serial.Serial(port=current_port,
 
 def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
-        heading = serial.read() # start of heading
-        start = serial.read() # start of text
+        #heading = serial.read() # start of heading
+        #start = serial.read() # start of text
         target = serial.read()
         command = serial.read()
-        end = serial.read() # end of text
-        cr_ = ground.waitByte() # carriage return
-        lf_ = ground.waitByte() # line feed
+        #end = serial.read() # end of text
+        #cr_ = serial.read() # carriage return
+        #lf_ = serial.read() # line feed
         downlink_queue.put(['UP','RE',target+command])
         if target == b'\x01':
             if command == b'\x01': # ping pi

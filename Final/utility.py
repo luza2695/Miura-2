@@ -11,8 +11,9 @@ from sensors import read_sensors, print_sensors
 def main(downlink_queue,running):
 	downlink_queue.put(['UT','BU', 0])
 	while running:
-		pressure, humidity, temperature = read_sensors()
-		downlink_queue.put(['SE','PR', pressure])
-		downlink_queue.put(['SE','HU', humidity])
-		downlink_queue.put(['SE','TE', temperature])
+		# gets list of downlink formatted data
+		data_set = read_sensors()
+		# downlinks each set of data
+		for data in data_set:
+			downlink_queue.put(data)
 		time.sleep(0.5)

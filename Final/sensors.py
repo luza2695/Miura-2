@@ -96,20 +96,29 @@ def read_temp():
 def print_sensors():
 	print("Reading...")
 	pressure = read_pressure()
-	print(("Pressure: %.2f kPa ") % (pressure), end="")
+	print("Pressure: {:.2f} kPa ".format(pressure), end="")
 	humidity = read_humid()
-	print(("Humidity: %.2f %% ") % (humidity), end="")
+	print("Humidity: {:.2f} %% ".format(humidity), end="")
 	temperature = read_temp()
 	print("Temperature: ", end="")
 	for i in range(0,num_temp):
-			print(("%.2f C ") % (temperature[i]), end="")
+			print("{:.2f} C ".format(temperature[i]), end="")
 	print("")
 	return
 
-# returns value of each sensor
+# returns value of each sensor in downlinking format
 def read_sensors():
 	pressure = read_pressure()
+	pres_downlink = ['SE','PR',pressure]
 	humidity = read_humid()
+	hum_downlink = ['SE','HU',humidity]
 	temperature = read_temp()
-	return pressure, humidity, temperature
+	temp_downlink = ['SE','TE',list_values(temperature)]
+	return [pres_downlink,hum_downlink,temp_downlink]
+
+def list_values(values):
+	list_string = ''
+	for value in values:
+		list_string += '{:.2f}'.format(value)
+	return list_string
 

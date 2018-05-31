@@ -23,9 +23,9 @@ import serial
 import utility
 import uplink
 import downlink
-import sched
+#import sched
 import heater #heaterPayload, heaterValve
-import pressure
+import sensors
 import solenoid
 #######################################################################
 
@@ -85,7 +85,7 @@ while running:
 	#	- Do not run any of the pressure checks
 	#	- Turn on heaters
 	if stage == 1: #ascent stage 1 
-		
+		pass		
 
 
 	#if it is stage 2 (inflation) ...

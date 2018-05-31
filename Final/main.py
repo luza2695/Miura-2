@@ -43,8 +43,8 @@ file_index = 0
 
 # sets up downlink queue
 downlink_queue = queue.Queue()
-downlink_queue.put('Data Log {}'.format(file_index))
-downlink_queue.put('Starting Main Thread: {}'.format(start_time))
+downlink_queue.put(['MA', 'BU', '{}'.format(start_time)])
+print('Starting Main Thread: {}'.format(start_time))
 
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"

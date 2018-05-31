@@ -10,7 +10,8 @@ from sensors import read_sensors, print_sensors
 
 def main(downlink_queue,running):
 	current_time = time.strftime('%b_%m_%H:%M:%S')
-	downlink_queue.put('Starting utility thread: {}'.format(current_time))
+	print(current_time)
+	downlink_queue.put('UT','BU','{}'.format(current_time))
 	while running:
 		print_sensors()
 		# add downlink of sensor data

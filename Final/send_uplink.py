@@ -28,29 +28,29 @@ ser = serial.Serial(port=current_port,
 # commands_usage = ['Ping Pi','Demo Motor','Open Pressurize','Close Pressurize','Open Exhaust','Close Exhaust','Burp Exhaust','Camera Demo']
 
 commands = {
-	'\x01\x01':'\\x01\\x01 : Ping Pi',
-	'\x01\x02':'\\x01\\x02 : Manual Mode',
-	'\x01\x03':'\\x01\\x03 : Automation Mode',
-	'\x01\x04':'\\x01\\x04 : Retract Motor',
-	'\x01\x05':'\\x01\\x05 : Reboot Pi',
-	'\x01\x06':'\\x01\\x06 : Take Video',
-	'\x02\x01':'\\x02\\x01 : Start Cycle',
-	'\x02\x02':'\\x02\\x02 : Finish Retraction',
-	'\x02\x03':'\\x02\\x03 : Finish Inflation',
-	'\x03\x01':'\\x03\\x01 : Open Solenoid Valve 1',
-	'\x03\x02':'\\x03\\x02 : Close Solenoid Valve 1',
-	'\x03\x03':'\\x03\\x03 : Open Solenoid Valve 2',
-	'\x03\x04':'\\x03\\x04 : Close Solenoid Valve 2',
-	'\x03\x05':'\\x03\\x05 : Open Exhaust Value',
-	'\x03\x06':'\\x03\\x06 : Close Exhaust Valve',
-	'\x04\x01':'\\x04\\x01 : Disable Valve 1',
-	'\x04\x02':'\\x04\\x02 : Enable Valve 1',
-	'\x04\x03':'\\x04\\x03 : Disable Valve 2',
-	'\x04\x04':'\\x04\\x04 : Enable Valve 2',
-	'\x05\x01':'\\x05\\x01 : Turn On Solenoid Heaters',
-	'\x05\x02':'\\x05\\x02 : Turn Off Solenoid Heaters',
-	'\x05\x03':'\\x05\\x03 : Turn On Payload Heaters',
-	'\x05\x04':'\\x05\\x04 : Turn Off Payload Heaters'
+	'0x01 0x01':'0x01 0x01 : Ping Pi',
+	'0x01 0x02':'0x01 0x02 : Manual Mode',
+	'0x01 0x03':'0x01 0x03 : Automation Mode',
+	'0x01 0x04':'0x01 0x04 : Retract Motor',
+	'0x01 0x05':'0x01 0x05 : Reboot Pi',
+	'0x01 0x06':'0x01 0x06 : Take Video',
+	'0x02 0x01':'0x02 0x01 : Start Cycle',
+	'0x02 0x02':'0x02 0x02 : Finish Retraction',
+	'0x02 0x03':'0x02 0x03 : Finish Inflation',
+	'0x03 0x01':'0x03 0x01 : Open Solenoid Valve 1',
+	'0x03 0x02':'0x03 0x02 : Close Solenoid Valve 1',
+	'0x03 0x03':'0x03 0x03 : Open Solenoid Valve 2',
+	'0x03 0x04':'0x03 0x04 : Close Solenoid Valve 2',
+	'0x03 0x05':'0x03 0x05 : Open Exhaust Value',
+	'0x03 0x06':'0x03 0x06 : Close Exhaust Valve',
+	'0x04 0x01':'0x04 0x01 : Disable Valve 1',
+	'0x04 0x02':'0x04 0x02 : Enable Valve 1',
+	'0x04 0x03':'0x04 0x03 : Disable Valve 2',
+	'0x04 0x04':'0x04 0x04 : Enable Valve 2',
+	'0x05 0x01':'0x05 0x01 : Turn On Solenoid Heaters',
+	'0x05 0x02':'0x05 0x02 : Turn Off Solenoid Heaters',
+	'0x05 0x03':'0x05 0x03 : Turn On Payload Heaters',
+	'0x05 0x04':'0x05 0x04 : Turn Off Payload Heaters'
 }
 
 # prompts user for valid command
@@ -62,12 +62,17 @@ complete = False
 
 while (not complete):
 	time.sleep(0.5)
-	cmd = input('\nEnter Command: ')
+	command_string = input('\nEnter Command: ')
 
-	if not any(cmd in command for command in commands.keys()) and False:
+	if not any(command_string in command for command in commands.keys()) and False:
+		print('Invalid Command')
+	elif (command_string[0:2] != '0x') or (command_string[4:7] != ' 0x') or (len(command_string) != 9):
 		print('Invalid Command')
 	else: 
-		ser.write(cmd.encode())
+		target = hex(int(command_string[0:4],16))
+		command = hex(int(command_string[5:9],16))
+		ser.write(target)
+		ser.write(command)
 
 	while ser.inWaiting():
 		cmd = ser.read()

@@ -13,6 +13,7 @@ sys.path.append('../')
 #from Camera import cameratest
 import examples.StepperTest as StepperTest
 import solenoid
+import queue
 
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
@@ -41,38 +42,44 @@ serial = serial.Serial(port=current_port,
 
 def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
-        cmd = serial.read()  # gets command
-        packet = hex(int.from_bytes((cmd), byteorder='big')) # convert hex into bytes
-        print(packet)
-        if cmd == b"\x01": # ping pi
-            cmdTime = time.asctime(time.localtime(time.time()))
-            serial.write(bytes(5))
-            print("Command Recieved :", cmdTime)
-            pass
-        elif cmd == b"\x02": # demo motor
-            print("Begin Motor Command")
-            StepperTest.main()
-        elif cmd == b"\x03": # open pressurization valve
-            print("Opening Pressurize Valve")
-            solenoid.openPressurize()
-        elif cmd == b"\x04": # close pressurization valve
-            print("Closing Pressurize Valve")
-            solenoid.closePressurize()
-        elif cmd == b"\x05": # open exhaust valve
-            print("Opening Exhaust Valve")
-            solenoid.openExhaust()
-        elif cmd == b"\x06": # close exhaust valve
-            print("Closing Exhaust Valve")
-            solenoid.closeExhaust()
-        elif cmd == b"\x07": # burp exhaust valve
-            print("Burping Exhaust Valve")
-            solenoid.burp()
-        elif cmd == b"\x0C": # take picture
-            print("Begin Camera Command")
-            #cameratest.main()
-            cmd = bytes('Nice picture!', 'utf-8')
-            testDownlink.downlink(cmd)
-        else:
-            print("invalid command")
+        target = serial.read()
+        command = serial.read()
+        print(target,command)
+        packet1 = hex(int.from_bytes((target), byteorder='big')) # Convert from hex into bytes
+        packet2 = hex(int.from_bytes((command), byteorder='big')) # Convert from hex into bytes
+        print(packet1, packet2)
+        # if cmd == b"\x01": # ping pi
+        #     cmdTime = time.asctime(time.localtime(time.time()))
+        #     serial.write(bytes(5))
+        #     print("Command Recieved :", cmdTime)
+        #     pass
+        # elif cmd == b"\x02": # demo motor
+        #     print("Begin Motor Command")
+        #     StepperTest.main()
+        # elif cmd == b"\x03": # open pressurization valve
+        #     print("Opening Pressurize Valve")
+        #     solenoid.openPressurize()
+        # elif cmd == b"\x04": # close pressurization valve
+        #     print("Closing Pressurize Valve")
+        #     solenoid.closePressurize()
+        # elif cmd == b"\x05": # open exhaust valve
+        #     print("Opening Exhaust Valve")
+        #     solenoid.openExhaust()
+        # elif cmd == b"\x06": # close exhaust valve
+        #     print("Closing Exhaust Valve")
+        #     solenoid.closeExhaust()
+        # elif cmd == b"\x07": # burp exhaust valve
+        #     print("Burping Exhaust Valve")
+        #     solenoid.burp()
+        # elif cmd == b"\x0C": # take picture
+        #     print("Begin Camera Command")
+        #     #cameratest.main()
+        #     cmd = bytes('Nice picture!', 'utf-8')
+        #     testDownlink.downlink(cmd)
+        # else:
+        #     print("invalid command")
     return
+
+while True:
+    main(serial,queue.Queue())
 

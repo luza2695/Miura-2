@@ -41,9 +41,9 @@ for i in range(0,num_temp):
 # - 4 = +/- 1.024V
 # - 8 = +/- 0.512V
 # - 16 = +/- 0.256V
-GAIN = 1
+# GAIN = 1
 
-adc.start_adc(0, gain = GAIN)
+# adc.start_adc(0, gain = GAIN)
 
 # reads external pressure sensor
 def read_pressure():

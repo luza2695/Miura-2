@@ -23,8 +23,15 @@ import serial
 import utility
 import uplink
 import downlink
-from heater import heaterPayload, heaterValve
+import sched
+from heater #heaterPayload, heaterValve
+from pressure
+from solenoid
 #######################################################################
+
+#Variables
+stage = 1
+max_inflation_time = 30
 
 # gets start time of main thread
 start_time = time.strftime('%b_%m_%H:%M:%S')
@@ -62,14 +69,12 @@ serial.flushInput()
 running = True
 
 # start utilty thread
-utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running),daemon=True)
+utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running, stage),daemon=True)
 utility_thread.start()
 
-#Variables
-maxInflationTime = 30
-time_temp_start = 0
-time_temp_end = 0
-stage = 1
+
+#scheduler
+
 
 #pressure check loop
 while running:
@@ -80,7 +85,9 @@ while running:
 	#	- Do not run any of the pressure checks
 	#	- Turn on heaters
 	if stage == 1: #ascent stage 1 
-		time_temp_start = time.time()
+		
+
+
 	#if it is stage 2 (inflation) ...
 	#	- Starts when stage 1 or 5 is completed
 	#	- Open solenoid valve

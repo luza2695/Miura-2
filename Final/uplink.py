@@ -118,6 +118,3 @@ def main(serial, downlink_queue):
             print('invalid target')
     return
 
-while True:
-    main(serial,queue.Queue())
-

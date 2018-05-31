@@ -75,6 +75,7 @@ utility_thread.start()
 while running:
 	uplink.main(serial, downlink_queue)
 	downlink.main(serial, downlink_queue)
+	
 	current_time = time.time()
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera

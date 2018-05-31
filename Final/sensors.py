@@ -10,7 +10,7 @@ import glob
 import time
 import smbus
 import RPi.GPIO as GPIO
-import Adafruit_ADS1x15
+#import Adafruit_ADS1x15
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -32,7 +32,7 @@ for i in range(0,num_temp):
 	device_file.append(device_folder + '/w1_slave')
 
 #16 bit for the ADC
-adc = Adafruit_ADS1x15.ADS1115()
+#adc = Adafruit_ADS1x15.ADS1115()
 
 #Gains
 # - 2/3 = +/- 6.144V
@@ -87,10 +87,10 @@ def read_temp():
 	return temp_c
 
 # reads pressure of pressure system from transducer
-def read_pressure_system():
-	value = adc.get_last_result()
-	volts = value*5/65536
-	pressure = volts*10
+# def read_pressure_system():
+# 	value = adc.get_last_result()
+# 	volts = value*5/65536
+# 	pressure = volts*10
    
 # prints value of each sensor 
 def print_sensors():

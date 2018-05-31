@@ -24,9 +24,9 @@ import utility
 import uplink
 import downlink
 import sched
-from heater #heaterPayload, heaterValve
-from pressure
-from solenoid
+import heater #heaterPayload, heaterValve
+import pressure
+import solenoid
 #######################################################################
 
 #Variables

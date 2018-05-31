@@ -31,8 +31,7 @@ import solenoid
 
 #Variables
 stage = 1
-max_inflation_time = 30
-
+stage_start_time = time.time()
 # gets start time of main thread
 start_time = time.strftime('%b_%m_%H:%M:%S')
 
@@ -72,20 +71,32 @@ running = True
 utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running, stage),daemon=True)
 utility_thread.start()
 
-
-#scheduler
+#stage change funcion
+def stagechange(stage):
+	return stage, time.time()
 
 
 #pressure check loop
 while running:
 	uplink.main(serial, downlink_queue)
 	downlink.main(serial, downlink_queue)
+	current_time = time.time()
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
 	#	- Do not run any of the pressure checks
 	#	- Turn on heaters
 	if stage == 1: #ascent stage 1 
-		
+		#Turn on heaters
+		heater.heaterValve(True)
+		heater.heaterPayload(True)
+
+		#Turn on Camera
+		#DO THIS LATER
+
+		#conditionals ...
+		#	- after 4 hours into flight
+		if (current_time-stage_start_time) >= 14400 :
+			stage, stage_start_time = stagechange(2)
 
 
 	#if it is stage 2 (inflation) ...
@@ -98,7 +109,25 @@ while running:
 	#		- when pressure has reached the maximum capacity
 	#		- When the inflation timer has been reached 
 	elif stage == 2: #infating // stage 2
-		pass
+		#Read pressure
+		value2 = sensors.read_pressure_system()
+
+		#Open solenoid valve and Motor OFF
+		solenoid.openPressurize()
+
+		#Close exhaust valve
+		solenoid.closeExhaust()
+
+		#Camera ON
+		#DO THIS LATER
+
+		# Conditionals:
+		#	-if pressure is 0.75 or greater
+		#	-if __ (time) goes by
+		if value2 >= 0.75 or (current_time-stage_start_time) >= 300: #atm
+			stage, stage_start_time = stagechange(3)
+			solenoid.closePressurize()
+
 	#if it is stage 3 (inflated) ...
 	#	- Starts when inflation is completed
 	#	- Close solenoid valve
@@ -107,7 +136,24 @@ while running:
 	#	- Camera ON
 	#	- Stops when the inflated timer is done
 	elif stage == 3:
-		pass
+		#read pressure
+		value3 = sensors.read_pressure_system()
+
+		#close solenoid valve and motor OFF
+		solenoid.closePressurize()
+
+		#close exhaust
+		solenoid.closeExhaust()
+
+		#camer ON
+		#DO THIS LATER
+
+		#Conditionals ...
+		#	-After __ hours has been passed
+		#	- 
+		if (current_time-stage_start_time) >= 3600:
+                        stage, stage_start_time = stagechange(4)
+
 	#if it is stage 4 (deflating) ...
 	#	- Starts when inflated timer has been completed
 	#	- Close Solenoid valve
@@ -116,7 +162,25 @@ while running:
 	#	- Camera ON
 	#	- Stops when motor has fully retracted
 	elif stage == 4:
-		pass
+		#read pressure from tranducer
+		value4 = sensors.read_pressure_system()
+
+		#Close solenoid valve
+		solenoid.closePressurize()
+
+		#open exhaust and motor ON
+		solenoid.openExhaust()
+
+		#Camera ON
+		#DO THIS LATER!
+
+		#Conditionals ...
+		#	-once motor completes the theoretical revs around
+		#	-30 min has passed
+		if :
+                        stage, stage_start_time = stagechange(3)
+
+
 	#if it is stage 5 (deflated) ...
 	#	- Starts when deflation is completed
 	#	- Close Solenoid Valve
@@ -126,6 +190,8 @@ while running:
 	#	- Stops when deflated timer is done
 	elif stage == 5:
 		pass
+
+	
 	#If it is stage 6 (emergency) ...
 	#	- Starts when pressure > 0.8 atms
 	#	- Close Solenoid Valve

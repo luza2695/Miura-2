@@ -25,8 +25,8 @@ myStepper.setSpeed(150)             # 30 RPM
 
 #while (True):
     #print("Single coil steps")
-myStepper.step(1500, Adafruit_MotorHAT.FORWARD,  Adafruit_MotorHAT.SINGLE)
-#myStepper.step(2000, Adafruit_MotorHAT.BACKWARD, Adafruit_MotorHAT.SINGLE)
+#myStepper.step(1500, Adafruit_MotorHAT.FORWARD,  Adafruit_MotorHAT.SINGLE)
+myStepper.step(1500, Adafruit_MotorHAT.BACKWARD, Adafruit_MotorHAT.SINGLE)
 
     #print("Double coil steps")
     #myStepper.step(100, Adafruit_MotorHAT.FORWARD,  Adafruit_MotorHAT.DOUBLE)

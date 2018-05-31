@@ -133,4 +133,4 @@ while(running):
 
 
 	#check data every 0.1 seconds
-	time.sleeo(0.1)
+	time.sleep(0.1)

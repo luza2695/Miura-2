@@ -14,17 +14,17 @@ import RPi.GPIO as GPIO
 import time
 
 ##############################################################################
-#Payload heater
-def heaterPayload(x):
+# turns payload heater on or off
+def payload_heater(state):
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(7,GPIO.OUT)
 	while True:
-		GPIO.output(7,x)
+		GPIO.output(7,state)
 
-#Valve heaters
-def heaterValve(x):
+# Turns solenoid heater on or off
+def solenoid_heater(state):
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(8,GPIO.OUT)
 	while True:
-		GPIO.output(8,x)
+		GPIO.output(8,state)
 

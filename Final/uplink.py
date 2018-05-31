@@ -105,13 +105,13 @@ def main(serial, downlink_queue):
                 print('invalid command')
         elif target == b'\x05': # heater system control
             if command == b'\x01': # turn on solenoid heaters
-                pass
+                heater.solenoid_heater(True)
             elif command == b'\x02': # turn off solenoid heaters
-                pass
+                heater.solenoid_heater(False)
             elif command == b'\x03': # turn on payload heaters
-                pass
+                heater.payload_heater(True)
             elif command == b'\x04': # turn off payload heaters
-                pass
+                heater.payload_heater(False)
             else:
                 print('invalid command')
         else:

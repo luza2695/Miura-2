@@ -52,7 +52,7 @@ def main(serial, downlink_queue):
         downlink_queue.put(['UP','RE',target+command])
         if target == b'\x01':
             if command == b'\x01': # ping pi
-                commandTime = time.strftime('%b_%m_%H:%M:%S')
+                commandTime = time.strftime('%b %m %G %H:%M:%S')
                 print('Command Recieved: {}'.format(commandTime))
                 pass
             elif command == b'\x02': # manual mode

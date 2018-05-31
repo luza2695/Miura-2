@@ -23,7 +23,7 @@ import queue
 #GPIO.cleanup()
 
 # sets current pi usb port
-current_port = "/dev/ttyUSB0"
+current_port = '/dev/ttyUSB0'
 
 # Create serial object
 serial = serial.Serial(port=current_port,
@@ -42,42 +42,79 @@ serial = serial.Serial(port=current_port,
 
 def main(serial, downlink_queue):
     if serial.inWaiting(): # reads uplink command
-        target = serial.read(1)
-        command = serial.read(1)
-        print(target,command)
-        packet1 = hex(int.from_bytes((target), byteorder='big')) # Convert from hex into bytes
-        packet2 = hex(int.from_bytes((command), byteorder='big')) # Convert from hex into bytes
-        print(packet1, packet2)
-        # if cmd == b"\x01": # ping pi
-        #     cmdTime = time.asctime(time.localtime(time.time()))
-        #     serial.write(bytes(5))
-        #     print("Command Recieved :", cmdTime)
-        #     pass
-        # elif cmd == b"\x02": # demo motor
-        #     print("Begin Motor Command")
-        #     StepperTest.main()
-        # elif cmd == b"\x03": # open pressurization valve
-        #     print("Opening Pressurize Valve")
-        #     solenoid.openPressurize()
-        # elif cmd == b"\x04": # close pressurization valve
-        #     print("Closing Pressurize Valve")
-        #     solenoid.closePressurize()
-        # elif cmd == b"\x05": # open exhaust valve
-        #     print("Opening Exhaust Valve")
-        #     solenoid.openExhaust()
-        # elif cmd == b"\x06": # close exhaust valve
-        #     print("Closing Exhaust Valve")
-        #     solenoid.closeExhaust()
-        # elif cmd == b"\x07": # burp exhaust valve
-        #     print("Burping Exhaust Valve")
-        #     solenoid.burp()
-        # elif cmd == b"\x0C": # take picture
-        #     print("Begin Camera Command")
-        #     #cameratest.main()
-        #     cmd = bytes('Nice picture!', 'utf-8')
-        #     testDownlink.downlink(cmd)
-        # else:
-        #     print("invalid command")
+        heading = serial.read() # start of heading
+        start = serial.read() # start of text
+        target = serial.read()
+        command = serial.read()
+        end = serial.read() # end of text
+        cr_ = ground.waitByte() # carriage return
+        lf_ = ground.waitByte() # line feed
+        downlink_queue.put(['UP','RE',target+command])
+        if target == b'\x01'
+            if command == b'\x01': # ping pi
+                commandTime = time.strftime('%b_%m_%H:%M:%S')
+                print('Command Recieved: {}'.format(commandTime))
+                pass
+            elif command == b'\x02': # manual mode
+                pass
+            elif command == b'\x03': # automation mode
+                pass
+            elif command == b'\x04': # retract motor
+                StepperTest.main()
+            elif command == b'\x05': # take picture
+                #cameratest.main()
+            elif command == b'\x06': # reboot pi
+                pass
+            else:
+                print('invalid command')
+        elif target == b'\x02': # cycle control
+            if command == b'\x01': # start cycle
+                pass
+            elif command == b'\x02': # finish retraction
+                pass
+            elif command == b'\x03': # finish inflation
+                pass
+            else:
+                print('invalid command')
+        elif target == b'\x03': # manual pressure system control
+            if command == b'\x01': # open pressurization valve
+                print('Opening Pressurize Valve')
+                solenoid.openPressurize()
+            elif command == b'\x02': # close pressurization valve
+                print('Closing Pressurize Valve')
+                solenoid.closePressurize()
+            elif command == b'\x05': # open exhaust valve
+                print('Opening Exhaust Valve')
+                solenoid.openExhaust()
+            elif command == b'\x06': # close exhaust valve
+                print('Closing Exhaust Valve')
+                solenoid.closeExhaust()
+            else:
+                print('invalid command')
+        elif target == b'\x04': # pressure system enabling control
+            if command == b'\x01': # disable system 1
+                pass
+            elif command == b'\x02': # enable system 1
+                pass
+            elif command == b'\x03': # disable system 2
+                pass
+            elif command == b'\x04': # enable system 2
+                pass
+            else:
+                print('invalid command')
+        elif target == b'\x05': # heater system control
+            if command == b'\x01': # turn on solenoid heaters
+                pass
+            elif command == b'\x02': # turn off solenoid heaters
+                pass
+            elif command == b'\x03': # turn on payload heaters
+                pass
+            elif command == b'\x04': # turn off payload heaters
+                pass
+            else:
+                print('invalid command')
+        else:
+            print('invalid target')
     return
 
 while True:

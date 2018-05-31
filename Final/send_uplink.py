@@ -10,23 +10,20 @@ import time
 import glob
 from sys import platform
 
-if platform == "linux" or platform == "linux2":
-    current_port = "/dev/ttyUSB0"
-elif platform == "darwin":
-    current_port = glob.glob("/dev/tty.USA*")[0]
+if platform == 'linux' or platform == 'linux2':
+    current_port = '/dev/ttyUSB0'
+elif platform == 'darwin':
+    current_port = glob.glob('/dev/tty.USA*')[0]
 
 # sets up serial object for use
-ser = serial.Serial(port=current_port,
+serial = serial.Serial(port=current_port,
                     baudrate=4800,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS,
                     timeout=1)
 
-# sets list of valid commands
-# commands = ['x01','x02','x03','x04','x05','x06','x07','x0C']
-# commands_usage = ['Ping Pi','Demo Motor','Open Pressurize','Close Pressurize','Open Exhaust','Close Exhaust','Burp Exhaust','Camera Demo']
-
+# defines list of commands
 commands = {
 	'0x01 0x01':'0x01 0x01 : Ping Pi',
 	'0x01 0x02':'0x01 0x02 : Manual Mode',
@@ -64,17 +61,19 @@ while (not complete):
 	time.sleep(0.5)
 	command_string = input('\nEnter Command: ')
 
-	if not any(command_string in command for command in commands.keys()) and False:
+	if not any(command_string in command for command in commands.keys()):
 		print('Invalid Command')
 	elif (command_string[0:2] != '0x') or (command_string[4:7] != ' 0x') or (len(command_string) != 9):
 		print('Invalid Command')
 	else: 
-		target = hex(int(command_string[0:4],16))
-		command = hex(int(command_string[5:9],16))
-		ser.write(target.encode())
-		ser.write(command.encode())
+		target = bytes([int(command_string[0:4],16)])
+		command = bytes([int(command_string[5:9],16)])
+		serial.write(target)
+		serial.write(command)
 
-	while ser.inWaiting():
-		cmd = ser.read()
-		packet = cmd.decode("utf-8")
+	time.sleep(1)
+
+	while serial.inWaiting():
+		response = serial.read()
+		packet = response.decode()
 		print(packet)

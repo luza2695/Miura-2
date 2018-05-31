@@ -43,7 +43,7 @@ file_index = 0
 
 # sets up downlink queue
 downlink_queue = queue.Queue()
-downlink_queue.put(['MA', 'BU', '{}'.format(start_time)])
+downlink_queue.put(['MA', 'BU', 0])
 
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"

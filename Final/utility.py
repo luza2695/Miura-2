@@ -1,8 +1,18 @@
-# imports
-import serial
-import time
-import downlink
+##################################################################
+# Miura 2: Utility Thread (utility.py)
+# Created: 5/29/2018
+# Modified: 5/30/2018
+# Purpose: Downlink data and write to log file
+##################################################################
 
-def utility(downlink_queue, log_filename, log_lock):
-	for i in range(0,4):
-		testDownlink.downlink(bytes(str(i),'utf-8'))
+import time
+from sensors import read_sensors, print_sensors
+
+def main(downlink_queue,running):
+	current_time = time.strftime('%b_%m_%H:%M:%S')
+	print(current_time)
+	downlink_queue.put(['UT','BU', 0])
+	while running:
+		print_sensors()
+		# add downlink of sensor data
+		time.sleep(0.5)

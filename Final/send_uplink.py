@@ -27,7 +27,6 @@ commands = ['x01','x02','x03','x04','x05','x06','x07','x0C']
 commands_usage = ['Ping Pi','Demo Motor','Open Pressurize','Close Pressurize','Open Exhaust','Close Exhaust','Burp Exhaust','Camera Demo']
 
 # prompts user for valid command
-
 print('\nCommands:\r')
 for i in range(len(commands)):
 	print('\t' + commands[i] + ': ' + commands_usage[i] + '\r')

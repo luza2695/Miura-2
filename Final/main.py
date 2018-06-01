@@ -10,6 +10,11 @@
 # Outputs:
 #	- State (6 states)
 #	- Uplink (only for camera use)
+# Tasks:
+#	- Check if main is okay logically
+#	- Camera code
+#	- Motor code --> DC brushless
+#	- Make the downlink horizontal
 # Created: 5/1/2018
 # Modified: 6/1/2018
 # Miura2 - main.py
@@ -95,7 +100,6 @@ while running:
 		if (current_time-stage_start_time) >= 14400 :
 			stage, stage_start_time = stagechange(2)
 
-
 	#if it is stage 2 (inflation) ...
 	#	- Starts when stage 1 or 5 is completed
 	#	- Open solenoid valve
@@ -121,9 +125,13 @@ while running:
 		# Conditionals:
 		#	-if pressure is 0.55 or greater
 		#	-if 1 min goes by
-		 if value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
+		if value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
 		 	stage, stage_start_time = stagechange(3)
 		 	solenoid.closePressurize(1)
+
+		#EMERGENCY CONDITION (STAGE 5)
+		else if value2 >= 0.8: #atm
+			stage == 6
 
 	#if it is stage 3 (inflated) ...
 	#	- Starts when inflation is completed
@@ -150,6 +158,10 @@ while running:
 		#
 		if (current_time-stage_start_time) >= 600:
          		stage, stage_start_time = stagechange(4)
+
+		#EMERGENCY CONDITION (STAGE 6)
+		else if value3 >= 0.8: #atm
+                        stage == 6
 
 	#if it is stage 4 (deflating) ...
 	#	- Starts when inflated timer has been completed
@@ -178,6 +190,9 @@ while running:
 		if (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
         		stage, stage_start_time = stagechange(5)
 
+		#EMERGENCY CONDITION (STAGE 6)
+		else if value4 >= 0.8: #atm
+                        stage == 6
 
 	#if it is stage 5 (deflated) ...
 	#	- Starts when deflation is completed
@@ -192,6 +207,10 @@ while running:
 		if (stage_start_time - current_time) >= 180
                         stage, stage_start_time = stagechange(2)
 
+		#EMERGENCY CONDITION (STAGE 6)
+		else if value5 >= 0.8: #atm
+                        stage == 6
+
 	#If it is stage 6 (emergency) ...
 	#	- Starts when pressure > 0.8 atms
 	#	- Close Solenoid Valve
@@ -199,8 +218,15 @@ while running:
 	#	- Motor OFF
 	#	- Camera ON
 	#	- Stops when pressure becomes less than 0.8 atm (stable)
-	elif value > 0.8 or stage == 6: #atm
-		pass
+	elif stage == 6: #atm
+		#Close solenoid valve
+		solenoid.closePressurize()
+
+		#Open exhaust valve
+		solenoid.openExhaust()
+
+		#Camera ON
+		#do this later
 
 	#check data every 0.5 seconds
 	time.sleep(0.5)

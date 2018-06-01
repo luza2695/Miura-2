@@ -23,7 +23,7 @@ serial = serial.Serial(port=current_port,
                     bytesize=serial.EIGHTBITS,
                     timeout=1)
 
-# defines list of commands
+# defines lis of commands
 commands = {
 	'0x01 0x01':'0x01 0x01 : Ping Pi',
 	'0x01 0x02':'0x01 0x02 : Manual Mode',
@@ -54,7 +54,7 @@ commands = {
 print('\nCommands:\r')
 for value in commands.values():
 	print('\t' + value + '\r')
-	
+
 complete = False
 
 while (not complete):
@@ -65,7 +65,7 @@ while (not complete):
 		print('Invalid Command')
 	elif (command_string[0:2] != '0x') or (command_string[4:7] != ' 0x') or (len(command_string) != 9):
 		print('Invalid Command')
-	else: 
+	else:
 		target = bytes([int(command_string[0:4],16)])
 		command = bytes([int(command_string[5:9],16)])
 		serial.write(target)

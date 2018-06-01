@@ -11,7 +11,7 @@
 #	- State (6 states)
 #	- Uplink (only for camera use)
 # Created: 5/1/2018
-# Modified: 5/29/2018
+# Modified: 6/1/2018
 # Miura2 - main.py
 #######################################################################
 # Imports:
@@ -72,9 +72,11 @@ utility_thread.start()
 
 # pressure check loop
 while running:
+	#Start the uplink/downlink
 	uplink.main(serial, downlink_queue)
 	downlink.main(serial, downlink_queue)
 
+	#Track the current time
 	current_time = time.time()
 	#if it is stage 1 (ascent) ...
 	#	- Turn off camera
@@ -117,11 +119,11 @@ while running:
 		#DO THIS LATER
 
 		# Conditionals:
-		#	-if pressure is 0.75 or greater
-		#	-if __ (time) goes by
-		# if value2 >= 0.75 or (current_time-stage_start_time) >= 300: #atm
-		# 	stage, stage_start_time = stagechange(3)
-		# 	solenoid.closePressurize(1)
+		#	-if pressure is 0.55 or greater
+		#	-if 1 min goes by
+		 if value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
+		 	stage, stage_start_time = stagechange(3)
+		 	solenoid.closePressurize(1)
 
 	#if it is stage 3 (inflated) ...
 	#	- Starts when inflation is completed
@@ -144,10 +146,10 @@ while running:
 		#DO THIS LATER
 
 		#Conditionals ...
-		#	-After __ hours has been passed
-		#	- 
-		# if (current_time-stage_start_time) >= 3600:
-  #       	stage, stage_start_time = stagechange(4)
+		#	-After 10 min has been passed
+		#
+		if (current_time-stage_start_time) >= 600:
+         		stage, stage_start_time = stagechange(4)
 
 	#if it is stage 4 (deflating) ...
 	#	- Starts when inflated timer has been completed
@@ -171,9 +173,10 @@ while running:
 
 		#Conditionals ...
 		#	-once motor completes the theoretical revs around
-		#	-30 min has passed
-		#if False:
-        	#stage, stage_start_time = stagechange(3)
+		#	-1 min has passed
+		#	-pressure exceeds 0.55 or lower than 0.3
+		if (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
+        		stage, stage_start_time = stagechange(5)
 
 
 	#if it is stage 5 (deflated) ...
@@ -184,8 +187,11 @@ while running:
 	#	- Camera ON
 	#	- Stops when deflated timer is done
 	elif stage == 5:
-		pass
-	
+		#Conditionals ...
+		#	-when 3 minutes passes by
+		if (stage_start_time - current_time) >= 180
+                        stage, stage_start_time = stagechange(2)
+
 	#If it is stage 6 (emergency) ...
 	#	- Starts when pressure > 0.8 atms
 	#	- Close Solenoid Valve

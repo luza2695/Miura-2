@@ -202,8 +202,8 @@ while running:
 	elif value > 0.8 or stage == 6: #atm
 		pass
 
-	#check data every 0.1 seconds
-	time.sleep(0.1)
+	#check data every 0.5 seconds
+	time.sleep(0.5)
 
 # stage change funcion
 def stagechange(stage):

@@ -115,7 +115,9 @@ def read_sensors():
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	temperature = read_temp()
 	temp_downlink = ['SE','TE',list_values(temperature)]
-	return [pres_downlink,hum_downlink,temp_downlink]
+	transducer = read_pressure_system()
+	trans_downlink = ['SE', 'TR','{:.2f}'.format(transducer)]
+	return [pres_downlink,hum_downlink,temp_downlink, trans_downlink]
 
 # makes a string for list of same data values from different sensors
 def list_values(values):

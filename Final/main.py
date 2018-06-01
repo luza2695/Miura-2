@@ -12,9 +12,9 @@
 #	- Uplink (only for camera use)
 # Tasks:
 #	- Check if main is okay logically
-#	- Camera code
 #	- Motor code --> DC brushless
 #	- Make the downlink horizontal
+#	- Motor ON - Torqued only
 # Created: 5/1/2018
 # Modified: 6/1/2018
 # Miura2 - main.py
@@ -31,6 +31,7 @@ import downlink
 import heater
 import sensors
 import solenoid
+import cameras
 #######################################################################
 
 #Variables
@@ -84,16 +85,17 @@ while running:
 	#Track the current time
 	current_time = time.time()
 	#if it is stage 1 (ascent) ...
-	#	- Turn off camera
+	#	- Turn off still and video cameras
 	#	- Do not run any of the pressure checks
 	#	- Turn on heaters
-	if stage == 1: #ascent stage 1 
+	if stage == 1: #ascent stage 1
 		#Turn on heaters
 		#heater.solenoid_heater(True)
 		#heater.payload_heater(True)
 
-		#Turn on Camera
-		#DO THIS LATER
+		#Turn off Cameras
+		#cameras.stillCameras(False)
+		#cameras.videoCamera(True)
 
 		#conditionals ...
 		#	- after 4 hours into flight
@@ -105,7 +107,7 @@ while running:
 	#	- Open solenoid valve
 	#	- Motor given NO power
 	#	- Close exhaust valve
-	#	- Camera ON
+	#	- Video and still cameras ON
 	#	- Stops ...
 	#		- when pressure has reached the maximum capacity
 	#		- When the inflation timer has been reached 
@@ -119,8 +121,9 @@ while running:
 		#Close exhaust valve
 		#solenoid.closeExhaust()
 
-		#Camera ON
-		#DO THIS LATER
+		#Video and still Cameras ON
+		#cameras.stillCameras(True)
+		#cameras.videoCamera(True)
 
 		# Conditionals:
 		#	-if pressure is 0.55 or greater
@@ -138,7 +141,7 @@ while running:
 	#	- Close solenoid valve
 	#	- Close Exhaust valve
 	#	- Motor given NO power
-	#	- Camera ON
+	#	- Still Cameras ON // video camera OFF
 	#	- Stops when the inflated timer is done
 	elif stage == 3:
 		#read pressure
@@ -150,8 +153,9 @@ while running:
 		#close exhaust
 		#solenoid.closeExhaust()
 
-		#camer ON
-		#DO THIS LATER
+		#Still cameras ON // video camera OFF
+		#cameras.stillCameras(True)
+		#cameras.videoCamera(False)
 
 		#Conditionals ...
 		#	-After 10 min has been passed
@@ -168,7 +172,7 @@ while running:
 	#	- Close Solenoid valve
 	#	- Open Exhaust valve
 	#	- Motor ON
-	#	- Camera ON
+	#	- Video and Still Cameras ON
 	#	- Stops when motor has fully retracted
 	elif stage == 4:
 		#read pressure from tranducer
@@ -180,8 +184,9 @@ while running:
 		#open exhaust and motor ON
 		#solenoid.openExhaust()
 
-		#Camera ON
-		#DO THIS LATER!
+		#Video and Still Cameras ON
+		#cameras.stillCameras(True)
+		#cameras.videoCamera(True)
 
 		#Conditionals ...
 		#	-once motor completes the theoretical revs around
@@ -199,9 +204,22 @@ while running:
 	#	- Close Solenoid Valve
 	#	- Close Exhaust valve
 	#	- Motor ON, but not moving (only torqued)
-	#	- Camera ON
+	#	- Still Cameras ON // video camera OFF
 	#	- Stops when deflated timer is done
 	elif stage == 5:
+		#Close solenoid valve
+		solenoid.closePressurize()
+
+		#Close exhaust valve
+		solenoid.closeExhaust()
+
+		#Motor ON - TORQUED
+		#DO THIS LATER!
+
+		#Still cameras ON // video camera OFF
+		#cameras.stillCameras(True)
+		#cameras.videoCamera(False)
+
 		#Conditionals ...
 		#	-when 3 minutes passes by
 		if (stage_start_time - current_time) >= 180
@@ -225,8 +243,11 @@ while running:
 		#Open exhaust valve
 		solenoid.openExhaust()
 
-		#Camera ON
-		#do this later
+		#Motor OFF
+		#DO THIS LATER!
+
+		#Still Cameras ON
+		#cameras.stillCameras(True)
 
 	#check data every 0.5 seconds
 	time.sleep(0.5)

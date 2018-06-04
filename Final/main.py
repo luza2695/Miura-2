@@ -47,9 +47,9 @@ except FileExistsError:
     # This directory should exist, just making sure
     pass
 file_index = 0
-while os.path.exists('/datalogs/datalog{}'.format(file_index)):
+while os.path.exists('datalogs/datalog{}'.format(file_index)):
     file_index += 1
-data_directory = '/datalogs/datalog{}'.format(file_index)
+data_directory = 'datalogs/datalog{}'.format(file_index)
 os.mkdir(data_directory)
 
 # Set up the log file, initialize as empty

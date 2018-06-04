@@ -72,9 +72,3 @@ while (not complete):
 		serial.write(command)
 
 	time.sleep(1)
-
-	while serial.inWaiting():
-		response = serial.read()
-		print(response)
-		# packet = response.decode()
-		# print(packet)

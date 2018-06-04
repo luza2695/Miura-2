@@ -80,7 +80,7 @@ utility_thread.start()
 while running:
 	#Start the uplink/downlink
 	uplink.main(serial, downlink_queue)
-	downlink.main(serial, downlink_queue)
+	downlink.main(serial, downlink_queue, stage)
 
 	#Track the current time
 	current_time = time.time()

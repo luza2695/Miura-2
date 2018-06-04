@@ -14,7 +14,7 @@ sys.path.append('../')
 import examples.StepperTest as StepperTest
 #import solenoid
 import queue
-import heater
+import heater, cameras, solenoid
 
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
@@ -57,15 +57,18 @@ def main(serial, downlink_queue):
                 print('Ping Command Recieved: {}\n'.format(commandTime))
                 pass
             elif command == b'\x02': # manual mode
-                pass
+                #shutoff solenoids
+                solenoid.closePressurize()
+
+                #shutoff exhaust
+                
             elif command == b'\x03': # automation mode
                 pass
             elif command == b'\x04': # retract motor
                 StepperTest.main()
                 downlink_queue.put(['MO','RE',0])
             elif command == b'\x05': # take picture
-                #cameratest.main()
-                pass
+                cameras.singlePic()
             elif command == b'\x06': # reboot pi
                 pass
             else:

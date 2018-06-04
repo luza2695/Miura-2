@@ -94,8 +94,8 @@ while running:
 		#heater.payload_heater(True)
 
 		#Turn off Cameras
-		#cameras.stillCameras(False)
-		#cameras.videoCamera(True)
+		#cameras.stillCameras()
+		#cameras.videoCamera()
 
 		#conditionals ...
 		#	- after 4 hours into flight
@@ -121,8 +121,8 @@ while running:
 		#solenoid.closeExhaust()
 
 		#Video and still Cameras ON
-		#cameras.stillCameras(True)
-		#cameras.videoCamera(True)
+		#cameras.stillCameras()
+		#cameras.videoCamera()
 
 		# Conditionals:
 		#	-if pressure is 0.55 or greater
@@ -184,8 +184,8 @@ while running:
 		#solenoid.openExhaust()
 
 		#Video and Still Cameras ON
-		#cameras.stillCameras(True)
-		#cameras.videoCamera(True)
+		#cameras.stillCameras()
+		#cameras.videoCamera()
 
 		#Conditionals ...
 		#	-once motor completes the theoretical revs around
@@ -216,8 +216,8 @@ while running:
 		#DO THIS LATER!
 
 		#Still cameras ON // video camera OFF
-		#cameras.stillCameras(True)
-		#cameras.videoCamera(False)
+		#cameras.stillCameras()
+		#cameras.videoCamera()
 
 		#Conditionals ...
 		#	-when 3 minutes passes by
@@ -246,7 +246,7 @@ while running:
 		#DO THIS LATER!
 
 		#Still Cameras ON
-		#cameras.stillCameras(True)
+		#cameras.stillCameras()
 		pass
 	#check data every 0.5 seconds
 	time.sleep(0.5)

@@ -41,6 +41,11 @@ stage_start_time = time.time()
 start_time = time.strftime('%m_%d_%Y_%H:%M:%S')
 
 # creates log file
+try: # checks log directory exists
+    os.mkdir('Log Data')
+except FileExistsError:
+    # This directory should exist, just making sure
+    pass
 file_index = 0
 while os.path.exists('/Log Data/mission{}.log'.format(file_index)):
 	file_index += 1

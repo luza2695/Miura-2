@@ -1,5 +1,5 @@
 #######################################################################
-# Purpose: 
+# Purpose:
 #	- To continuously check the pressure sensors
 #	- To take in the uplink commands
 #	- Control the feedback of the pressure
@@ -30,7 +30,7 @@ import uplink
 import downlink
 import heater
 import sensors
-import solenoid
+#import solenoid
 import cameras
 #######################################################################
 
@@ -68,7 +68,7 @@ serial = serial.Serial(port=current_port,
 					  timeout=1)
 
 # clears the serial communication channel
-serial.flushInput() 
+serial.flushInput()
 
 running = True
 
@@ -101,7 +101,6 @@ while running:
 		#	- after 4 hours into flight
 		if (current_time-stage_start_time) >= 14400:
 			stage, stage_start_time = stagechange(2)
-			
 	#if it is stage 2 (inflation) ...
 	#	- Starts when stage 1 or 5 is completed
 	#	- Open solenoid valve
@@ -113,7 +112,7 @@ while running:
 	#		- When the inflation timer has been reached 
 	elif stage == 2: #infating // stage 2
 		#Read pressure
-		value2 = sensors.read_pressure_system()
+		#value2 = sensors.read_pressure_system()
 
 		#Open solenoid valve and Motor OFF
 		#solenoid.openPressurize(1)
@@ -130,7 +129,7 @@ while running:
 		#	-if 1 min goes by
 		if value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
 		 	stage, stage_start_time = stagechange(3)
-		 	solenoid.closePressurize(1)
+		 	#solenoid.closePressurize(1)
 
 		#EMERGENCY CONDITION (STAGE 5)
 		elif value2 >= 0.8: #atm
@@ -145,7 +144,7 @@ while running:
 	#	- Stops when the inflated timer is done
 	elif stage == 3:
 		#read pressure
-		value3 = sensors.read_pressure_system()
+		#value3 = sensors.read_pressure_system()
 
 		#close solenoid valve and motor OFF
 		#solenoid.closePressurize(1)
@@ -161,11 +160,11 @@ while running:
 		#	-After 10 min has been passed
 		#
 		if (current_time-stage_start_time) >= 600:
-         	stage, stage_start_time = stagechange(4)
+         		stage, stage_start_time = stagechange(4)
 
 		#EMERGENCY CONDITION (STAGE 6)
 		elif value3 >= 0.8: #atm
-            stage == 6
+            		stage == 6
 
 	#if it is stage 4 (deflating) ...
 	#	- Starts when inflated timer has been completed
@@ -176,7 +175,7 @@ while running:
 	#	- Stops when motor has fully retracted
 	elif stage == 4:
 		#read pressure from tranducer
-		value4 = sensors.read_pressure_system()
+		#value4 = sensors.read_pressure_system()
 
 		#Close solenoid valve
 		# solenoid.closePressurize(1)
@@ -193,11 +192,11 @@ while running:
 		#	-1 min has passed
 		#	-pressure exceeds 0.55 or lower than 0.3
 		if (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
-        	stage, stage_start_time = stagechange(5)
+        		stage, stage_start_time = stagechange(5)
 
 		#EMERGENCY CONDITION (STAGE 6)
 		elif value4 >= 0.8: #atm
-            stage == 6
+            		stage == 6
 
 	#if it is stage 5 (deflated) ...
 	#	- Starts when deflation is completed
@@ -208,10 +207,10 @@ while running:
 	#	- Stops when deflated timer is done
 	elif stage == 5:
 		#Close solenoid valve
-		solenoid.closePressurize()
+		#solenoid.closePressurize()
 
 		#Close exhaust valve
-		solenoid.closeExhaust()
+		#solenoid.closeExhaust()
 
 		#Motor ON - TORQUED
 		#DO THIS LATER!
@@ -223,11 +222,11 @@ while running:
 		#Conditionals ...
 		#	-when 3 minutes passes by
 		if (stage_start_time - current_time) >= 180:
-        	stage, stage_start_time = stagechange(2)
+        		stage, stage_start_time = stagechange(2)
 
 		#EMERGENCY CONDITION (STAGE 6)
 		elif value5 >= 0.8: #atm
-        	stage == 6
+        		stage == 6
 
 	#If it is stage 6 (emergency) ...
 	#	- Starts when pressure > 0.8 atms
@@ -238,17 +237,17 @@ while running:
 	#	- Stops when pressure becomes less than 0.8 atm (stable)
 	elif stage == 6: #atm
 		#Close solenoid valve
-		solenoid.closePressurize()
+		#solenoid.closePressurize()
 
 		#Open exhaust valve
-		solenoid.openExhaust()
+		#solenoid.openExhaust()
 
 		#Motor OFF
 		#DO THIS LATER!
 
 		#Still Cameras ON
 		#cameras.stillCameras(True)
-
+		pass
 	#check data every 0.5 seconds
 	time.sleep(0.5)
 

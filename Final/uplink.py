@@ -12,7 +12,7 @@ import sys
 sys.path.append('../')
 #from Camera import cameratest
 import examples.StepperTest as StepperTest
-import solenoid
+#import solenoid
 import queue
 import heater
 
@@ -82,27 +82,27 @@ def main(serial, downlink_queue):
         elif target == b'\x03': # manual pressure system control
             if command == b'\x01': # open pressurization valve 1
                 print('Opening Pressurize Valve 1')
-                solenoid.openPressurize(1)
+                #solenoid.openPressurize(1)
                 downlink_queue.put(['SO','V1',1])
             elif command == b'\x02': # close pressurization valve 1
                 print('Closing Pressurize Valve 1')
-                solenoid.closePressurize(1)
+                #solenoid.closePressurize(1)
                 downlink_queue.put(['SO','V1',0])
             if command == b'\x03': # open pressurization valve 2
                 print('Opening Pressurize Valve 2')
-                solenoid.openPressurize(2)
+                #solenoid.openPressurize(2)
                 downlink_queue.put(['SO','V2',1])
             elif command == b'\x04': # close pressurization valve 2
                 print('Closing Pressurize Valve 2')
-                solenoid.closePressurize(2)
+                #solenoid.closePressurize(2)
                 downlink_queue.put(['SO','V2',0])
             elif command == b'\x05': # open exhaust valve
                 print('Opening Exhaust Valve')
-                solenoid.openExhaust()
+                #solenoid.openExhaust()
                 downlink_queue.put(['SO','EX',1])
             elif command == b'\x06': # close exhaust valve
                 print('Closing Exhaust Valve')
-                solenoid.closeExhaust()
+                #solenoid.closeExhaust()
                 downlink_queue.put(['SO','EX',0])
             else:
                 print('invalid command')

@@ -127,7 +127,7 @@ while running:
 			#value2 = sensors.read_pressure_system()
 
 			#Open solenoid valve and Motor OFF
-			#solenoid.openPressurize(1)
+			#solenoid.openPressurize(current_solenoid)
 
 			#Close exhaust valve
 			#solenoid.closeExhaust()
@@ -159,7 +159,7 @@ while running:
 			#value3 = sensors.read_pressure_system()
 
 			#close solenoid valve and motor OFF
-			#solenoid.closePressurize(1)
+			#solenoid.closePressurize(current_solenoid)
 
 			#close exhaust
 			#solenoid.closeExhaust()
@@ -190,7 +190,7 @@ while running:
 			#value4 = sensors.read_pressure_system()
 
 			#Close solenoid valve
-			# solenoid.closePressurize(1)
+			# solenoid.closePressurize(current_solenoid)
 
 			#open exhaust and motor ON
 			#solenoid.openExhaust()
@@ -219,7 +219,7 @@ while running:
 		#	- Stops when deflated timer is done
 		elif stage == 5:
 			#Close solenoid valve
-			#solenoid.closePressurize()
+			#solenoid.closePressurize(current_solenoid)
 
 			#Close exhaust valve
 			#solenoid.closeExhaust()
@@ -249,7 +249,7 @@ while running:
 		#	- Stops when pressure becomes less than 0.8 atm (stable)
 		elif stage == 6: #atm
 			#Close solenoid valve
-			#solenoid.closePressurize()
+			#solenoid.closePressurize(current_solenoid)
 
 			#Open exhaust valve
 			#solenoid.openExhaust()

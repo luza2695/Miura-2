@@ -10,11 +10,11 @@ import time
 import serial
 import sys
 sys.path.append('../')
-#from Camera import cameratest
 import examples.StepperTest as StepperTest
 #import solenoid
 import queue
-import heater, cameras, solenoid
+import heater
+#import camera
 
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
@@ -58,30 +58,31 @@ def main(serial, downlink_queue, manual):
                 pass
             elif command == b'\x02': # manual mode
                 #shutoff solenoids
-                solenoid.closePressurize()
+                #solenoid.closePressurize()
 
                 #shutoff exhaust
-                solenoid.closeExhaust()
+                #solenoid.closeExhaust()
 
                 #Manual mode ON
                 manual = True
 
             elif command == b'\x03': # automation mode
                 #shutoff solenoids
-                solenoid.closePressurize()
+                #solenoid.closePressurize()
 
                 #turn on exhaust
-                solenoid.openPressurize()
+                #solenoid.openPressurize()
 
                 #Manual mode OFF
                 manual = False
             elif command == b'\x04': # retract motor
                 StepperTest.main()
-                downlink_queue.put(['MO','RE',0])
-            elif command == b'\x05': # take picture
-                cameras.singlePic()
+           	downlink_queue.put(['MO','RE',0])
+	    elif command == b'\x05': # take picture
+		#cameras.singlePic()
+		pass
             elif command == b'\x06': # reboot pi
-                pass
+		pass
             else:
                 print('invalid command')
         elif target == b'\x02': # cycle control

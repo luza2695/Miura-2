@@ -42,14 +42,18 @@ start_time = time.strftime('%m_%d_%Y_%H:%M:%S')
 
 # creates log file
 try: # checks log directory exists
-    os.mkdir('Log Data')
+    os.mkdir('datalogs')
 except FileExistsError:
     # This directory should exist, just making sure
     pass
 file_index = 0
-while os.path.exists('home/pi/Desktop/Miura-2/Miura-2/Final/Log Data/mission{}.log'.format(file_index)):
-	file_index += 1
-log_filename = 'home/pi/Desktop/Miura-2/Miura-2/Final/Log Data/mission{}.log'.format(file_index)
+while os.path.exists('/datalogs/datalog{}'.format(file_index)):
+    file_index += 1
+data_directory = '/datalogs/datalog{}'.format(file_index)
+os.mkdir(data_directory)
+
+# Set up the log file, initialize as empty
+log_filename = '{}/mission.log'.format(data_directory)
 open(log_filename, 'w+').close()
 
 # sets up downlink queue

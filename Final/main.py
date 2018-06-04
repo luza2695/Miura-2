@@ -133,7 +133,7 @@ while running:
 		 	solenoid.closePressurize(1)
 
 		#EMERGENCY CONDITION (STAGE 5)
-		else if value2 >= 0.8: #atm
+		elif value2 >= 0.8: #atm
 			stage == 6
 
 	#if it is stage 3 (inflated) ...
@@ -164,7 +164,7 @@ while running:
          		stage, stage_start_time = stagechange(4)
 
 		#EMERGENCY CONDITION (STAGE 6)
-		else if value3 >= 0.8: #atm
+		elif value3 >= 0.8: #atm
                         stage == 6
 
 	#if it is stage 4 (deflating) ...
@@ -196,7 +196,7 @@ while running:
         		stage, stage_start_time = stagechange(5)
 
 		#EMERGENCY CONDITION (STAGE 6)
-		else if value4 >= 0.8: #atm
+		elif value4 >= 0.8: #atm
                         stage == 6
 
 	#if it is stage 5 (deflated) ...
@@ -226,7 +226,7 @@ while running:
                         stage, stage_start_time = stagechange(2)
 
 		#EMERGENCY CONDITION (STAGE 6)
-		else if value5 >= 0.8: #atm
+		elif value5 >= 0.8: #atm
                         stage == 6
 
 	#If it is stage 6 (emergency) ...

@@ -38,19 +38,14 @@ import cameras
 stage = 1
 stage_start_time = time.time()
 # gets start time of main thread
-start_time = time.strftime('%b_%m_%H:%M:%S')
+start_time = time.strftime('%m_%d_%Y_%H:%M:%S')
 
-# creates directory where log file and data files will be saved
+# creates log file
 file_index = 0
-# while os.path.exists('/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)):
-# 	file_index += 1
-# data_directory = '/Desktop/Miura-2/Final/logfiles/datalog{}'.format(file_index)
-#os.mkdir(data_directory)
-
-# sets up the log file, initialize as empty
-# log_filename = '{}/mission.log}'.format(data_directory)
-# log_lock = threading.Lock()
-# open(log_filename, 'w+').close()
+while os.path.exists('/Log Data/mission{}.log'.format(file_index)):
+	file_index += 1
+log_filename = '/Log Data/mission{}.log'.format(file_index)
+open(log_filename, 'w+').close()
 
 # sets up downlink queue
 downlink_queue = queue.Queue()
@@ -80,7 +75,7 @@ utility_thread.start()
 while running:
 	#Start the uplink/downlink
 	uplink.main(serial, downlink_queue)
-	downlink.main(serial, downlink_queue, stage)
+	downlink.main(serial, downlink_queue, log_filename, stage)
 
 	#Track the current time
 	current_time = time.time()

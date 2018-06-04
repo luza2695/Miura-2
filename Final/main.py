@@ -47,9 +47,9 @@ except FileExistsError:
     # This directory should exist, just making sure
     pass
 file_index = 0
-while os.path.exists('/Log Data/mission{}.log'.format(file_index)):
+while os.path.exists('home/pi/Desktop/Miura-2/Miura-2/Final/Log Data/mission{}.log'.format(file_index)):
 	file_index += 1
-log_filename = '/Log Data/mission{}.log'.format(file_index)
+log_filename = 'home/pi/Desktop/Miura-2/Miura-2/Final/Log Data/mission{}.log'.format(file_index)
 open(log_filename, 'w+').close()
 
 # sets up downlink queue

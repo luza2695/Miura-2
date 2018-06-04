@@ -77,7 +77,7 @@ def main(serial, downlink_queue, manual):
                 manual = False
             elif command == b'\x04': # retract motor
                 StepperTest.main()
-           	    downlink_queue.put(['MO','RE',0])
+                downlink_queue.put(['MO','RE',0])
 	       elif command == b'\x05': # take picture
                 #cameras.singlePic()
                 pass

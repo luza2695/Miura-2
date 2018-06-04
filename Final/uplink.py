@@ -61,9 +61,15 @@ def main(serial, downlink_queue):
                 solenoid.closePressurize()
 
                 #shutoff exhaust
-                
+                solenoid.closeExhaust()
+
             elif command == b'\x03': # automation mode
-                pass
+                #shutoff solenoids
+                solenoid.closePressurize()
+
+                #turn on exhaust
+                solenoid.openPressurize()
+
             elif command == b'\x04': # retract motor
                 StepperTest.main()
                 downlink_queue.put(['MO','RE',0])

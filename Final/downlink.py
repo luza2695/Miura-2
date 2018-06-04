@@ -16,7 +16,7 @@ def main(serial, downlink_queue, log_filename, stage):
 		current_time = time.time() # gets current time
 		packet = '\x01CU MI2 %s %s %.2f %i %i\x02' % (sender, data_type, current_time, checksum, stage) + ' ' + data + '\x03\n'
 		print(packet)
-        with open(log_filename, 'a') as log: # opens log file
-        	log.write(message) # writes to log file
-		serial.write(packet.encode()) # writes message to serial
+		with open(log_filename, 'a') as log: # opens log file
+			log.write(message) # writes to log file
+			serial.write(packet.encode()) # writes message to serial
 	return

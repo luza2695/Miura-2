@@ -101,7 +101,7 @@ while running:
 		#	- after 4 hours into flight
 		if (current_time-stage_start_time) >= 14400:
 			stage, stage_start_time = stagechange(2)
-
+			
 	#if it is stage 2 (inflation) ...
 	#	- Starts when stage 1 or 5 is completed
 	#	- Open solenoid valve

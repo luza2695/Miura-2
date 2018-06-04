@@ -99,7 +99,7 @@ while running:
 
 		#conditionals ...
 		#	- after 4 hours into flight
-		if (current_time-stage_start_time) >= 14400 :
+		if (current_time-stage_start_time) >= 14400:
 			stage, stage_start_time = stagechange(2)
 
 	#if it is stage 2 (inflation) ...
@@ -161,11 +161,11 @@ while running:
 		#	-After 10 min has been passed
 		#
 		if (current_time-stage_start_time) >= 600:
-         		stage, stage_start_time = stagechange(4)
+         	stage, stage_start_time = stagechange(4)
 
 		#EMERGENCY CONDITION (STAGE 6)
 		elif value3 >= 0.8: #atm
-                        stage == 6
+            stage == 6
 
 	#if it is stage 4 (deflating) ...
 	#	- Starts when inflated timer has been completed
@@ -193,11 +193,11 @@ while running:
 		#	-1 min has passed
 		#	-pressure exceeds 0.55 or lower than 0.3
 		if (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
-        		stage, stage_start_time = stagechange(5)
+        	stage, stage_start_time = stagechange(5)
 
 		#EMERGENCY CONDITION (STAGE 6)
 		elif value4 >= 0.8: #atm
-                        stage == 6
+            stage == 6
 
 	#if it is stage 5 (deflated) ...
 	#	- Starts when deflation is completed
@@ -222,12 +222,12 @@ while running:
 
 		#Conditionals ...
 		#	-when 3 minutes passes by
-		if (stage_start_time - current_time) >= 180
-                        stage, stage_start_time = stagechange(2)
+		if (stage_start_time - current_time) >= 180:
+        	stage, stage_start_time = stagechange(2)
 
 		#EMERGENCY CONDITION (STAGE 6)
 		elif value5 >= 0.8: #atm
-                        stage == 6
+        	stage == 6
 
 	#If it is stage 6 (emergency) ...
 	#	- Starts when pressure > 0.8 atms

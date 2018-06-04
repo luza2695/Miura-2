@@ -41,7 +41,7 @@ serial = serial.Serial(port=current_port,
 #    GPIO.output(led_pin,GPIO.LOW)
 #    GPIO.cleanup()
 
-def main(serial, downlink_queue):
+def main(serial, downlink_queue, manual):
     if serial.inWaiting(): # reads uplink command
         #heading = serial.read() # start of heading
         #start = serial.read() # start of text
@@ -63,6 +63,9 @@ def main(serial, downlink_queue):
                 #shutoff exhaust
                 solenoid.closeExhaust()
 
+                #Manual mode ON
+                manual = True
+
             elif command == b'\x03': # automation mode
                 #shutoff solenoids
                 solenoid.closePressurize()
@@ -70,6 +73,8 @@ def main(serial, downlink_queue):
                 #turn on exhaust
                 solenoid.openPressurize()
 
+                #Manual mode OFF
+                manual = False
             elif command == b'\x04': # retract motor
                 StepperTest.main()
                 downlink_queue.put(['MO','RE',0])
@@ -143,5 +148,5 @@ def main(serial, downlink_queue):
                 print('invalid command')
         else:
             print('invalid target')
-    return
+    return manual
 

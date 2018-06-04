@@ -75,6 +75,7 @@ serial = serial.Serial(port=current_port,
 serial.flushInput()
 
 running = True
+manual = False
 
 # start utilty thread
 utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running, stage),daemon=True)
@@ -83,7 +84,7 @@ utility_thread.start()
 # pressure check loop
 while running:
 	#Start the uplink/downlink
-	uplink.main(serial, downlink_queue)
+	uplink.main(serial, downlink_queue, manual)
 	downlink.main(serial, downlink_queue, log_filename, stage)
 
 	#Track the current time
@@ -254,6 +255,7 @@ while running:
 		pass
 	#check data every 0.5 seconds
 	time.sleep(0.5)
+
 
 # stage change funcion
 def stagechange(stage):

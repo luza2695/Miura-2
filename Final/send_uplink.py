@@ -75,5 +75,6 @@ while (not complete):
 
 	while serial.inWaiting():
 		response = serial.read()
-		packet = response.decode()
-		print(packet)
+		print(response)
+		# packet = response.decode()
+		# print(packet)

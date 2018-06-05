@@ -11,9 +11,9 @@ import smbus
 ##################################################################
 #variables for SPI
 address = 0xE0
-configbyte = 0x00
+configbyte = 0x1c
 bus = smbus.SMBus(1)
-bus.write_byte(adress,configbyte)
+bus.write_byte(address,configbyte)
 
 #Create LED array by sending this function num_LEDs
 def set_LED_quantity(num_LEDs):

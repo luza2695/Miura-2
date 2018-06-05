@@ -139,8 +139,8 @@ set_LED(0,25,25,25,brightness)
 #             WriteLEDs()
 #             time.sleep(wait)
 
-except KeyboardInterrupt:
-    pass
+# except KeyboardInterrupt:
+#     pass
 
 
 

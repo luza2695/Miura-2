@@ -72,6 +72,8 @@ brightness = 15
 
 while True:
     set_LED(0,25,25,25,brightness)
+    set_LED(3,25,25,25,brightness)
+    set_LED(7,25,25,25,brightness)
     WriteLEDs()
     time.sleep(10)
 

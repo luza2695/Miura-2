@@ -71,11 +71,9 @@ delay = 0.15
 brightness = 15
 
 while True:
-    set_LED(0,25,25,25,brightness)
-    set_LED(3,25,25,25,brightness)
-    set_LED(7,25,25,25,brightness)
+    set_LED(0,25,0,0,brightness)
     WriteLEDs()
-    time.sleep(10)
+    time.sleep(1)
 
 # try:
 #     while True:

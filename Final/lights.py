@@ -63,7 +63,6 @@ def WriteLEDs():
 #number of LEDs
 set_LED_quantity(8)
 
-
 #Delay
 delay = 0.15
 
@@ -71,7 +70,8 @@ delay = 0.15
 brightness = 15
 
 while True:
-    set_LED(0,25,0,0,brightness)
+    for i in range(8):
+        set_LED(i,25,25,25,brightness)
     WriteLEDs()
     time.sleep(1)
 

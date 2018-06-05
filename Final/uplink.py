@@ -5,24 +5,16 @@
 # Purpose: Accept uplink commands
 ##################################################################
 
-#import RPi.GPIO as GPIO
 import time
 import serial
 import sys
-sys.path.append('../')
+#sys.path.append('../')
 import examples.StepperTest as StepperTest
 #import solenoid
 import queue
 import heater
 #import camera
 ##################################################################
-
-#led_pin = 33
-#GPIO.setmode(GPIO.BOARD)
-#GPIO.setwarnings(False)
-#GPIO.setup(led_pin,GPIO.OUT)
-#GPIO.output(led_pin,GPIO.LOW)
-#GPIO.cleanup()
 
 # sets current pi usb port
 current_port = '/dev/ttyUSB0'
@@ -34,13 +26,6 @@ serial = serial.Serial(port=current_port,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
             timeout=1)
-
-#LED ping when called
-#def led():
-#    GPIO.output(led_pin,GPIO.HIGH)
-#    time.sleep(0.5)
-#    GPIO.output(led_pin,GPIO.LOW)
-#    GPIO.cleanup()
 
 def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled):
     if serial.inWaiting(): # reads uplink command

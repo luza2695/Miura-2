@@ -10,7 +10,7 @@ import glob
 import time
 import smbus
 import RPi.GPIO as GPIO
-#import Adafruit_ADS1x15
+import Adafruit_ADS1x15
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -31,19 +31,6 @@ for i in range(0,num_temp):
 	device_folder = glob.glob(base_dir + '28*')[i]
 	device_file.append(device_folder + '/w1_slave')
 
-#16 bit for the ADC
-#adc = Adafruit_ADS1x15.ADS1115()
-
-#Gains
-# - 2/3 = +/- 6.144V
-# - 1 = +/- 4.096V
-# - 2 = +/- 2.048V
-# - 4 = +/- 1.024V
-# - 8 = +/- 0.512V
-# - 16 = +/- 0.256V
-# GAIN = 1
-
-# adc.start_adc(0, gain = GAIN)
 
 # reads external pressure sensor
 def read_pressure():
@@ -86,12 +73,39 @@ def read_temp():
 			temp_c.append(current)
 	return temp_c
 
+#16 bit for the ADC
+#input solenoid 1
+adc1 = Adafruit_ADS1x15.ADS1115()
+#input solenoid 2
+adc2 = Adafruit_ADS1x15.ADS1115()
+#exhaust solenoid
+adc3 = Adafruit_ADS1x15.ADS1115()
+
+#Gains
+# - 2/3 = +/- 6.144V
+# - 1 = +/- 4.096V
+# - 2 = +/- 2.048V
+# - 4 = +/- 1.024V
+# - 8 = +/- 0.512V
+# - 16 = +/- 0.256V
+ GAIN = 1
+
+adc1.start_adc(0, gain = GAIN)
+adc2.start_adc(1, gain = GAIN)
+adc3.start_adc(2, gain = GAIN)
+
 # reads pressure of pressure system from transducer
-# def read_pressure_system():
-# 	value = adc.get_last_result()
-# 	volts = value*5/65536
-# 	pressure = volts*10
-#	return pressure 
+def read_pressure_system():
+ 	value1 = adc1.get_last_result()
+ 	value2 = adc2.get_last_result()
+ 	value3 = adc3.get_last_result()
+ 	volts1 = value*5/65536
+ 	volts2 = value*5/65536
+ 	volts3 = value*5/65536
+ 	pressureSol1 = volts1*10
+ 	pressureSol2 = volts2*10
+ 	pressureExh  = volts3*10
+	return pressureSol1, pressureSol2, pressureExh
 
 # prints value of each sensor 
 def print_sensors():
@@ -115,9 +129,9 @@ def read_sensors():
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	temperature = read_temp()
 	temp_downlink = ['SE','TE',list_values(temperature)]
-	#transducer = read_pressure_system()
-	#trans_downlink = ['SE', 'TR','{:.2f}'.format(transducer)]
-	return [pres_downlink,hum_downlink,temp_downlink] #trans_downlink]
+	transducer = read_pressure_system()
+	trans_downlink = ['SE', 'TR','{:.2f}'.format(transducer)]
+	return [pres_downlink,hum_downlink,temp_downlink,trans_downlink]
 
 # makes a string for list of same data values from different sensors
 def list_values(values):

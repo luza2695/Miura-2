@@ -15,6 +15,7 @@ import examples.StepperTest as StepperTest
 import queue
 import heater
 #import camera
+##################################################################
 
 #led_pin = 33
 #GPIO.setmode(GPIO.BOARD)
@@ -162,7 +163,7 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
             elif command == b'\x04': # turn off payload heaters
                 heater.payload_heater(False)
                 downlink_queue.put(['HE','PA',0])
-                
+
             else:
                 print('invalid command')
 

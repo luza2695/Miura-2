@@ -7,10 +7,13 @@
 # Imports
 import spidev
 import time
+import smbus
 ##################################################################
 #variables for SPI
-spi = spidev.SpiDev()
-spi.open(0,0)
+address = 0xE0
+configbyte = 0x00
+bus = smbus.SMBus(1)
+bus.write_byte(adress,configbyte)
 
 #Create LED array by sending this function num_LEDs
 def set_LED_quantity(num_LEDs):

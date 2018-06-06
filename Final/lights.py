@@ -57,7 +57,7 @@ def WriteLEDs():
 
 
 
-def lights(x)
+def lights(x):
     if x == 1:
         #number of LEDs
         set_LED_quantity(8)
@@ -68,12 +68,17 @@ def lights(x)
         #brightness: 0-31
         brightness = 15
         leds = 8
-
-        set_LED(leds,25,25,25,brightness)
+        #for i in range(leds):
+        #    set_LED(i,25,25,25,brightness)
+        set_LED(0,25,25,25,brightness)
         WriteLEDs()
     elif x == 2:
+        pass
         #make celebration lights and music
-        
+    return
+
+lights(1)
+
 #while True:
 #    for i in range(8):
 #        set_LED(i,25,25,25,brightness)

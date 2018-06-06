@@ -10,10 +10,6 @@ import time
 import smbus
 ##################################################################
 #variables for SPI
-# address = 0xE0
-# configbyte = 0x1c
-# bus = smbus.SMBus(1)
-# bus.write_byte(address,configbyte)
 
 spi = spidev.SpiDev()
 spi.open(0,0)
@@ -60,20 +56,29 @@ def WriteLEDs():
     _start_end_frame()
 
 
-#number of LEDs
-set_LED_quantity(8)
 
-#Delay
-delay = 0.15
+def lights(x)
+    if x == 1:
+        #number of LEDs
+        set_LED_quantity(8)
 
-#brightness: 0-31
-brightness = 15
+        #Delay
+        delay = 0.15
 
-while True:
-    for i in range(8):
-        set_LED(i,25,25,25,brightness)
-    WriteLEDs()
-    time.sleep(1)
+        #brightness: 0-31
+        brightness = 15
+        leds = 8
+
+        set_LED(leds,25,25,25,brightness)
+        WriteLEDs()
+    elif x == 2:
+        #make celebration lights and music
+        
+#while True:
+#    for i in range(8):
+#        set_LED(i,25,25,25,brightness)
+#    WriteLEDs()
+#    time.sleep(1)
 
 # try:
 #     while True:

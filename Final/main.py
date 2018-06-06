@@ -30,8 +30,9 @@ import uplink
 import downlink
 import heater
 import sensors
-#import solenoid
+import solenoid
 import cameras
+import lights
 #######################################################################
 
 #Variables
@@ -100,6 +101,7 @@ while running:
 		#	- Turn off still and video cameras
 		#	- Do not run any of the pressure checks
 		#	- Turn on heaters
+		#	- Lights OFF
 		if stage == 1: #ascent stage 1
 			#Turn on heaters
 			#heater.solenoid_heater(True)
@@ -119,10 +121,14 @@ while running:
 		#	- Motor given NO power
 		#	- Close exhaust valve
 		#	- Video and still cameras ON
+		#	- Lights ON
 		#	- Stops ...
 		#		- when pressure has reached the maximum capacity
 		#		- When the inflation timer has been reached 
 		elif stage == 2: #inflating // stage 2
+			#Lights ON
+			#lights.lights(1)
+
 			#Read pressure
 			#value2 = sensors.read_pressure_system()
 
@@ -154,7 +160,11 @@ while running:
 		#	- Motor given NO power
 		#	- Still Cameras ON // video camera OFF
 		#	- Stops when the inflated timer is done
+		#	- Lights ON
 		elif stage == 3:
+			#Lights ON
+			#lights.lights(1)
+
 			#read pressure
 			#value3 = sensors.read_pressure_system()
 
@@ -185,7 +195,11 @@ while running:
 		#	- Motor ON
 		#	- Video and Still Cameras ON
 		#	- Stops when motor has fully retracted
+		#	- Lights ON
 		elif stage == 4:
+			#Lights ON
+			#lights.lights(1)
+
 			#read pressure from tranducer
 			#value4 = sensors.read_pressure_system()
 
@@ -217,7 +231,11 @@ while running:
 		#	- Motor ON, but not moving (only torqued)
 		#	- Still Cameras ON // video camera OFF
 		#	- Stops when deflated timer is done
+		#	- Lights ON
 		elif stage == 5:
+			#Lights ON
+			#lights.lights(1)
+
 			#Close solenoid valve
 			#solenoid.closePressurize(current_solenoid)
 
@@ -235,6 +253,8 @@ while running:
 			#	-when 3 minutes passes by
 			if (stage_start_time - current_time) >= 180:
 	        		stage, stage_start_time = changeStage(2)
+	        		#let the celebration begin
+	        		#lights.lights(2)
 
 			#EMERGENCY CONDITION (STAGE 6)
 			elif value5 >= 0.8: #atm
@@ -247,7 +267,11 @@ while running:
 		#	- Motor OFF
 		#	- Camera ON
 		#	- Stops when pressure becomes less than 0.8 atm (stable)
+		#	- Lights ON
 		elif stage == 6: #atm
+			#Lights ON
+			#lights.lights(1)
+			
 			#Close solenoid valve
 			#solenoid.closePressurize(current_solenoid)
 

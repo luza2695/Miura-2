@@ -14,7 +14,6 @@ import smbus
 spi = spidev.SpiDev()
 spi.open(0,0)
 
-
 #Create LED array by sending this function num_LEDs
 def set_LED_quantity(num_LEDs):
     global NUM_LEDs
@@ -41,7 +40,7 @@ def set_LED(num, r, g, b, brightness):
 #end of each data frame when writing to the LEDs
 def _start_end_frame():
     for x in range (4):
-            spi.xfer2([0x00])
+        spi.xfer2([0x00])
 
 #Write data to the LEDs
 def WriteLEDs():
@@ -52,11 +51,13 @@ def WriteLEDs():
         spi.xfer2([b])
         spi.xfer2([g])
         spi.xfer2([r])
-
     _start_end_frame()
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> cd9f60e1abc91179af790225bf3d1a4338b1415a
 def lights(x):
     if x == 1:
         #number of LEDs
@@ -67,18 +68,29 @@ def lights(x):
 
         #brightness: 0-31
         brightness = 15
+<<<<<<< HEAD
         leds = 8
         #for i in range(leds):
         #    set_LED(i,25,25,25,brightness)
         set_LED(0,25,25,25,brightness)
+=======
+
+        for i in range(8):
+            set_LED(i,25,25,25,0)
+            set_LED(i,25,25,25,brightness)
+>>>>>>> cd9f60e1abc91179af790225bf3d1a4338b1415a
         WriteLEDs()
     elif x == 2:
         pass
         #make celebration lights and music
     return
 
+<<<<<<< HEAD
 lights(1)
 
+=======
+lights(1)   
+>>>>>>> cd9f60e1abc91179af790225bf3d1a4338b1415a
 #while True:
 #    for i in range(8):
 #        set_LED(i,25,25,25,brightness)

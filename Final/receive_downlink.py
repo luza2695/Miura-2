@@ -23,9 +23,12 @@ serial = serial.Serial(port=current_port,
                     bytesize=serial.EIGHTBITS,
                     timeout=1)
 
+print("Serial object initialized...")
+print("Waiting for downlink...")
+
 while True:
 	while serial.inWaiting():
-			response = serial.readline()
-			packet = response.decode()
-			print(packet)
+		response = serial.readline()
+		packet = response.decode()
+		print(packet)
 	time.sleep(1)

@@ -99,11 +99,11 @@ def read_pressure_system():
  	value1 = adc1.get_last_result()
  	#value2 = adc2.get_last_result()
  	value3 = adc3.get_last_result()
- 	volts1 = value*5/65536
- 	#volts2 = value*5/65536
- 	volts3 = value*5/65536
+ 	volts1 = value1*5/65536
+ 	#volts2 = value2*5/65536
+ 	volts3 = value3*5/65536
  	pressureSol1 = volts1*10
- 	pressureSol2 = 0
+ 	pressureSol2 = 0 #volts2*10
  	pressureExh  = volts3*10
  	return pressureSol1, pressureSol2, pressureExh
 

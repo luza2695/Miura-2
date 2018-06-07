@@ -74,6 +74,8 @@ def lights(x):
     return
 
 lights(1)
+
+
 #while True:
 #    for i in range(8):
 #        set_LED(i,25,25,25,brightness)

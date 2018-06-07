@@ -88,7 +88,7 @@ adc3 = Adafruit_ADS1x15.ADS1115()
 # - 4 = +/- 1.024V
 # - 8 = +/- 0.512V
 # - 16 = +/- 0.256V
- GAIN = 1
+GAIN = 1
 
 adc1.start_adc(0, gain = GAIN)
 #adc2.start_adc(1, gain = GAIN)

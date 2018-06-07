@@ -91,19 +91,19 @@ adc3 = Adafruit_ADS1x15.ADS1115()
  GAIN = 1
 
 adc1.start_adc(0, gain = GAIN)
-adc2.start_adc(1, gain = GAIN)
+#adc2.start_adc(1, gain = GAIN)
 adc3.start_adc(2, gain = GAIN)
 
 # reads pressure of pressure system from transducer
 def read_pressure_system():
  	value1 = adc1.get_last_result()
- 	value2 = adc2.get_last_result()
+ 	#value2 = adc2.get_last_result()
  	value3 = adc3.get_last_result()
  	volts1 = value*5/65536
- 	volts2 = value*5/65536
+ 	#volts2 = value*5/65536
  	volts3 = value*5/65536
  	pressureSol1 = volts1*10
- 	pressureSol2 = volts2*10
+ 	pressureSol2 = 0
  	pressureExh  = volts3*10
 	return pressureSol1, pressureSol2, pressureExh
 

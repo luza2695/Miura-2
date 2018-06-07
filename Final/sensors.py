@@ -12,8 +12,8 @@ import smbus
 import RPi.GPIO as GPIO
 import Adafruit_ADS1x15
 
-os.system('modprobe w1-gpio')
-os.system('modprobe w1-therm')
+# os.system('modprobe w1-gpio')
+# os.system('modprobe w1-therm')
 
 # i2c sensor ids
 pres_id = 0x60
@@ -46,31 +46,17 @@ def read_humid():
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
 
-# reads raw value of each temperature sensor
-def read_temp_raw():
-	lines = []
-	for i in range(0,num_temp):
-		f = open(device_file[i], 'r')
-		lines.append(f.readlines())
-		f.close()
-	return lines
-
 # reads temp from each sensor
 def read_temp():
-	lines_list = []
-	temp_c = []
+	temp_c = ()
 	for i in range(0,num_temp):
 		f = open(device_file[i], 'r')
-		lines_list.append(f.readlines())
+		lines = f.readlines()
 		f.close()
-		lines = lines_list[i]
-		while lines[0].strip()[-3:] != 'YES':
-			lines = read_temp_raw()
 		equals_pos = lines[1].find('t=')
 		if equals_pos != -1:
 			temp_string = lines[1][equals_pos+2:]
-			current = float(temp_string) / 1000.0
-			temp_c.append(current)
+			temp_c = temp_c + (float(temp_string) / 1000.0)
 	return temp_c
 
 #16 bit for the ADC
@@ -117,10 +103,7 @@ def print_sensors():
 	humidity = read_humid()
 	print('Humidity: {:.2f} %% '.format(humidity), end='')
 	temperature = read_temp()
-	print('Temperature: ', end='')
-	for i in range(0,num_temp):
-			print('{:.2f} C '.format(temperature[i]), end='')
-	print('')
+	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(temperature), end='')
 	return
 
 # returns value of each sensor in downlinking format
@@ -130,17 +113,8 @@ def read_sensors():
 	humidity = read_humid()
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	temperature = read_temp()
-	temp_downlink = ['SE','TE',list_values(temperature)]
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(temperature)]
 	pres_sol1,pres_sol2,pres_exh = read_pressure_system()
 	trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(pres_sol1,pres_sol2,pres_exh)]
 	return [pres_downlink,hum_downlink,temp_downlink,trans_downlink]
-
-# makes a string for list of same data values from different sensors
-def list_values(values):
-	list_string = ''
-	# adds value in list to string
-	for value in values:
-		list_string += '{:.2f} '.format(value)
-	# returns string with trailing whitespace removed
-	return list_string.rstrip()
 

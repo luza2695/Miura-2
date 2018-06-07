@@ -130,28 +130,29 @@ while running:
 			#lights.lights(1)
 
 			#Read pressure
-			#value2 = sensors.read_pressure_system()
+			value2 = sensors.read_pressure_system()
 
 			#Open solenoid valve and Motor OFF
-			#solenoid.openPressurize(current_solenoid)
+			solenoid.openPressurize(current_solenoid)
 
 			#Close exhaust valve
-			#solenoid.closeExhaust()
+			solenoid.closeExhaust()
 
 			#Video and still Cameras ON
 			#cameras.stillCameras()
 			#cameras.videoCamera()
-
+			
+			#EMERGENCY CONDITION (STAGE 5)
+			if value2 >= 0.8: #atm
+				stage == 6
 			# Conditionals:
 			#	-if pressure is 0.55 or greater
 			#	-if 1 min goes by
-			if value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
+			elif value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
 			 	stage, stage_start_time = changeStage(3)
-			 	#solenoid.closePressurize(1)
+			 	solenoid.closePressurize(1)
 
-			#EMERGENCY CONDITION (STAGE 5)
-			elif value2 >= 0.8: #atm
-				stage == 6
+			
 
 		#if it is stage 3 (inflated) ...
 		#	- Starts when inflation is completed
@@ -166,27 +167,26 @@ while running:
 			#lights.lights(1)
 
 			#read pressure
-			#value3 = sensors.read_pressure_system()
+			value3 = sensors.read_pressure_system()
 
 			#close solenoid valve and motor OFF
-			#solenoid.closePressurize(current_solenoid)
+			solenoid.closePressurize(current_solenoid)
 
 			#close exhaust
-			#solenoid.closeExhaust()
+			solenoid.closeExhaust()
 
 			#Still cameras ON // video camera OFF
 			#cameras.stillCameras(True)
 			#cameras.videoCamera(False)
 
+			#EMERGENCY CONDITION (STAGE 6)
+			if value3 >= 0.8: #atm
+	            		stage == 6
 			#Conditionals ...
 			#	-After 10 min has been passed
 			#
-			if (current_time-stage_start_time) >= 600:
+			elif (current_time-stage_start_time) >= 600:
 	         		stage, stage_start_time = changeStage(4)
-
-			#EMERGENCY CONDITION (STAGE 6)
-			elif value3 >= 0.8: #atm
-	            		stage == 6
 
 		#if it is stage 4 (deflating) ...
 		#	- Starts when inflated timer has been completed
@@ -201,28 +201,27 @@ while running:
 			#lights.lights(1)
 
 			#read pressure from tranducer
-			#value4 = sensors.read_pressure_system()
+			value4 = sensors.read_pressure_system()
 
 			#Close solenoid valve
-			# solenoid.closePressurize(current_solenoid)
+			solenoid.closePressurize(current_solenoid)
 
 			#open exhaust and motor ON
-			#solenoid.openExhaust()
+			solenoid.openExhaust()
 
 			#Video and Still Cameras ON
 			#cameras.stillCameras()
 			#cameras.videoCamera()
 
+			#EMERGENCY CONDITION (STAGE 6)
+			if value4 >= 0.8: #atm
+	            		stage == 6
 			#Conditionals ...
 			#	-once motor completes the theoretical revs around
 			#	-1 min has passed
 			#	-pressure exceeds 0.55 or lower than 0.3
-			if (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
+			elif (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
 	        		stage, stage_start_time = changeStage(5)
-
-			#EMERGENCY CONDITION (STAGE 6)
-			elif value4 >= 0.8: #atm
-	            		stage == 6
 
 		#if it is stage 5 (deflated) ...
 		#	- Starts when deflation is completed
@@ -237,28 +236,25 @@ while running:
 			#lights.lights(1)
 
 			#Close solenoid valve
-			#solenoid.closePressurize(current_solenoid)
+			solenoid.closePressurize(current_solenoid)
 
 			#Close exhaust valve
-			#solenoid.closeExhaust()
-
-			#Motor ON - TORQUED
-			#DO THIS LATER!
+			solenoid.closeExhaust()
 
 			#Still cameras ON // video camera OFF
 			#cameras.stillCameras()
 			#cameras.videoCamera()
 
+
+			#EMERGENCY CONDITION (STAGE 6)
+			if value5 >= 0.8: #atm
+	        		stage == 6
 			#Conditionals ...
 			#	-when 3 minutes passes by
-			if (stage_start_time - current_time) >= 180:
+			elif (stage_start_time - current_time) >= 180:
 	        		stage, stage_start_time = changeStage(2)
 	        		#let the celebration begin
 	        		#lights.lights(2)
-
-			#EMERGENCY CONDITION (STAGE 6)
-			elif value5 >= 0.8: #atm
-	        		stage == 6
 
 		#If it is stage 6 (emergency) ...
 		#	- Starts when pressure > 0.8 atms
@@ -273,17 +269,14 @@ while running:
 			#lights.lights(1)
 			
 			#Close solenoid valve
-			#solenoid.closePressurize(current_solenoid)
+			solenoid.closePressurize(current_solenoid)
 
 			#Open exhaust valve
-			#solenoid.openExhaust()
-
-			#Motor OFF
-			#DO THIS LATER!
+			solenoid.openExhaust()
 
 			#Still Cameras ON
 			#cameras.stillCameras()
-			pass
+
 	#check data every 0.5 seconds
 	time.sleep(0.5)
 

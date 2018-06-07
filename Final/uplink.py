@@ -10,9 +10,9 @@ import serial
 import sys
 #sys.path.append('../')
 import examples.StepperTest as StepperTest
-#import solenoid
+import solenoid
 import queue
-import heater
+#import heater
 #import camera
 ##################################################################
 
@@ -134,19 +134,19 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
         elif target == b'\x04': # heater system control
             
             if command == b'\x01': # turn on solenoid heaters
-                heater.solenoid_heater(True)
+                #heater.solenoid_heater(True)
                 downlink_queue.put(['HE','SO',1])
 
             elif command == b'\x02': # turn off solenoid heaters
-                heater.solenoid_heater(False)
+                #heater.solenoid_heater(False)
                 downlink_queue.put(['HE','SO',0])
 
             elif command == b'\x03': # turn on payload heaters
-                heater.payload_heater(True)
+                #heater.payload_heater(True)
                 downlink_queue.put(['HE','PA',1])
 
             elif command == b'\x04': # turn off payload heaters
-                heater.payload_heater(False)
+                #heater.payload_heater(False)
                 downlink_queue.put(['HE','PA',0])
 
             else:

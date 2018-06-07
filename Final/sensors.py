@@ -31,23 +31,18 @@ for i in range(0,num_temp):
 	device_folder = glob.glob(base_dir + '28*')[i]
 	device_file.append(device_folder + '/w1_slave')
 
-
 # reads external pressure sensor
 def read_pressure():
-	start = time.time()
 	bus.write_byte_data(pres_id, 0x26, 0x39)
 	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
 	temp = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
 	pressure = (temp * 101.324998) / 4000
-	print(time.time() - start)
 	return pressure
 
 # reads external humidity
 def read_humid():
-	start = time.time()
 	data = bus.read_i2c_block_data(hum_id, 0x00, 4)
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
-	print(time.time() - start)
 	return humidity
 
 # reads temp from each sensor
@@ -93,15 +88,13 @@ throwaway = adc3.get_last_result()
 
 # reads pressure of pressure system from transducer
 def read_pressure_system():
-	start = time.time()
 	value1 = adc1.get_last_result()
 	#value2 = adc2.get_last_result()
 	value3 = adc3.get_last_result()
 	pressureSol1 = value1*50/65536
 	pressureSol2 = 0 #value2*50/65536
 	pressureExh  = value3*50/65536
-	print(time.time() - start)
-	return pressureSol1, pressureSol2, pressureExh
+	return (pressureSol1, pressureSol2, pressureExh)
 
 # prints value of each sensor 
 def print_sensors():
@@ -122,7 +115,7 @@ def read_sensors():
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
-	pres_sol1,pres_sol2,pres_exh = read_pressure_system()
-	trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(pres_sol1,pres_sol2,pres_exh)]
+	pressure_system = read_pressure_system()
+	trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return [pres_downlink,hum_downlink,temp_downlink,trans_downlink]
 

@@ -77,7 +77,7 @@ def read_temp():
 #input solenoid 1
 adc1 = Adafruit_ADS1x15.ADS1115()
 #input solenoid 2
-adc2 = Adafruit_ADS1x15.ADS1115()
+#adc2 = Adafruit_ADS1x15.ADS1115()
 #exhaust solenoid
 adc3 = Adafruit_ADS1x15.ADS1115()
 
@@ -94,17 +94,19 @@ adc1.start_adc(0, gain = GAIN)
 #adc2.start_adc(1, gain = GAIN)
 adc3.start_adc(2, gain = GAIN)
 
+# clears channel
+temp = adc1.get_last_result()
+#temp = adc2.get_last_result()
+temp = adc3.get_last_result()
+
 # reads pressure of pressure system from transducer
 def read_pressure_system():
  	value1 = adc1.get_last_result()
  	#value2 = adc2.get_last_result()
  	value3 = adc3.get_last_result()
- 	volts1 = value1*5/65536
- 	#volts2 = value2*5/65536
- 	volts3 = value3*5/65536
- 	pressureSol1 = volts1*10
- 	pressureSol2 = 0 #volts2*10
- 	pressureExh  = volts3*10
+ 	pressureSol1 = value1*50/65536
+ 	pressureSol2 = 0 #value2*50/65536
+ 	pressureExh  = value3*50/65536
  	return pressureSol1, pressureSol2, pressureExh
 
 # prints value of each sensor 

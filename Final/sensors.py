@@ -94,14 +94,14 @@ throwaway = adc3.get_last_result()
 # reads pressure of pressure system from transducer
 def read_pressure_system():
 	start = time.time()
- 	value1 = adc1.get_last_result()
- 	#value2 = adc2.get_last_result()
- 	value3 = adc3.get_last_result()
- 	pressureSol1 = value1*50/65536
- 	pressureSol2 = 0 #value2*50/65536
- 	pressureExh  = value3*50/65536
- 	print(time.time() - start)
- 	return pressureSol1, pressureSol2, pressureExh
+	value1 = adc1.get_last_result()
+	#value2 = adc2.get_last_result()
+	value3 = adc3.get_last_result()
+	pressureSol1 = value1*50/65536
+	pressureSol2 = 0 #value2*50/65536
+	pressureExh  = value3*50/65536
+	print(time.time() - start)
+	return pressureSol1, pressureSol2, pressureExh
 
 # prints value of each sensor 
 def print_sensors():

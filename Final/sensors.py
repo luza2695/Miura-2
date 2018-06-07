@@ -56,7 +56,7 @@ def read_temp():
 		equals_pos = lines[1].find('t=')
 		if equals_pos != -1:
 			temp_string = lines[1][equals_pos+2:]
-			temp_c = temp_c + (float(temp_string) / 1000.0)
+			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
 #16 bit for the ADC
@@ -81,9 +81,9 @@ adc1.start_adc(0, gain = GAIN)
 adc3.start_adc(2, gain = GAIN)
 
 # clears channel
-temp = adc1.get_last_result()
-#temp = adc2.get_last_result()
-temp = adc3.get_last_result()
+throwaway = adc1.get_last_result()
+#throwaway = adc2.get_last_result()
+throwaway = adc3.get_last_result()
 
 # reads pressure of pressure system from transducer
 def read_pressure_system():

@@ -105,7 +105,7 @@ def read_pressure_system():
  	pressureSol1 = volts1*10
  	pressureSol2 = 0
  	pressureExh  = volts3*10
-	return pressureSol1, pressureSol2, pressureExh
+ 	return pressureSol1, pressureSol2, pressureExh
 
 # prints value of each sensor 
 def print_sensors():

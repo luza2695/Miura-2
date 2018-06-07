@@ -1,7 +1,7 @@
 ##################################################################
 # Purpose: Controls/tests the outside luminati lights
 # Created: 6/5/2018
-# Modified: -/-/-
+# Modified: 6/7/2018
 # Miura2 - lights.py
 ##################################################################
 # Imports
@@ -71,6 +71,7 @@ def lights(x):
     elif x == 2:
         pass
         #make celebration lights and music
+        
     return
 
 lights(1)

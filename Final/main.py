@@ -16,7 +16,7 @@
 #	- Make the downlink horizontal
 #	- Motor ON - Torqued only
 # Created: 5/1/2018
-# Modified: 6/1/2018
+# Modified: 6/7/2018
 # Miura2 - main.py
 #######################################################################
 # Imports:
@@ -142,7 +142,7 @@ while running:
 			#cameras.stillCameras()
 			#cameras.videoCamera()
 			
-			#EMERGENCY CONDITION (STAGE 5)
+			#EMERGENCY CONDITION (STAGE 6)
 			if value2 >= 0.8: #atm
 				stage == 6
 			# Conditionals:
@@ -254,7 +254,7 @@ while running:
 			elif (stage_start_time - current_time) >= 180:
 	        		stage, stage_start_time = changeStage(2)
 	        		#let the celebration begin
-	        		#lights.lights(2)
+	        		#lights.lights(2) & omxplayer -o local example.mp3
 
 		#If it is stage 6 (emergency) ...
 		#	- Starts when pressure > 0.8 atms

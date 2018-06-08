@@ -35,7 +35,7 @@ import cameras
 #import lights
 from helpers import changeStage, switchSolenoid
 #######################################################################
-
+print('Main thread initialized...')
 #Variables
 stage = 1
 stage_start_time = time.time()
@@ -85,6 +85,7 @@ current_solenoid = 1
 # start utilty thread
 utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running, stage),daemon=True)
 utility_thread.start()
+
 
 # pressure check loop
 while running:

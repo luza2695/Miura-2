@@ -12,6 +12,7 @@ import sensors
 time_delay = 0.5
 
 def main(downlink_queue,running,stage):
+	print('Utility thread initialized...')
 	downlink_queue.put(['UT','BU', 0])
 	while running:
 		# gets list of downlink formatted data

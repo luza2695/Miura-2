@@ -112,7 +112,7 @@ while running:
 			#cameras.stillCameras()
 			#cameras.videoCamera()
 
-			sole.openExhaust()
+			solenoid.openExhaust()
 
 			#conditionals ...
 			#	- after 4 hours into flight
@@ -223,7 +223,7 @@ while running:
 			#	-once motor completes the theoretical revs around
 			#	-1 min has passed
 			#	-pressure exceeds 0.55 or lower than 0.3
-			elif (stage_start_time - current_time) >= 60 and value4 =< 0.1:
+			elif (stage_start_time - current_time) >= 60 and value4 <= 0.1:
 	        		stage, stage_start_time = changeStage(5)
 
 		#if it is stage 5 (deflated) ...

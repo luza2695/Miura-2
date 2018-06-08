@@ -49,8 +49,10 @@ commands = {
 }
 
 # prompts user for valid command
-print('\nCommands:\r')
+print('\nCommands:')
 for key, value in zip(commands.keys(),commands.values()):
+	if key.endswith('0x01'):
+		print('\n')
 	print('\t' + key + ": " + value + '\r')
 
 complete = False

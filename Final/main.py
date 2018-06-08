@@ -33,6 +33,7 @@ import sensors
 import solenoid
 import cameras
 #import lights
+from helpers import changeStage, switchSolenoid
 #######################################################################
 
 #Variables
@@ -85,220 +86,197 @@ current_solenoid = 1
 utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running, stage),daemon=True)
 utility_thread.start()
 
-def main():
-	# pressure check loop
-	while running:
-		#Start the uplink/downlink
-		manual, stage, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled)
-		downlink.main(serial, downlink_queue, log_filename, stage)
+# pressure check loop
+while running:
+	#Start the uplink/downlink
+	manual, stage, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled)
+	downlink.main(serial, downlink_queue, log_filename, stage)
 
-		#Track the current time
-		current_time = time.time()
+	#Track the current time
+	current_time = time.time()
 
-		# checks if in manual mode
-		if not manual:
-			switchSolenoid(current_solenoid,solenoid_1_enabled,solenoide_2_enabled)
-			#if it is stage 1 (ascent) ...
-			#	- Turn off still and video cameras
-			#	- Do not run any of the pressure checks
-			#	- Turn on heaters
-			#	- Lights OFF
-			if stage == 1: #ascent stage 1
-				#Turn on heaters
-				#heater.solenoid_heater(True)
-				#heater.payload_heater(True)
+	# checks if in manual mode
+	if not manual:
+		switchSolenoid(current_solenoid,solenoid_1_enabled,solenoide_2_enabled)
+		#if it is stage 1 (ascent) ...
+		#	- Turn off still and video cameras
+		#	- Do not run any of the pressure checks
+		#	- Turn on heaters
+		#	- Lights OFF
+		if stage == 1: #ascent stage 1
+			#Turn on heaters
+			#heater.solenoid_heater(True)
+			#heater.payload_heater(True)
 
-				#Turn off Cameras
-				#cameras.stillCameras()
-				#cameras.videoCamera()
+			#Turn off Cameras
+			#cameras.stillCameras()
+			#cameras.videoCamera()
 
-				#conditionals ...
-				#	- after 4 hours into flight
-				if (current_time-stage_start_time) >= 14400:
-					stage, stage_start_time = changeStage(2)
-			#if it is stage 2 (inflation) ...
-			#	- Starts when stage 1 or 5 is completed
-			#	- Open solenoid valve
-			#	- Motor given NO power
-			#	- Close exhaust valve
-			#	- Video and still cameras ON
-			#	- Lights ON
-			#	- Stops ...
-			#		- when pressure has reached the maximum capacity
-			#		- When the inflation timer has been reached 
-			elif stage == 2: #inflating // stage 2
-				#Lights ON
-				#lights.lights(1)
+			#conditionals ...
+			#	- after 4 hours into flight
+			if (current_time-stage_start_time) >= 14400:
+				stage, stage_start_time = changeStage(2)
+		#if it is stage 2 (inflation) ...
+		#	- Starts when stage 1 or 5 is completed
+		#	- Open solenoid valve
+		#	- Motor given NO power
+		#	- Close exhaust valve
+		#	- Video and still cameras ON
+		#	- Lights ON
+		#	- Stops ...
+		#		- when pressure has reached the maximum capacity
+		#		- When the inflation timer has been reached 
+		elif stage == 2: #inflating // stage 2
+			#Lights ON
+			#lights.lights(1)
 
-				#Read pressure
-				value2 = sensors.read_pressure_system()
+			#Read pressure
+			value2 = sensors.read_pressure_system()
 
-				#Open solenoid valve and Motor OFF
-				solenoid.openPressurize(current_solenoid)
+			#Open solenoid valve and Motor OFF
+			solenoid.openPressurize(current_solenoid)
 
-				#Close exhaust valve
-				solenoid.closeExhaust()
+			#Close exhaust valve
+			solenoid.closeExhaust()
 
-				#Video and still Cameras ON
-				#cameras.stillCameras()
-				#cameras.videoCamera()
+			#Video and still Cameras ON
+			#cameras.stillCameras()
+			#cameras.videoCamera()
 
-				#EMERGENCY CONDITION (STAGE 6)
-				if value2 >= 0.8: #atm
-					stage == 6
-				# Conditionals:
-				#	-if pressure is 0.55 or greater
-				#	-if 1 min goes by
-				elif value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
-				 	stage, stage_start_time = changeStage(3)
-				 	solenoid.closePressurize(1)
-
+			#EMERGENCY CONDITION (STAGE 6)
+			if value2 >= 0.8: #atm
+				stage == 6
+			# Conditionals:
+			#	-if pressure is 0.55 or greater
+			#	-if 1 min goes by
+			elif value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
+			 	stage, stage_start_time = changeStage(3)
+			 	solenoid.closePressurize(1)
 
 
-			#if it is stage 3 (inflated) ...
-			#	- Starts when inflation is completed
-			#	- Close solenoid valve
-			#	- Close Exhaust valve
-			#	- Motor given NO power
-			#	- Still Cameras ON // video camera OFF
-			#	- Stops when the inflated timer is done
-			#	- Lights ON
-			elif stage == 3:
-				#Lights ON
-				#lights.lights(1)
 
-				#read pressure
-				value3 = sensors.read_pressure_system()
+		#if it is stage 3 (inflated) ...
+		#	- Starts when inflation is completed
+		#	- Close solenoid valve
+		#	- Close Exhaust valve
+		#	- Motor given NO power
+		#	- Still Cameras ON // video camera OFF
+		#	- Stops when the inflated timer is done
+		#	- Lights ON
+		elif stage == 3:
+			#Lights ON
+			#lights.lights(1)
 
-				#close solenoid valve and motor OFF
-				solenoid.closePressurize(current_solenoid)
+			#read pressure
+			value3 = sensors.read_pressure_system()
 
-				#close exhaust
-				solenoid.closeExhaust()
+			#close solenoid valve and motor OFF
+			solenoid.closePressurize(current_solenoid)
 
-				#Still cameras ON // video camera OFF
-				#cameras.stillCameras(True)
-				#cameras.videoCamera(False)
+			#close exhaust
+			solenoid.closeExhaust()
 
-				#EMERGENCY CONDITION (STAGE 6)
-				if value3 >= 0.8: #atm
-		            		stage == 6
-				#Conditionals ...
-				#	-After 10 min has been passed
-				#
-				elif (current_time-stage_start_time) >= 600:
-		         		stage, stage_start_time = changeStage(4)
+			#Still cameras ON // video camera OFF
+			#cameras.stillCameras(True)
+			#cameras.videoCamera(False)
 
-			#if it is stage 4 (deflating) ...
-			#	- Starts when inflated timer has been completed
-			#	- Close Solenoid valve
-			#	- Open Exhaust valve
-			#	- Motor ON
-			#	- Video and Still Cameras ON
-			#	- Stops when motor has fully retracted
-			#	- Lights ON
-			elif stage == 4:
-				#Lights ON
-				#lights.lights(1)
+			#EMERGENCY CONDITION (STAGE 6)
+			if value3 >= 0.8: #atm
+	            		stage == 6
+			#Conditionals ...
+			#	-After 10 min has been passed
+			#
+			elif (current_time-stage_start_time) >= 600:
+	         		stage, stage_start_time = changeStage(4)
 
-				#read pressure from tranducer
-				value4 = sensors.read_pressure_system()
+		#if it is stage 4 (deflating) ...
+		#	- Starts when inflated timer has been completed
+		#	- Close Solenoid valve
+		#	- Open Exhaust valve
+		#	- Motor ON
+		#	- Video and Still Cameras ON
+		#	- Stops when motor has fully retracted
+		#	- Lights ON
+		elif stage == 4:
+			#Lights ON
+			#lights.lights(1)
 
-				#Close solenoid valve
-				solenoid.closePressurize(current_solenoid)
+			#read pressure from tranducer
+			value4 = sensors.read_pressure_system()
 
-				#open exhaust and motor ON
-				solenoid.openExhaust()
+			#Close solenoid valve
+			solenoid.closePressurize(current_solenoid)
 
-				#Video and Still Cameras ON
-				#cameras.stillCameras()
-				#cameras.videoCamera()
+			#open exhaust and motor ON
+			solenoid.openExhaust()
 
-				#EMERGENCY CONDITION (STAGE 6)
-				if value4 >= 0.8: #atm
-		            		stage == 6
-				#Conditionals ...
-				#	-once motor completes the theoretical revs around
-				#	-1 min has passed
-				#	-pressure exceeds 0.55 or lower than 0.3
-				elif (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
-		        		stage, stage_start_time = changeStage(5)
+			#Video and Still Cameras ON
+			#cameras.stillCameras()
+			#cameras.videoCamera()
 
-			#if it is stage 5 (deflated) ...
-			#	- Starts when deflation is completed
-			#	- Close Solenoid Valve
-			#	- Close Exhaust valve
-			#	- Motor ON, but not moving (only torqued)
-			#	- Still Cameras ON // video camera OFF
-			#	- Stops when deflated timer is done
-			#	- Lights ON
-			elif stage == 5:
-				#Lights ON
-				#lights.lights(1)
+			#EMERGENCY CONDITION (STAGE 6)
+			if value4 >= 0.8: #atm
+	            		stage == 6
+			#Conditionals ...
+			#	-once motor completes the theoretical revs around
+			#	-1 min has passed
+			#	-pressure exceeds 0.55 or lower than 0.3
+			elif (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
+	        		stage, stage_start_time = changeStage(5)
 
-				#Close solenoid valve
-				solenoid.closePressurize(current_solenoid)
+		#if it is stage 5 (deflated) ...
+		#	- Starts when deflation is completed
+		#	- Close Solenoid Valve
+		#	- Close Exhaust valve
+		#	- Motor ON, but not moving (only torqued)
+		#	- Still Cameras ON // video camera OFF
+		#	- Stops when deflated timer is done
+		#	- Lights ON
+		elif stage == 5:
+			#Lights ON
+			#lights.lights(1)
 
-				#Close exhaust valve
-				solenoid.closeExhaust()
+			#Close solenoid valve
+			solenoid.closePressurize(current_solenoid)
 
-				#Still cameras ON // video camera OFF
-				#cameras.stillCameras()
-				#cameras.videoCamera()
+			#Close exhaust valve
+			solenoid.closeExhaust()
+
+			#Still cameras ON // video camera OFF
+			#cameras.stillCameras()
+			#cameras.videoCamera()
 
 
-				#EMERGENCY CONDITION (STAGE 6)
-				if value5 >= 0.8: #atm
-		        		stage == 6
-				#Conditionals ...
-				#	-when 3 minutes passes by
-				elif (stage_start_time - current_time) >= 180:
-		        		stage, stage_start_time = changeStage(2)
-		        		#let the celebration begin
-		        		#lights.lights(2) & omxplayer -o local example.mp3
+			#EMERGENCY CONDITION (STAGE 6)
+			if value5 >= 0.8: #atm
+	        		stage == 6
+			#Conditionals ...
+			#	-when 3 minutes passes by
+			elif (stage_start_time - current_time) >= 180:
+	        		stage, stage_start_time = changeStage(2)
+	        		#let the celebration begin
+	        		#lights.lights(2) & omxplayer -o local example.mp3
 
-			#If it is stage 6 (emergency) ...
-			#	- Starts when pressure > 0.8 atms
-			#	- Close Solenoid Valve
-			#	- Open Exhaust Valve
-			#	- Motor OFF
-			#	- Camera ON
-			#	- Stops when pressure becomes less than 0.8 atm (stable)
-			#	- Lights ON
-			elif stage == 6: #atm
-				#Lights ON
-				#lights.lights(1)
+		#If it is stage 6 (emergency) ...
+		#	- Starts when pressure > 0.8 atms
+		#	- Close Solenoid Valve
+		#	- Open Exhaust Valve
+		#	- Motor OFF
+		#	- Camera ON
+		#	- Stops when pressure becomes less than 0.8 atm (stable)
+		#	- Lights ON
+		elif stage == 6: #atm
+			#Lights ON
+			#lights.lights(1)
 
-				#Close solenoid valve
-				solenoid.closePressurize(current_solenoid)
+			#Close solenoid valve
+			solenoid.closePressurize(current_solenoid)
 
-				#Open exhaust valve
-				solenoid.openExhaust()
+			#Open exhaust valve
+			solenoid.openExhaust()
 
-				#Still Cameras ON
-				#cameras.stillCameras()
+			#Still Cameras ON
+			#cameras.stillCameras()
 
-		#check data every 0.5 seconds
-		time.sleep(0.5)
-	return
-
-# stage change funcion
-def changeStage(stage):
-	return stage, time.time()
-
-# switches solenoid based on which are enabled or disabled
-def switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled):
-	if solenoid_1_enabled and solenoid_2_enabled:
-		if current_solenoid == 1:
-			current_solenoid = 2
-		else:
-			current_solenoid = 1
-	elif solenoid_1_enabled:
-		current_solenoid = 1
-	elif solenoid_2_enabled:
-		current_solenoid = 2
-	else:
-		current_solenoid = 0
-	return current_solenoid
-
-main()
+	#check data every 0.5 seconds
+	time.sleep(0.5)

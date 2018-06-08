@@ -131,7 +131,7 @@ while running:
 			#lights.lights(1)
 
 			#Read pressure
-			value2 = sensors.read_pressure_system()
+			ta1,ta2,value2 = sensors.read_pressure_system()
 
 			#Open solenoid valve and Motor OFF
 			solenoid.openPressurize(current_solenoid)
@@ -168,7 +168,7 @@ while running:
 			#lights.lights(1)
 
 			#read pressure
-			value3 = sensors.read_pressure_system()
+			ta1,ta2,value3 = sensors.read_pressure_system()
 
 			#close solenoid valve and motor OFF
 			solenoid.closePressurize(current_solenoid)
@@ -202,7 +202,7 @@ while running:
 			#lights.lights(1)
 
 			#read pressure from tranducer
-			value4 = sensors.read_pressure_system()
+			ta1,ta2,value4 = sensors.read_pressure_system()
 
 			#Close solenoid valve
 			solenoid.closePressurize(current_solenoid)

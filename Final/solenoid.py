@@ -8,16 +8,16 @@
 import RPi.GPIO as GPIO
 import time
 
-pressurize_pin_1 = 12
-#pressurize_pin_2 = 0
+pressurize_pin1 = 12
+pressurize_pin2 = 15
 exhaust_pin = 16
 motor_pin = 18
 
 GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(pressurize_pin1, GPIO.OUT)
-#GPIO.setup(pressurize_pin2, GPIO.OUT)
+GPIO.setup(pressurize_pin2, GPIO.OUT)
 GPIO.setup(exhaust_pin, GPIO.OUT)
 GPIO.setup(motor_pin, GPIO.OUT)
 
@@ -27,13 +27,13 @@ def openPressurize(solenoid_id):
 	if solenoid_id == 1:
 		GPIO.output(pressurize_pin1, True)
 	elif solenoid_id == 2:
-		pass
+		GPIO.output(pressurize_pin2, True)
 
 def closePressurize(solenoid_id):
 	if solenoid_id == 1:
 		GPIO.output(pressurize_pin1, False)
 	elif solenoid_id == 2:
-		pass
+		GPIO.output(pressurize_pin2, False)
 
 def openExhaust():
 	GPIO.output(exhaust_pin, True)
@@ -49,3 +49,4 @@ def burp():
 		time.sleep(burp_rate)
 		GPIO.output(exhaust_pin, False)
 		time.sleep(burp_rate)
+

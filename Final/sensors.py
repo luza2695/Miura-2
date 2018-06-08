@@ -47,18 +47,20 @@ def read_humid():
 
 # reads temp from each sensor
 def read_temp():
-	start = time.time()
 	temp_c = ()
 	for i in range(0,num_temp):
 		f = open(device_file[i], 'r')
+		start = time.time()
 		lines = f.readlines()
+		print(time.time() - start)
 		f.close()
 		equals_pos = lines[1].find('t=')
 		if equals_pos != -1:
 			temp_string = lines[1][equals_pos+2:]
 			temp_c = temp_c + (float(temp_string)/1000.0,)
-	print(time.time() - start)
 	return temp_c
+
+read_temp()
 
 #16 bit for the ADC
 #input solenoid 1

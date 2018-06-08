@@ -1,3 +1,5 @@
+import time
+
 # stage change funcion
 def changeStage(stage):
 	return stage, time.time()

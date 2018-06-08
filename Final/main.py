@@ -114,7 +114,7 @@ while running:
 
 			#conditionals ...
 			#	- after 4 hours into flight
-			if (current_time-stage_start_time) >= 14400:
+			if (current_time-stage_start_time) >= 10:
 				stage, stage_start_time = changeStage(2)
 		#if it is stage 2 (inflation) ...
 		#	- Starts when stage 1 or 5 is completed

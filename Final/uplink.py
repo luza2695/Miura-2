@@ -111,7 +111,7 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
                 print('invalid command')
 
         elif target == b'\x03': # pressure system enabling control
-            
+
             if command == b'\x01': # disable system 1
                 solenoid_1_enabled = False
                 downlink_queue.put(['SO','V1','DI'])
@@ -132,7 +132,7 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
                 print('invalid command')
 
         elif target == b'\x04': # heater system control
-            
+
             if command == b'\x01': # turn on solenoid heaters
                 #heater.solenoid_heater(True)
                 downlink_queue.put(['HE','SO',1])

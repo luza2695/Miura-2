@@ -97,7 +97,7 @@ while running:
 
 	# checks if in manual mode
 	if not manual:
-		switchSolenoid(current_solenoid,solenoid_1_enabled,solenoide_2_enabled)
+		switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled)
 		#if it is stage 1 (ascent) ...
 		#	- Turn off still and video cameras
 		#	- Do not run any of the pressure checks

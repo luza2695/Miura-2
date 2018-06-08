@@ -114,7 +114,7 @@ def read_sensors():
 	humidity = read_humid()
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	#temperature = read_temp()
-	#temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
 	pressure_system = read_pressure_system()
 	trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return [pres_downlink,hum_downlink,temp_downlink,trans_downlink]

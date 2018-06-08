@@ -186,7 +186,7 @@ while running:
 			#Conditionals ...
 			#	-After 10 min has been passed
 			#
-			elif (current_time-stage_start_time) >= 600:
+			elif (current_time-stage_start_time) >= 60*3:
 	         		stage, stage_start_time = changeStage(4)
 
 		#if it is stage 4 (deflating) ...

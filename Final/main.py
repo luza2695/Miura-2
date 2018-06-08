@@ -152,7 +152,7 @@ while running:
 			# Conditionals:
 			#	-if pressure is 0.55 or greater
 			#	-if 1 min goes by
-			elif value2 >= 0.55 or (current_time-stage_start_time) >= 60: #atm
+			elif value2 >= 0.55: #or (current_time-stage_start_time) >= 60: #atm
 			 	stage, stage_start_time = changeStage(3)
 			 	solenoid.closePressurize(1)
 
@@ -282,4 +282,4 @@ while running:
 			#cameras.stillCameras()
 
 	#check data every 0.5 seconds
-	time.sleep(0.5)
+	time.sleep(0.2)

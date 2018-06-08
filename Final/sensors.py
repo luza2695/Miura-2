@@ -60,8 +60,6 @@ def read_temp():
 			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
-read_temp()
-
 #16 bit for the ADC
 #input solenoid 1
 adc1 = Adafruit_ADS1x15.ADS1115()
@@ -98,7 +96,7 @@ def read_pressure_system():
 	pressureExh  = value3*50/65536
 	return (pressureSol1, pressureSol2, pressureExh)
 
-# prints value of each sensor 
+# prints value of each sensor
 def print_sensors():
 	print('Reading...')
 	pressure = read_pressure()
@@ -115,8 +113,8 @@ def read_sensors():
 	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 	humidity = read_humid()
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
-	temperature = read_temp()
-	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
+	#temperature = read_temp()
+	#temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 	pressure_system = read_pressure_system()
 	trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return [pres_downlink,hum_downlink,temp_downlink,trans_downlink]

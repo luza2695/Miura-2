@@ -93,8 +93,8 @@ def read_pressure_system():
 	value3 = adc3.get_last_result()
 	pressureSol1 = value1*50/65536
 	pressureSol2 = 0 #value2*50/65536
-	pressureExh  = value3*50/65536
-	return (pressureSol1, pressureSol2, pressureExh)
+	pressureMain  = value3*50/65536
+	return (pressureSol1, pressureSol2, pressureMain)
 
 # prints value of each sensor
 def print_sensors():

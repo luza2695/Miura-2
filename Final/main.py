@@ -112,6 +112,8 @@ while running:
 			#cameras.stillCameras()
 			#cameras.videoCamera()
 
+			sole.openExhaust()
+
 			#conditionals ...
 			#	- after 4 hours into flight
 			if (current_time-stage_start_time) >= 10:
@@ -133,11 +135,11 @@ while running:
 			#Read pressure
 			ta1,ta2,value2 = sensors.read_pressure_system()
 
-			#Open solenoid valve and Motor OFF
-			solenoid.openPressurize(current_solenoid)
-
 			#Close exhaust valve
 			solenoid.closeExhaust()
+
+			#Open solenoid valve and Motor OFF
+			solenoid.openPressurize(current_solenoid)
 
 			#Video and still Cameras ON
 			#cameras.stillCameras()
@@ -186,7 +188,7 @@ while running:
 			#Conditionals ...
 			#	-After 10 min has been passed
 			#
-			elif (current_time-stage_start_time) >= 60*3:
+			elif (current_time-stage_start_time) >= 60*3 or value3 <= 0.3:
 	         		stage, stage_start_time = changeStage(4)
 
 		#if it is stage 4 (deflating) ...
@@ -221,7 +223,7 @@ while running:
 			#	-once motor completes the theoretical revs around
 			#	-1 min has passed
 			#	-pressure exceeds 0.55 or lower than 0.3
-			elif (stage_start_time - current_time) >= 60 or value4 >= 0.55 or value <= 0.3:
+			elif (stage_start_time - current_time) >= 60 and value4 =< 0.1:
 	        		stage, stage_start_time = changeStage(5)
 
 		#if it is stage 5 (deflated) ...

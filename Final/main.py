@@ -141,7 +141,7 @@ while running:
 			#Video and still Cameras ON
 			#cameras.stillCameras()
 			#cameras.videoCamera()
-			
+
 			#EMERGENCY CONDITION (STAGE 6)
 			if value2 >= 0.8: #atm
 				stage == 6
@@ -152,7 +152,7 @@ while running:
 			 	stage, stage_start_time = changeStage(3)
 			 	solenoid.closePressurize(1)
 
-			
+
 
 		#if it is stage 3 (inflated) ...
 		#	- Starts when inflation is completed
@@ -267,7 +267,7 @@ while running:
 		elif stage == 6: #atm
 			#Lights ON
 			#lights.lights(1)
-			
+
 			#Close solenoid valve
 			solenoid.closePressurize(current_solenoid)
 

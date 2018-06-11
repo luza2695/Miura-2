@@ -43,5 +43,5 @@ def takePicture():
 
 #Fast shutter camera (Camera 2)
 def takeVideo():
-	os.system('ffmpeg -t 120 -f v4l2 -framerate 25 -video_size 640x80 -i /dev/video1 -t 300 output.mkv')
+	os.system('ffmpeg -t 5 -f v4l2 -framerate 25 -video_size 1024x768 -i /dev/video1 output.mkv')
 

@@ -98,7 +98,6 @@ while running:
 
 	# checks if in manual mode
 	if not manual:
-		switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled)
 		#if it is stage 1 (ascent) ...
 		#	- Turn off still and video cameras
 		#	- Do not run any of the pressure checks
@@ -132,7 +131,6 @@ while running:
 		elif stage == 2: #inflating // stage 2
 			#Lights ON
 			#lights.lights(1)
-
 			#Read pressure
 			ta1,ta2,value2 = sensors.read_pressure_system()
 

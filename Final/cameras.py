@@ -33,8 +33,6 @@ def main(downlink_queue,camera_queue):
 		time.sleep(0.1)
 
 
-
-
 #still cameras (cameras 1 and 3)
 def takePicture():
 	start = time.time()
@@ -43,5 +41,5 @@ def takePicture():
 
 #Fast shutter camera (Camera 2)
 def takeVideo():
-	os.system('ffmpeg -t 5 -f v4l2 -framerate 25 -video_size 1024x768 -i /dev/video1 output.mkv')
+	os.system('ffmpeg -t 3 -f v4l2 -framerate 60 -video_size 1024x768 -i /dev/video1 output.mkv')
 

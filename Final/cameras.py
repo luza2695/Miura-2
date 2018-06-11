@@ -36,8 +36,8 @@ def main(downlink_queue,camera_queue):
 #still cameras (cameras 1 and 3)
 def takePicture():
 	start = time.time()
-	os.system('fswebcam -i 0 -d /dev/video0 -r 1024x768 -S 10 /pics/cam1_{}.jpg'.format(start))
-	os.system('fswebcam -i 0 -d /dev/video2 -r 1024x768 -S 10 /pics/cam3_{}.jpg'.format(start))
+	os.system('fswebcam -i 0 -d /dev/video0 -r 1024x768 -S 10 pics/cam1_{}.jpg'.format(start))
+	os.system('fswebcam -i 0 -d /dev/video2 -r 1024x768 -S 10 pics/cam3_{}.jpg'.format(start))
 
 #Fast shutter camera (Camera 2)
 def takeVideo():

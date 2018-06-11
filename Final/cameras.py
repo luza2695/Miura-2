@@ -55,9 +55,8 @@ def stillCameras(x):
 
 		os.system('fswebcam -i 0 -d /dev/video2 -r 1024x768 -S 10 cam3_' + str(start) + '.jpg')
 
-	print(time.time()-start)
-	elif x == 2:
-
+		print(time.time()-start)
+	else:
 		os.system('fswebcam -i 0 -d /dev/video0 -r 1024x768 cam1_' + str(start) + '.jpg')
 
 		os.system('fswebcam -i 0 -d /dev/video2 -r 1024x768 cam3_' + str(start) + '.jpg')

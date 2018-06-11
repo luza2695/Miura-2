@@ -37,6 +37,7 @@ from helpers import changeStage, switchSolenoid
 #######################################################################
 print('Main thread initialized...')
 #Variables
+global stage
 stage = 1
 stage_start_time = time.time()
 # gets start time of main thread

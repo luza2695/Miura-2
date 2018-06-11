@@ -10,46 +10,23 @@
 #imports
 import os
 import time
-import threading
-
-# main: thread function
-def main(downlink_queue,camera_queue):
-	print('Camera thread initialized...')
-	downlink_queue.put(['CM','BU', 0])
-	last_pic = time.time()
-	while True:
-		current_time = time.time()
-
-		if current_time - last_pic >= 5:
-			takePicture()
-			last_pic = current_time
-
-		if not camera_queue.empty():
-			command = camera_queue.get()
-			if command == 'takeVideo':
-				takeVideo()
-			elif command == 'takePicture':
-				takePicture()
-		time.sleep(0.1)
-
 
 #still cameras (cameras 1 and 3)
-def takePicture():
+def takePicture(data_directory):
 	start = time.time()
-	os.system('fswebcam -i 0 -d /dev/video0 -r 1024x768 -S 10 pics/cam0_{}.jpg'.format(start))
-	os.system('fswebcam -i 0 -d /dev/video2 -r 1024x768 -S 10 pics/cam2_{}.jpg'.format(start))
+	os.system('fswebcam -i 0 -d /dev/video0 -b -r 1024x768 -S 10 {}/cam0_{}.jpg'.format(data_directory,start))
+	os.system('fswebcam -i 0 -d /dev/video2 -b -r 1024x768 -S 10 {}/cam2_{}.jpg'.format(data_directory,start))
 
 #Fast shutter camera (Camera 2)
-def takeVideo():
+def takeVideo(data_directory):
 	start = time.time()
-	num_frames = 60
+	frames = 60
 	duration = 10
 	counter = 0
 	while counter < num_frames:
 		if counter == 0:
-			os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 5 pics/cam1_{}_{}.jpg'.format(start,counter))
+			os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 10 {}/cam1_{}_{}.jpg'.format(data_directory,start,counter))
 		else:
-			os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 5 pics/cam1_{}_{}.jpg'.format(start,counter))
+			os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 10 {}/cam1_{}_{}.jpg'.format(data_directory,start,counter))
 		counter += 1
-		print(time.time())
-		time.sleep(0.2)
+		time.sleep(duration/frames)

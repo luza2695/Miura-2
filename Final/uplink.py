@@ -8,13 +8,12 @@
 import time
 import serial
 import sys
-#sys.path.append('../')
 import examples.StepperTest as StepperTest
 import solenoid
 import queue
 #import heater
-#import camera
-##################################################################
+import cameras
+from helpers import changeStage
 
 # sets current pi usb port
 current_port = '/dev/ttyUSB0'
@@ -27,7 +26,7 @@ serial = serial.Serial(port=current_port,
             bytesize=serial.EIGHTBITS,
             timeout=1)
 
-def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled):
+def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled):
     if serial.inWaiting(): # reads uplink command
         #heading = serial.read() # start of heading
         #start = serial.read() # start of text
@@ -57,7 +56,7 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
             elif command == b'\x04': # restart automation mode
                 #Manual mode OFF
                 manual = False
-                stage = 2
+                stage, stage_start_time = changeStage(2)
                 downlink_queue.put(['MA','AU',1])
 
             elif command == b'\x05': # retract motor
@@ -65,7 +64,7 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
                 downlink_queue.put(['MO','RE',1])
 
             elif command == b'\x06': # take video
-                cameras.videoCamera()
+                cameras.takeVideo(data_directory)
                 downlink_queue.put(['CA','VI',1])
 
             elif command == b'\x07': # reboot pi
@@ -149,11 +148,19 @@ def main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_e
                 #heater.payload_heater(False)
                 downlink_queue.put(['HE','PA',0])
 
+            elif command == b'\x05': # turn on regulator heaters
+                #heater.regulator_heater(True)
+                downlink_queue.put(['HE','RG',1])
+
+            elif command == b'\x06': # turn off regulator heaters
+                #heater.regulator_heater(False)
+                downlink_queue.put(['HE','RG',0])
+
             else:
                 print('invalid command')
 
         else:
             print('invalid target')
 
-    return manual, stage, solenoid_1_enabled, solenoid_2_enabled
+    return manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled
 

@@ -8,23 +8,31 @@
 # Miura2 -  heater.py
 # Creator: Lucas Zardini
 
-##############################################################################
-#imports
 import RPi.GPIO as GPIO
 import time
 
-##############################################################################
+payload_heater_pin = 7
+solenoid_heater_pin = 8
+regulator_heater_pin = 9
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(payload_heater_pin, GPIO.OUT)
+GPIO.setup(solenoid_heater_pin, GPIO.OUT)
+GPIO.setup(regulator_heater_pin, GPIO.OUT)
+
 # turns payload heater on or off
 def payload_heater(state):
-	GPIO.setmode(GPIO.BOARD)
-	GPIO.setup(7,GPIO.OUT)
-	GPIO.output(7,state)
+	GPIO.output(payload_heater_pin,state)
 	return
 
 # Turns solenoid heater on or off
 def solenoid_heater(state):
-	GPIO.setmode(GPIO.BOARD)
-	GPIO.setup(8,GPIO.OUT)
-	GPIO.output(8,state)
+	GPIO.output(solenoid_heater_pin,state)
+	return
+
+# Turns regular heater on or off
+def regulator_heater(state):
+	GPIO.output(regulator_heater_pin,state)
 	return
 

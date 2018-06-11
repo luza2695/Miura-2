@@ -63,9 +63,6 @@ open(log_filename, 'w+').close()
 downlink_queue = queue.Queue()
 downlink_queue.put(['MA', 'BU', 0])
 
-# sets up queue for camera commands
-camera_queue = queue.Queue()
-
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"
 
@@ -87,18 +84,16 @@ solenoid_2_enabled = True
 current_solenoid = 1
 
 # start utilty thread
-utility_thread = threading.Thread(name = 'util', target = utility.main, args = (downlink_queue), daemon = True)
+utility_thread = threading.Thread(name = 'util', target = utility.main, args = (downlink_queue,data_directory), daemon = True)
 utility_thread.start()
 
-# start cameras thread
-camera_thread = threading.Thread(name = 'cam', target = cameras.main, args = (downlink_queue, camera_queue), daemon = True)
-camera_thread.start()
-
+# delay for main thread
+main_delay = 0.5
 
 # pressure check loop
 while running:
 	#Start the uplink/downlink
-	manual, stage, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled)
+	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled)
 	downlink.main(serial, downlink_queue, log_filename, stage)
 
 	#Track the current time
@@ -126,7 +121,7 @@ while running:
 			#conditionals ...
 			#	- after 4 hours into flight
 			if (current_time-stage_start_time) >= 10:
-				stage, stage_start_time, current_solenoid = changeStage(2,current_solenoid)
+				stage, stage_start_time = changeStage(2)
 		#if it is stage 2 (inflation) ...
 		#	- Starts when stage 1 or 5 is completed
 		#	- Open solenoid valve
@@ -138,6 +133,12 @@ while running:
 		#		- when pressure has reached the maximum capacity
 		#		- When the inflation timer has been reached 
 		elif stage == 2: #inflating // stage 2
+
+			# do one time tasks for new cycle
+			if current_time - stage_start_time < main_delay:
+				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled)
+				cameras.takeVideo(data_directory)
+
 			#Lights ON
 			#lights.lights(1)
 			#Read pressure
@@ -160,7 +161,7 @@ while running:
 			#	-if pressure is 0.55 or greater
 			#	-if 1 min goes by
 			elif value2 >= 0.55: #or (current_time-stage_start_time) >= 60: #atm
-			 	stage, stage_start_time, current_solenoid = changeStage(3,current_solenoid)
+			 	stage, stage_start_time = changeStage(3)
 			 	solenoid.closePressurize(1)
 
 
@@ -186,10 +187,6 @@ while running:
 			#close exhaust
 			solenoid.closeExhaust()
 
-			#Still cameras ON // video camera OFF
-			#cameras.stillCameras(True)
-			#cameras.videoCamera(False)
-
 			#EMERGENCY CONDITION (STAGE 6)
 			if value3 >= 0.8: #atm
 	            		stage == 6
@@ -197,7 +194,7 @@ while running:
 			#	-After 10 min has been passed
 			#
 			elif (current_time-stage_start_time) >= 60*3 or value3 <= 0.3:
-	         		stage, stage_start_time, current_solenoid = changeStage(4,current_solenoid)
+	         		stage, stage_start_time = changeStage(4)
 
 		#if it is stage 4 (deflating) ...
 		#	- Starts when inflated timer has been completed
@@ -211,6 +208,11 @@ while running:
 			#Lights ON
 			#lights.lights(1)
 
+			# do one time tasks for new deflation
+			if current_time - stage_start_time < main_delay:
+				cameras.takeVideo(data_directory)
+
+
 			#read pressure from tranducer
 			ta1,ta2,value4 = sensors.read_pressure_system()
 
@@ -220,10 +222,6 @@ while running:
 			#open exhaust and motor ON
 			solenoid.openExhaust()
 
-			#Video and Still Cameras ON
-			#cameras.stillCameras()
-			#cameras.videoCamera()
-
 			#EMERGENCY CONDITION (STAGE 6)
 			if value4 >= 0.8: #atm
 	            		stage == 6
@@ -232,7 +230,7 @@ while running:
 			#	-1 min has passed
 			#	-pressure exceeds 0.55 or lower than 0.3
 			elif (stage_start_time - current_time) >= 60 and value4 <= 0.1:
-	        		stage, stage_start_time, current_solenoid = changeStage(5,current_solenoid)
+	        		stage, stage_start_time = changeStage(5)
 
 		#if it is stage 5 (deflated) ...
 		#	- Starts when deflation is completed
@@ -252,18 +250,13 @@ while running:
 			#Close exhaust valve
 			solenoid.closeExhaust()
 
-			#Still cameras ON // video camera OFF
-			#cameras.stillCameras()
-			#cameras.videoCamera()
-
-
 			#EMERGENCY CONDITION (STAGE 6)
 			if value5 >= 0.8: #atm
 	        		stage == 6
 			#Conditionals ...
 			#	-when 3 minutes passes by
 			elif (stage_start_time - current_time) >= 180:
-	        		stage, stage_start_time, current_solenoid = changeStage(2,current_solenoid)
+	        		stage, stage_start_time = changeStage(2)
 	        		#let the celebration begin
 	        		#lights.lights(2) & omxplayer -o local example.mp3
 
@@ -285,8 +278,5 @@ while running:
 			#Open exhaust valve
 			solenoid.openExhaust()
 
-			#Still Cameras ON
-			#cameras.stillCameras()
-
 	#check data every 0.5 seconds
-	time.sleep(0.5)
+	time.sleep(main_delay)

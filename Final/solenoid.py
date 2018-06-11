@@ -42,11 +42,11 @@ def openExhaust():
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
 
-def burp():
-	burp_rate = 0.05
-	for i in range(0,50):
-		GPIO.output(exhaust_pin, True)
-		time.sleep(burp_rate)
-		GPIO.output(exhaust_pin, False)
-		time.sleep(burp_rate)
+# def burp():
+# 	burp_rate = 0.05
+# 	for i in range(0,50):
+# 		GPIO.output(exhaust_pin, True)
+# 		time.sleep(burp_rate)
+# 		GPIO.output(exhaust_pin, False)
+# 		time.sleep(burp_rate)
 

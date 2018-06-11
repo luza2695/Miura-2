@@ -45,7 +45,9 @@ commands = {
 	'0x04 0x01':'Turn On Solenoid Heaters',
 	'0x04 0x02':'Turn Off Solenoid Heaters',
 	'0x04 0x03':'Turn On Payload Heaters',
-	'0x04 0x04':'Turn Off Payload Heaters'
+	'0x04 0x04':'Turn Off Payload Heaters',
+	'0x04 0x05':'Turn On Regulator Heaters',
+	'0x04 0x06':'Turn Off Regulator Heaters'
 }
 
 # prompts user for valid command

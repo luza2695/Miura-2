@@ -11,13 +11,12 @@ import sensors
 # how often to get data
 time_delay = 0.5
 
-def main(downlink_queue,running,stage):
+def main(downlink_queue):
 	print('Utility thread initialized...')
 	downlink_queue.put(['UT','BU', 0])
-	while running:
-		# gets list of downlink formatted data
-		data_set = sensors.read_sensors()
-		# downlinks each set of data
-		for data in data_set:
-			downlink_queue.put(data)
-		time.sleep(time_delay)
+	# gets list of downlink formatted data
+	data_set = sensors.read_sensors()
+	# downlinks each set of data
+	for data in data_set:
+		downlink_queue.put(data)
+	time.sleep(time_delay)

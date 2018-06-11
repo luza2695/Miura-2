@@ -1,8 +1,11 @@
 import time
 
 # stage change funcion
-def changeStage(stage):
-	return stage, time.time()
+def changeStage(stage, current_solenoid):
+	if stage == 2:
+		current_solenoid = switchSolenoid()
+	return stage, time.time(), current_solenoid
+
 
 # switches solenoid based on which are enabled or disabled
 def switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled):

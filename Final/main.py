@@ -63,6 +63,9 @@ open(log_filename, 'w+').close()
 downlink_queue = queue.Queue()
 downlink_queue.put(['MA', 'BU', 0])
 
+# sets up queue for camera commands
+camera_queue = queue.Queue()
+
 # sets current pi usb port
 current_port = "/dev/ttyUSB0"
 
@@ -84,11 +87,11 @@ solenoid_2_enabled = True
 current_solenoid = 1
 
 # start utilty thread
-utility_thread = threading.Thread(name = 'util', target = utility.main,args = (downlink_queue,running, stage), daemon = True)
+utility_thread = threading.Thread(name = 'util', target = utility.main, args = (downlink_queue), daemon = True)
 utility_thread.start()
 
 # start cameras thread
-camera_thread = threading.Thread(name = 'cam', target = cameras.main, args = (downlink_queue, running, stage), daemon = True)
+camera_thread = threading.Thread(name = 'cam', target = cameras.main, args = (downlink_queue, camera_queue), daemon = True)
 camera_thread.start()
 
 
@@ -97,8 +100,6 @@ while running:
 	#Start the uplink/downlink
 	manual, stage, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled)
 	downlink.main(serial, downlink_queue, log_filename, stage)
-
-
 
 	#Track the current time
 	current_time = time.time()
@@ -121,10 +122,11 @@ while running:
 
 			solenoid.openExhaust()
 
+
 			#conditionals ...
 			#	- after 4 hours into flight
 			if (current_time-stage_start_time) >= 10:
-				stage, stage_start_time = changeStage(2)
+				stage, stage_start_time, current_solenoid = changeStage(2,current_solenoid)
 		#if it is stage 2 (inflation) ...
 		#	- Starts when stage 1 or 5 is completed
 		#	- Open solenoid valve
@@ -158,7 +160,7 @@ while running:
 			#	-if pressure is 0.55 or greater
 			#	-if 1 min goes by
 			elif value2 >= 0.55: #or (current_time-stage_start_time) >= 60: #atm
-			 	stage, stage_start_time = changeStage(3)
+			 	stage, stage_start_time, current_solenoid = changeStage(3,current_solenoid)
 			 	solenoid.closePressurize(1)
 
 
@@ -195,7 +197,7 @@ while running:
 			#	-After 10 min has been passed
 			#
 			elif (current_time-stage_start_time) >= 60*3 or value3 <= 0.3:
-	         		stage, stage_start_time = changeStage(4)
+	         		stage, stage_start_time, current_solenoid = changeStage(4,current_solenoid)
 
 		#if it is stage 4 (deflating) ...
 		#	- Starts when inflated timer has been completed
@@ -230,7 +232,7 @@ while running:
 			#	-1 min has passed
 			#	-pressure exceeds 0.55 or lower than 0.3
 			elif (stage_start_time - current_time) >= 60 and value4 <= 0.1:
-	        		stage, stage_start_time = changeStage(5)
+	        		stage, stage_start_time, current_solenoid = changeStage(5,current_solenoid)
 
 		#if it is stage 5 (deflated) ...
 		#	- Starts when deflation is completed
@@ -261,7 +263,7 @@ while running:
 			#Conditionals ...
 			#	-when 3 minutes passes by
 			elif (stage_start_time - current_time) >= 180:
-	        		stage, stage_start_time = changeStage(2)
+	        		stage, stage_start_time, current_solenoid = changeStage(2,current_solenoid)
 	        		#let the celebration begin
 	        		#lights.lights(2) & omxplayer -o local example.mp3
 

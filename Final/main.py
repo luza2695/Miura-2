@@ -143,8 +143,8 @@ while running:
 			solenoid.openPressurize(current_solenoid)
 
 			#Video and still Cameras ON
-			#cameras.stillCameras()
-			#cameras.videoCamera()
+			cameras.stillCameras()
+			cameras.videoCamera()
 
 			#EMERGENCY CONDITION (STAGE 6)
 			if value2 >= 0.8: #atm

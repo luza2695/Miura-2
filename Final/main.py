@@ -16,7 +16,7 @@
 #	- Make the downlink horizontal
 #	- Motor ON - Torqued only
 # Created: 5/1/2018
-# Modified: 6/7/2018
+# Modified: 6/11/2018
 # Miura2 - main.py
 #######################################################################
 # Imports:
@@ -83,8 +83,12 @@ solenoid_2_enabled = True
 current_solenoid = 1
 
 # start utilty thread
-utility_thread = threading.Thread(name='util',target=utility.main,args=(downlink_queue,running, stage),daemon=True)
+utility_thread = threading.Thread(name = 'util', target = utility.main,args = (downlink_queue,running, stage), daemon = True)
 utility_thread.start()
+
+# start cameras thread
+camera_thread = threading.Thread(name = 'cam', target = cameras.main, args = (downlink_queue, running, stage), daemon = True)
+camera_thread.start()
 
 
 # pressure check loop
@@ -92,6 +96,8 @@ while running:
 	#Start the uplink/downlink
 	manual, stage, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, manual, stage, solenoid_1_enabled, solenoid_2_enabled)
 	downlink.main(serial, downlink_queue, log_filename, stage)
+
+
 
 	#Track the current time
 	current_time = time.time()
@@ -141,8 +147,8 @@ while running:
 			solenoid.openPressurize(current_solenoid)
 
 			#Video and still Cameras ON
-			cameras.stillCameras()
-			cameras.videoCamera()
+			#cameras.stillCameras()
+			#cameras.videoCamera()
 
 			#EMERGENCY CONDITION (STAGE 6)
 			if value2 >= 0.8: #atm
@@ -280,4 +286,4 @@ while running:
 			#cameras.stillCameras()
 
 	#check data every 0.5 seconds
-	time.sleep(0.2)
+	time.sleep(0.5)

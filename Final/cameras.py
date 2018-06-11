@@ -47,7 +47,7 @@ def takeVideo():
 	counter = 0
 	while counter < num_frames:
 		if counter == 0:
-			os.system('fswebcam -i 0 -d /dev/video1 -r 1024x768 -S 10 cam2_{}_{}.jpg'.format(start,counter))
+			os.system('fswebcam -i 0 -d /dev/video1 -r 1024x768 -S 10 pics/cam2_{}_{}.jpg'.format(start,counter))
 		else:
-			os.system('fswebcam -i 0 -d /dev/video1 -r 1024x768cam2_{}_{}.jpg'.format(start,counter))
+			os.system('fswebcam -i 0 -d /dev/video1 -r 1024x768 pics/cam2_{}_{}.jpg'.format(start,counter))
 		time.sleep(duration/num_frames)

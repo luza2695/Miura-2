@@ -21,7 +21,7 @@ hum_id = 0x68
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 4
+num_temp = 3
 
 # automatically finds temp sensor addresses
 device_file = []
@@ -45,30 +45,6 @@ def read_humid():
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
 
-
-
-# Change resolution of temperature sensor
-pin=4
-ow.setup(pin)
-ow.reset_search(pin)
-addr = ow.search(pin)
-ow.reset(pin)
-ow.select(pin, addr)
-ow.write(pin,0xBE,1)
-data = nil
-data = string.char(ow.read(pin))
-for i in range(1,8):
-    data = data + string.char(ow.read(pin))
-end
-print(data+byte(1,9))
-
-ow.reset(pin)
-ow.select(pin, addr)
-ow.write(pin,0x4E,1)
-ow.write(pin,0x1,1)
-ow.write(pin,0x1,1)
-ow.write(pin,0x7F,1)
-ow.reset(pin)
 
 # reads temp from each sensor
 def read_temp():

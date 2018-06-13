@@ -2,6 +2,13 @@ from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor, Adafruit_Step
 
 import time
 import atexit
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+motor_pin = 18
+GPIO.setup(motor_pin, GPIO.OUT)
+GPIO.output(motor_pin, True)
 
 # create a default object, no changes to I2C address or frequency
 mh = Adafruit_MotorHAT()

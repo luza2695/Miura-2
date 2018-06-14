@@ -16,7 +16,7 @@
 #	- Make the downlink horizontal
 #	- Motor ON - Torqued only
 # Created: 5/1/2018
-# Modified: 6/11/2018
+# Modified: 6/14/2018
 # Miura2 - main.py
 #######################################################################
 # Imports:
@@ -35,11 +35,17 @@ import cameras
 #import lights
 from helpers import changeStage, switchSolenoid
 #######################################################################
+
+# important variables for operation
+cycle_start_delay = 10
+inflation_time = 180
+sustention_time = 180
+retraction_time = 60
+deflation_time = 60
+
+# main thread has started
 print('Main thread initialized...')
-#Variables
-global stage
-stage = 1
-stage_start_time = time.time()
+
 # gets start time of main thread
 start_time = time.strftime('%m_%d_%Y_%H:%M:%S')
 
@@ -77,18 +83,20 @@ serial = serial.Serial(port=current_port,
 # clears the serial communication channel
 serial.flushInput()
 
-running = True
-manual = False
-solenoid_1_enabled = True
-solenoid_2_enabled = True
-current_solenoid = 1
-
 # start utilty thread
 utility_thread = threading.Thread(name = 'util', target = utility.main, args = (downlink_queue,data_directory), daemon = True)
 utility_thread.start()
 
 # delay for main thread
 main_delay = 0.5
+
+# sets variables for main loop operation
+running = True
+manual = False
+solenoid_1_enabled = True
+solenoid_2_enabled = True
+current_solenoid = 1
+stage, stage_start_time = changeStage(1)
 
 # pressure check loop
 while running:
@@ -120,7 +128,7 @@ while running:
 
 			#conditionals ...
 			#	- after 4 hours into flight
-			if (current_time-stage_start_time) >= 10:
+			if (current_time-stage_start_time) >= cycle_start_delay:
 				stage, stage_start_time = changeStage(2)
 		#if it is stage 2 (inflation) ...
 		#	- Starts when stage 1 or 5 is completed
@@ -160,7 +168,7 @@ while running:
 			# Conditionals:
 			#	-if pressure is 0.55 or greater
 			#	-if 1 min goes by
-			elif value2 >= 0.55: #or (current_time-stage_start_time) >= 60: #atm
+			elif value2 >= 0.55 or (current_time-stage_start_time) >= inflation_time: #atm
 			 	stage, stage_start_time = changeStage(3)
 			 	solenoid.closePressurize(1)
 
@@ -193,7 +201,7 @@ while running:
 			#Conditionals ...
 			#	-After 10 min has been passed
 			#
-			elif (current_time-stage_start_time) >= 60*3 or value3 <= 0.3:
+			elif (current_time-stage_start_time) >= sustention_time or value3 <= 0.3:
 	         		stage, stage_start_time = changeStage(4)
 
 		#if it is stage 4 (deflating) ...
@@ -229,7 +237,7 @@ while running:
 			#	-once motor completes the theoretical revs around
 			#	-1 min has passed
 			#	-pressure exceeds 0.55 or lower than 0.3
-			elif (stage_start_time - current_time) >= 60 and value4 <= 0.1:
+			elif (stage_start_time - current_time) >= retraction_time and value4 <= 0.1:
 	        		stage, stage_start_time = changeStage(5)
 
 		#if it is stage 5 (deflated) ...
@@ -255,7 +263,7 @@ while running:
 	        		stage == 6
 			#Conditionals ...
 			#	-when 3 minutes passes by
-			elif (stage_start_time - current_time) >= 180:
+			elif (stage_start_time - current_time) >= deflation_time:
 	        		stage, stage_start_time = changeStage(2)
 	        		#let the celebration begin
 	        		#lights.lights(2) & omxplayer -o local example.mp3

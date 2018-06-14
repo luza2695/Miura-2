@@ -38,7 +38,7 @@ from helpers import changeStage, switchSolenoid
 #######################################################################
 
 # important variables for operation
-cycle_start_delay = 10
+cycle_start_delay = 30
 inflation_time = 180
 sustention_time = 180
 retraction_time = 60

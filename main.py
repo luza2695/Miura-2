@@ -32,6 +32,7 @@ import heater
 import sensors
 import solenoid
 import cameras
+import motor
 #import lights
 from helpers import changeStage, switchSolenoid
 #######################################################################
@@ -229,6 +230,7 @@ while running:
 
 			#open exhaust and motor ON
 			solenoid.openExhaust()
+			motor.main()
 
 			#EMERGENCY CONDITION (STAGE 6)
 			if value4 >= 0.8: #atm

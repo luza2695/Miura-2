@@ -8,7 +8,7 @@
 import time
 import serial
 import sys
-import examples.StepperTest as StepperTest
+import motor
 import solenoid
 import queue
 #import heater
@@ -60,7 +60,7 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
                 downlink_queue.put(['MA','AU',1])
 
             elif command == b'\x05': # retract motor
-                StepperTest.main()
+                motor.main()
                 downlink_queue.put(['MO','RE',1])
 
             elif command == b'\x06': # take video

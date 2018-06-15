@@ -14,11 +14,11 @@ data_delay = 0.5
 
 # how often to get pictures
 pic_delay = 5
-pic_timer = 0
 
 def main(downlink_queue,data_directory):
 	print('Utility thread initialized...')
 	downlink_queue.put(['UT','BU', 0])
+	pic_timer = 0
 	while True:
 		# gets list of downlink formatted data
 		data_set = sensors.read_sensors()
@@ -27,7 +27,7 @@ def main(downlink_queue,data_directory):
 			downlink_queue.put(data)
 
 		# takes pic every 5 seconds
-		pic_timer += data_delay
+		pic_timer = pic_timer + data_delay
 		if pic_timer >= 5:
 			pic_timer = 0
 			cameras.takePicture(data_directory)

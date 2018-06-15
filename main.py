@@ -28,7 +28,7 @@ import serial
 import utility
 import uplink
 import downlink
-import heater
+#import heater
 import sensors
 import solenoid
 import cameras

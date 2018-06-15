@@ -27,9 +27,9 @@ num_temp = 3
 device_file = []
 base_dir = '/sys/bus/w1/devices/'
 
-for i in range(0,num_temp):
-	device_folder = glob.glob(base_dir + '28*')[i]
-	device_file.append(device_folder + '/w1_slave')
+#for i in range(0,num_temp):
+#	device_folder = glob.glob(base_dir + '28*')[i]
+#	device_file.append(device_folder + '/w1_slave')
 
 # reads external pressure sensor
 def read_pressure():
@@ -66,9 +66,9 @@ def read_temp():
 #input solenoid 1
 adc1 = Adafruit_ADS1x15.ADS1115()
 #input solenoid 2
-#adc2 = Adafruit_ADS1x15.ADS1115()
+adc2 = Adafruit_ADS1x15.ADS1115()
 #exhaust solenoid
-adc3 = Adafruit_ADS1x15.ADS1115()
+#adc3 = Adafruit_ADS1x15.ADS1115()
 
 #Gains
 # - 2/3 = +/- 6.144V
@@ -95,7 +95,7 @@ def read_pressure_system():
 	#value3 = adc3.get_last_result()
 	pressureSol1 = value1*50/65536
 	pressureSol2 = value2*50/65536
-	pressureMain  = 0#value3*50/65536
+	pressureMain  = 0 #value3*50/65536
 	return (pressureSol1, pressureSol2, pressureMain)
 
 # prints value of each sensor

@@ -20,9 +20,9 @@ def takePicture(data_directory):
 def takeVideo(data_directory):
 	start = time.time()
 	frames = 60
-	duration = 10
+	duration = 60
 	counter = 0
-	while counter < num_frames:
+	while counter < frames:
 		if counter == 0:
 			os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 10 {}/cam1_{}_{}.jpg'.format(data_directory,start,counter))
 		else:

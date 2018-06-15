@@ -3,12 +3,6 @@ import time
 import atexit
 import RPi.GPIO as GPIO
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
-motor_pin = 18
-GPIO.setup(motor_pin, GPIO.OUT)
-GPIO.output(motor_pin, True)
-
 mh = Adafruit_MotorHAT()
 
 def turnOffMotors():

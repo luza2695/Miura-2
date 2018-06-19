@@ -131,6 +131,7 @@ while running:
 			#	- after 4 hours into flight
 			if (current_time-stage_start_time) >= cycle_start_delay:
 				stage, stage_start_time = changeStage(2)
+
 		#if it is stage 2 (inflation) ...
 		#	- Starts when stage 1 or 5 is completed
 		#	- Open solenoid valve
@@ -150,6 +151,7 @@ while running:
 
 			#Lights ON
 			#lights.lights(1)
+			
 			#Read pressure
 			ta1,ta2,value2 = sensors.read_pressure_system()
 
@@ -172,8 +174,6 @@ while running:
 			elif value2 >= 0.55 or (current_time-stage_start_time) >= inflation_time: #atm
 			 	stage, stage_start_time = changeStage(3)
 			 	solenoid.closePressurize(1)
-
-
 
 		#if it is stage 3 (inflated) ...
 		#	- Starts when inflation is completed

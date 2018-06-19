@@ -21,7 +21,7 @@ hum_id = 0x68
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 3
+num_temp = 5
 
 # automatically finds temp sensor addresses
 device_file = []
@@ -64,9 +64,9 @@ def read_temp():
 
 #16 bit for the ADC
 #input solenoid 1
-adc1 = Adafruit_ADS1x15.ADS1115()
+#adc1 = Adafruit_ADS1x15.ADS1115()
 #input solenoid 2
-adc2 = Adafruit_ADS1x15.ADS1115()
+#adc2 = Adafruit_ADS1x15.ADS1115()
 #exhaust solenoid
 #adc3 = Adafruit_ADS1x15.ADS1115()
 
@@ -79,24 +79,24 @@ adc2 = Adafruit_ADS1x15.ADS1115()
 # - 16 = +/- 0.256V
 GAIN = 1
 
-adc1.start_adc(0, gain = GAIN)
-adc2.start_adc(1, gain = GAIN)
+#adc1.start_adc(0, gain = GAIN)
+#adc2.start_adc(1, gain = GAIN)
 #adc3.start_adc(2, gain = GAIN)
 
 # clears channel
-throwaway = adc1.get_last_result()
-throwaway = adc2.get_last_result()
+#throwaway = adc1.get_last_result()
+#throwaway = adc2.get_last_result()
 #throwaway = adc3.get_last_result()
 
 # reads pressure of pressure system from transducer
-def read_pressure_system():
-	value1 = adc1.get_last_result()
-	value2 = adc2.get_last_result()
-	#value3 = adc3.get_last_result()
-	pressureSol1 = value1*50/65536
-	pressureSol2 = value2*50/65536
-	pressureMain  = 0 #value3*50/65536
-	return (pressureSol1, pressureSol2, pressureMain)
+# def read_pressure_system():
+# 	value1 = adc1.get_last_result()
+# 	value2 = adc2.get_last_result()
+# 	#value3 = adc3.get_last_result()
+# 	pressureSol1 = value1*50/65536
+# 	pressureSol2 = value2*50/65536
+# 	pressureMain  = 0 #value3*50/65536
+# 	return (pressureSol1, pressureSol2, pressureMain)
 
 # prints value of each sensor
 def print_sensors():
@@ -117,7 +117,7 @@ def read_sensors():
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 	#temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
-	pressure_system = read_pressure_system()
-	trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
-	return [pres_downlink,hum_downlink,temp_downlink,trans_downlink]
+	#pressure_system = read_pressure_system()
+	#trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
+	return [pres_downlink,hum_downlink,temp_downlink] #,trans_downlink]
 

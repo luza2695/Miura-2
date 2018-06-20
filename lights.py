@@ -66,15 +66,21 @@ def lights(x):
 
         #shit
         for i in range(8):
-            set_LED(i,25,25,25,0)
-            set_LED(i,25,25,25,brightness)
-        WriteLEDs()
+           set_LED(i,15,15,15,5)
+           #set_LED(i,25,25,25,0)
+           #set_LED(i,50,50,50,30)
+           WriteLEDs()
+           time.sleep(2)
     elif x == 0:
-	set_LED_quantity(8)
-        for i in range(8):
-            set_LED(i,25,25,25,0)
-            set_LED(i,0,0,0,0)
-        WriteLEDs()
+
+        set_LED_quantity(8)
+
+        #for i in range(8):
+        while True:
+            set_LED(7,0,25,25,0)
+            set_LED(2,0,10,150,0)
+            time.sleep(1)
+            WriteLEDs()
 
 
     elif x == 2:
@@ -83,7 +89,7 @@ def lights(x):
     return
 
 
-lights(0)
+lights(1)
 
 #while True:
 #    for i in range(8):

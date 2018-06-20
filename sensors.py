@@ -1,7 +1,7 @@
 ##################################################################
 # Miura 2: Sensor Code (sensors.py)
 # Created: 5/30/2018
-# Modified: 5/30/2018
+# Modified: 6/20/2018
 # Purpose: Defines functions to take sensor data
 ##################################################################
 
@@ -11,6 +11,10 @@ import time
 import smbus
 import RPi.GPIO as GPIO
 import Adafruit_ADS1x15
+import board
+import busio
+import digitalio
+import adafruit_max31865
 
 # os.system('modprobe w1-gpio')
 # os.system('modprobe w1-therm')
@@ -62,6 +66,17 @@ def read_temp():
 	return temp_c
 
 
+# Temperature Transducer 
+# Initialize SPI bus and sensor.
+def read_temperature_system():
+	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+	cs = digitalio.DigitalInOut(board.D5)  # Chip select of the MAX31865 board.
+	sensor = adafruit_max31865.MAX31865(spi, cs)
+	temperature_system = sensor.temperature
+	return temperature_system
+
+
+
 #16 bit for the ADC
 #input solenoid 1
 #adc1 = Adafruit_ADS1x15.ADS1115()
@@ -101,23 +116,47 @@ GAIN = 1
 # prints value of each sensor
 def print_sensors():
 	print('Reading...')
+	#print ambient pressure data
 	pressure = read_pressure()
 	print('Pressure: {:.2f} atm '.format(pressure), end='')
+	
+	#print ambient humidity data
 	humidity = read_humid()
 	print('Humidity: {:.2f} %% '.format(humidity), end='')
+	
+	#print ambient temperature data
 	temperature = read_temp()
 	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature), end='')
+
+	#print temperature transducer data
+	temperature_system = read_temperature_system()
+	print('Temperature Transducer: {:.2f} %% '.format(temperature_system), end='')
+
+	#print pressure transducer data
+	pressure_system = read_pressure_system()
+	print('Pressure Transducer: {:.2f} C {:.2f} C {:.2f} C'.format(pressure_system), end='')
 	return
 
 # returns value of each sensor in downlinking format
 def read_sensors():
+	#read and downlink ambient pressure data
 	pressure = read_pressure()
 	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
+
+	#read and downlink ambient humidity data
 	humidity = read_humid()
 	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
-	#temperature = read_temp()
+
+	#read and downlink ambient temperature data
+	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
-	#pressure_system = read_pressure_system()
-	#trans_downlink = ['SE', 'TR','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
-	return [pres_downlink,hum_downlink,temp_downlink] #,trans_downlink]
+
+	#read and downlink temperature transducer data
+	temperature_system = read_temperature_system()
+	temp_trans_downlink = ['SE','TT','{:.2f}'.format(temperature_system)]
+
+	#read and downlink pressure transducer data
+	pressure_system = read_pressure_system()
+	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
+	return [pres_downlink,hum_downlink,temp_downlink,pres_trans_downlink,temp_trans_downlink]
 

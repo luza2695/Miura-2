@@ -1,7 +1,7 @@
 ##################################################################
 # Miura 2: Solenoid Control (solenoid.py)
 # Created: 5/24/2018
-# Modified: 5/29/2018
+# Modified: 6/20/2018
 # Purpose: Control solenoids for pressurization process
 ##################################################################
 
@@ -11,7 +11,7 @@ import time
 pressurize_pin1 = 12
 pressurize_pin2 = 15
 exhaust_pin = 16
-motor_pin = 18
+motor_driver_pin = 18
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
@@ -19,7 +19,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pressurize_pin1, GPIO.OUT)
 GPIO.setup(pressurize_pin2, GPIO.OUT)
 GPIO.setup(exhaust_pin, GPIO.OUT)
-GPIO.setup(motor_pin, GPIO.OUT)
+GPIO.setup(motor_driver_pin, GPIO.OUT)
 
 def openPressurize(solenoid_id):
 	GPIO.output(motor_pin, False)
@@ -37,7 +37,7 @@ def closePressurize(solenoid_id):
 
 def openExhaust():
 	GPIO.output(exhaust_pin, True)
-	GPIO.output(motor_pin, True)
+	GPIO.output(motor_driver_pin, True)
 
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)

@@ -4,16 +4,16 @@
 #	- Four heaters: payload, exhaust valve, solenoid 1, solenoid 2
 #	- 2 functions: 1) payload 2) solenoid 1, solenoid 2, exhaust valve
 # Created: 5/30/2018
-# Modified: -/-
+# Modified: 6/20/2018
 # Miura2 -  heater.py
 # Creator: Lucas Zardini
-
+##############################################################################
 import RPi.GPIO as GPIO
 import time
 
-payload_heater_pin = 7
-solenoid_heater_pin = 8
-regulator_heater_pin = 9
+payload_heater_pin = 22
+solenoid_heater_pin = 37
+regulator_heater_pin = 40
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)

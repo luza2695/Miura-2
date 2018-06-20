@@ -113,6 +113,7 @@ GAIN = 1
 # 	pressureMain  = 0 #value3*50/65536
 # 	return (pressureSol1, pressureSol2, pressureMain)
 
+
 # prints value of each sensor
 def print_sensors():
 	print('Reading...')

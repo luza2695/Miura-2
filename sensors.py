@@ -11,10 +11,10 @@ import time
 import smbus
 import RPi.GPIO as GPIO
 import Adafruit_ADS1x15
-import board
-import busio
-import digitalio
-import adafruit_max31865
+#import board
+#import busio
+#import digitalio
+#import adafruit_max31865
 
 # os.system('modprobe w1-gpio')
 # os.system('modprobe w1-therm')
@@ -104,14 +104,14 @@ throwaway = adc2.get_last_result()
 throwaway = adc3.get_last_result()
 
 # reads pressure of pressure system from transducer
-# def read_pressure_system():
- 	value1 = adc1.get_last_result()
- 	value2 = adc2.get_last_result()
- 	value3 = adc3.get_last_result()
- 	pressureSol1 = value1*50/65536
- 	pressureSol2 = value2*50/65536
- 	pressureMain  = 0 #value3*50/65536
- 	return (pressureSol1, pressureSol2, pressureMain)
+def read_pressure_system():
+        value1 = adc1.get_last_result()
+        value2 = adc2.get_last_result()
+        value3 = adc3.get_last_result()
+        pressureSol1 = value1*50/65536
+        pressureSol2 = value2*50/65536
+        pressureMain  = value3*50/65536
+        return [pressureSol1, pressureSol2, pressureMain]
 
 
 # prints value of each sensor

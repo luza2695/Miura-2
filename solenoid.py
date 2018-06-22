@@ -22,7 +22,7 @@ GPIO.setup(exhaust_pin, GPIO.OUT)
 GPIO.setup(motor_driver_pin, GPIO.OUT)
 
 def openPressurize(solenoid_id):
-	GPIO.output(motor_pin, False)
+	GPIO.output(motor_driver_pin, False)
 	time.sleep(0.3)
 	if solenoid_id == 1:
 		GPIO.output(pressurize_pin1, True)

@@ -38,7 +38,7 @@ from helpers import changeStage, switchSolenoid
 #######################################################################
 
 # important variables for operation
-cycle_start_delay = 30
+cycle_start_delay = 10
 inflation_time = 180
 sustention_time = 180
 retraction_time = 60
@@ -150,7 +150,7 @@ while running:
 				cameras.takeVideo(data_directory)
 
 			#Lights ON
-			#lights.lights(1)
+			#lights.lights_on()
 			
 			#Read pressure
 			ta1,ta2,value2 = sensors.read_pressure_system()
@@ -185,7 +185,7 @@ while running:
 		#	- Lights ON
 		elif stage == 3:
 			#Lights ON
-			#lights.lights(1)
+			#lights.lights_on()
 
 			#read pressure
 			ta1,ta2,value3 = sensors.read_pressure_system()
@@ -215,7 +215,7 @@ while running:
 		#	- Lights ON
 		elif stage == 4:
 			#Lights ON
-			#lights.lights(1)
+			#lights.lights_on()
 
 			# do one time tasks for new deflation
 			if current_time - stage_start_time < main_delay:
@@ -252,7 +252,7 @@ while running:
 		#	- Lights ON
 		elif stage == 5:
 			#Lights ON
-			#lights.lights(1)
+			#lights.lights_on()
 
 			#Close solenoid valve
 			solenoid.closePressurize(current_solenoid)
@@ -280,7 +280,7 @@ while running:
 		#	- Lights ON
 		elif stage == 6: #atm
 			#Lights ON
-			#lights.lights(1)
+			#lights.lights_on()
 
 			#Close solenoid valve
 			solenoid.closePressurize(current_solenoid)

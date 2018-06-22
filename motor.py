@@ -23,4 +23,3 @@ myStepper.setSpeed(70)
 def main():
 	myStepper.step(9000, Adafruit_MotorHAT.BACKWARD,  Adafruit_MotorHAT.DOUBLE)
 	return
-main()

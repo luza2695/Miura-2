@@ -89,7 +89,7 @@ utility_thread = threading.Thread(name = 'util', target = utility.main, args = (
 utility_thread.start()
 
 # delay for main thread
-main_delay = 0.5
+main_delay = 0.2
 
 # sets variables for main loop operation
 running = True
@@ -167,12 +167,12 @@ while running:
 			#cameras.videoCamera()
 
 			#EMERGENCY CONDITION (STAGE 6)
-			if value2 >= 0.8: #atm
+			if ta2 >= 0.8: #atm
 				stage == 6
 			# Conditionals:
 			#	-if pressure is 0.55 or greater
 			#	-if 1 min goes by
-			elif value2 >= 0.55 or (current_time-stage_start_time) >= inflation_time: #atm
+			elif ta2 >= 0.55 or (current_time-stage_start_time) >= inflation_time: #atm
 			 	stage, stage_start_time = changeStage(3)
 			 	solenoid.closePressurize(1)
 
@@ -198,7 +198,7 @@ while running:
 			solenoid.closeExhaust()
 
 			#EMERGENCY CONDITION (STAGE 6)
-			if value3 >= 0.8: #atm
+			if ta2 >= 0.8: #atm
 	            		stage == 6
 			#Conditionals ...
 			#	-After 10 min has been passed
@@ -234,7 +234,7 @@ while running:
 			motor.main()
 
 			#EMERGENCY CONDITION (STAGE 6)
-			if value4 >= 0.8: #atm
+			if ta2 >= 0.8: #atm
 	            		stage == 6
 			#Conditionals ...
 			#	-once motor completes the theoretical revs around

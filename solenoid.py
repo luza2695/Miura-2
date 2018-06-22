@@ -42,6 +42,8 @@ def openExhaust():
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
 
+openExhaust()
+
 # def burp():
 # 	burp_rate = 0.05
 # 	for i in range(0,50):

@@ -102,7 +102,6 @@ stage, stage_start_time = changeStage(1)
 print("Begin Cycles")
 # pressure check loop
 while running:
-	print("running")
 	#Start the uplink/downlink
 	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled)
 	downlink.main(serial, downlink_queue, log_filename, stage)

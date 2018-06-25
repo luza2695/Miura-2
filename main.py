@@ -89,7 +89,7 @@ utility_thread = threading.Thread(name = 'util', target = utility.main, args = (
 utility_thread.start()
 
 # delay for main thread
-main_delay = 0.2
+main_delay = 0.5
 
 # sets variables for main loop operation
 running = True
@@ -231,7 +231,10 @@ while running:
 
 			#open exhaust and motor ON
 			solenoid.openExhaust()
-			motor.main()
+			
+			#Motor ON
+			motor_thread = threading.Thread(name = 'motor', target = motor.main, args = (), daemon = True)
+			motor_thread.start()
 
 			#EMERGENCY CONDITION (STAGE 6)
 			if ta2 >= 0.8: #atm

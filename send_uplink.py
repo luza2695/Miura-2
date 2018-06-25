@@ -73,4 +73,4 @@ while (not complete):
 		serial.write(target)
 		serial.write(command)
 
-	time.sleep(1)
+	time.sleep(0.25)

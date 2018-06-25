@@ -16,9 +16,6 @@ import Adafruit_ADS1x15
 #import digitalio
 #import adafruit_max31865
 
-# os.system('modprobe w1-gpio')
-# os.system('modprobe w1-therm')
-
 # i2c sensor ids
 pres_id = 0x60
 hum_id = 0x68
@@ -31,9 +28,9 @@ num_temp = 0
 device_file = []
 base_dir = '/sys/bus/w1/devices/'
 
-#for i in range(0,num_temp):
-#	device_folder = glob.glob(base_dir + '28*')[i]
-#	device_file.append(device_folder + '/w1_slave')
+for i in range(0,num_temp):
+	device_folder = glob.glob(base_dir + '28*')[i]
+	device_file.append(device_folder + '/w1_slave')
 
 # reads external pressure sensor
 def read_pressure():
@@ -48,7 +45,6 @@ def read_humid():
 	data = bus.read_i2c_block_data(hum_id, 0x00, 4)
 	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
-
 
 # reads temp from each sensor
 def read_temp():
@@ -65,17 +61,14 @@ def read_temp():
 			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
-
 # Temperature Transducer 
 # Initialize SPI bus and sensor.
-def read_temperature_system():
-	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-	cs = digitalio.DigitalInOut(board.D5)  # Chip select of the MAX31865 board.
-	sensor = adafruit_max31865.MAX31865(spi, cs)
-	temperature_system = sensor.temperature
-	return temperature_system
-
-
+# def read_temperature_system():
+# 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+# 	cs = digitalio.DigitalInOut(board.D5)  # Chip select of the MAX31865 board.
+# 	sensor = adafruit_max31865.MAX31865(spi, cs)
+# 	temperature_system = sensor.temperature
+# 	return temperature_system
 
 #16 bit for the ADC
 #input solenoid 1
@@ -113,21 +106,20 @@ def read_pressure_system():
         pressureMain  = value3*50/65536
         return [pressureSol1, pressureSol2, pressureMain]
 
-
 # prints value of each sensor
 def print_sensors():
 	print('Reading...')
 	#print ambient pressure data
-	#pressure = read_pressure()
-	#print('Pressure: {:.2f} atm '.format(pressure), end='')
+	pressure = read_pressure()
+	print('Pressure: {:.2f} atm '.format(pressure), end='')
 	
 	#print ambient humidity data
-	#humidity = read_humid()
-	#print('Humidity: {:.2f} %% '.format(humidity), end='')
+	humidity = read_humid()
+	print('Humidity: {:.2f} %% '.format(humidity), end='')
 	
 	#print ambient temperature data
-	#temperature = read_temp()
-	#print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature), end='')
+	temperature = read_temp()
+	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature), end='')
 
 	#print temperature transducer data
 	#temperature_system = read_temperature_system()
@@ -141,23 +133,28 @@ def print_sensors():
 # returns value of each sensor in downlinking format
 def read_sensors():
 	#read and downlink ambient pressure data
-	#pressure = read_pressure()
-	#pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
+	pressure = read_pressure()
+	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 
 	#read and downlink ambient humidity data
-	#humidity = read_humid()
-	#hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
+	humidity = read_humid()
+	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 
 	#read and downlink ambient temperature data
-	#temperature = read_temp()
-	#temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
+	temperature = read_temp()
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
 
 	#read and downlink temperature transducer data
-	#temperature_system = read_temperature_system()
-	#temp_trans_downlink = ['SE','TT','{:.2f}'.format(temperature_system)]
+	# temperature_system = read_temperature_system()
+	# temp_trans_downlink = ['SE','TT','{:.2f}'.format(temperature_system)]
 
+	return [pres_downlink,hum_downlink,temp_downlink]
+
+# returns value of each system transducer in downlinking format
+def read_transducers():
 	#read and downlink pressure transducer data
 	pressure_system = read_pressure_system()
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
-	return [pres_trans_downlink] #[pres_downlink,hum_downlink,temp_downlink,pres_trans_downlink,temp_trans_downlink]
+	return pres_trans_downlink
+
 

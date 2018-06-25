@@ -11,12 +11,12 @@
 import os
 import time
 
-#still cameras (cameras 1 and 3)
+# still cameras (cameras 0 and 2)
 def takePicture(data_directory):
 	os.system('fswebcam -i 0 -d /dev/video0 -b -r 1024x768 -S 10 {}/cam0_{}.jpg'.format(data_directory,time.time()))
 	os.system('fswebcam -i 0 -d /dev/video2 -b -r 1024x768 -S 10 {}/cam2_{}.jpg'.format(data_directory,time.time()))
 
-#Fast shutter camera (Camera 2)
+# fast shutter camera (Camera 1)
 def takeVideo(data_directory):
 	start = time.time()
 	frames = 60

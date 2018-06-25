@@ -21,4 +21,9 @@ def lights_on():
 
 
 def epilepsy():
+	for x in range(0,3)
+		GPIO.output(lights, HIGH)
+		time.sleep(0.5)
+		GPIO.output(lights,LOW)
+		time.sleep(0.5)
     

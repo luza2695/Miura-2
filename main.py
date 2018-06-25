@@ -272,7 +272,7 @@ while running:
 			elif (stage_start_time - current_time) >= deflation_time:
 	        		stage, stage_start_time = changeStage(2)
 	        		#let the celebration begin
-	        		#lights.lights(2) & omxplayer -o local example.mp3
+	        		#lights.epilepsy() & omxplayer -o local example.mp3
 
 		#If it is stage 6 (emergency) ...
 		#	- Starts when pressure > 0.8 atms

@@ -25,29 +25,30 @@ bus = smbus.SMBus(1)
 num_temp = 0
 
 # automatically finds temp sensor addresses
-device_file = []
-base_dir = '/sys/bus/w1/devices/'
+#device_file = []
+#base_dir = '/sys/bus/w1/devices/'
 
-for i in range(0,num_temp):
-	device_folder = glob.glob(base_dir + '28*')[i]
-	device_file.append(device_folder + '/w1_slave')
+#for i in range(0,num_temp):
+#	device_folder = glob.glob(base_dir + '28*')[i]
+#	device_file.append(device_folder + '/w1_slave')
 
 # reads external pressure sensor
 def read_pressure():
-	bus.write_byte_data(pres_id, 0x26, 0x39)
-	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
-	temp = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
-	pressure = (temp * 101.324998) / 4000
+	#bus.write_byte_data(pres_id, 0x26, 0x39)
+	#data = bus.read_i2c_block_data(pres_id, 0x00, 4)
+	#temp = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
+	#pressure = (temp * 101.324998) / 4000
 	return pressure
 
 # reads external humidity
 def read_humid():
-	data = bus.read_i2c_block_data(hum_id, 0x00, 4)
-	humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
+	#data = bus.read_i2c_block_data(hum_id, 0x00, 4)
+	#humidity = ((((data[0] & 0x3F) * 256) + data[1]) * 100.0) / 16383.0
 	return humidity
 
 # reads temp from each sensor
 def read_temp():
+
 	temp_c = ()
 	for i in range(0,num_temp):
 		f = open(device_file[i], 'r')
@@ -66,17 +67,13 @@ def read_temp():
 # def read_temperature_system():
 # 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 # 	cs = digitalio.DigitalInOut(board.D5)  # Chip select of the MAX31865 board.
-# 	sensor = adafruit_max31865.MAX31865(spi, cs)
+# 	ensor = adafruit_max31865.MAX31865(spi, cs)
 # 	temperature_system = sensor.temperature
 # 	return temperature_system
 
 #16 bit for the ADC
 #input solenoid 1
-adc1 = Adafruit_ADS1x15.ADS1115()
-#input solenoid 2
-adc2 = Adafruit_ADS1x15.ADS1115()
-#exhaust solenoid
-adc3 = Adafruit_ADS1x15.ADS1115()
+adc = Adafruit_ADS1x15.ADS1115()
 
 #Gains
 # - 2/3 = +/- 6.144V
@@ -87,39 +84,32 @@ adc3 = Adafruit_ADS1x15.ADS1115()
 # - 16 = +/- 0.256V
 GAIN = 1
 
-adc1.start_adc(0, gain = GAIN)
-adc2.start_adc(1, gain = GAIN)
-adc3.start_adc(2, gain = GAIN)
-
-# clears channel
-throwaway = adc1.get_last_result()
-throwaway = adc2.get_last_result()
-throwaway = adc3.get_last_result()
-
 # reads pressure of pressure system from transducer
 def read_pressure_system():
-        value1 = adc1.get_last_result()
-        value2 = adc2.get_last_result()
-        value3 = adc3.get_last_result()
-        pressureSol1 = value1*50/65536
-        pressureSol2 = value2*50/65536
-        pressureMain  = value3*50/65536
-        return [pressureSol1, pressureSol2, pressureMain]
+	value1 = adc.read_adc(0, gain=GAIN)
+	value2 = adc.read_adc(1, gain=GAIN)
+	value3 = adc.read_adc(2, gain=GAIN)
+	pressureSol1 = value1*50/65536
+	pressureSol2 = value2*50/65536
+	pressureMain  = value3*50/65536
+	print('sol1: {:.3f} atm'.format(pressureSol1))
+	print('sol2: {:.3f} atm'.format(pressureSol2))
+	print('main: {:.3f} atm'.format(pressureMain))
+	print(' ')
+	return [pressureSol1, pressureSol2, pressureMain]
 
 # prints value of each sensor
 def print_sensors():
 	print('Reading...')
 	#print ambient pressure data
-	pressure = read_pressure()
-	print('Pressure: {:.2f} atm '.format(pressure), end='')
-	
+	#pressure = read_pressure()
+	#print('Pressure: {:.2f} atm '.format(pressure), end='')
 	#print ambient humidity data
-	humidity = read_humid()
-	print('Humidity: {:.2f} %% '.format(humidity), end='')
-	
+	#humidity = read_humid()
+	#print('Humidity: {:.2f} %% '.format(humidity), end='')
 	#print ambient temperature data
-	temperature = read_temp()
-	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature), end='')
+	#temperature = read_temp()
+	#print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature), end='')
 
 	#print temperature transducer data
 	#temperature_system = read_temperature_system()
@@ -127,8 +117,11 @@ def print_sensors():
 
 	#print pressure transducer data
 	pressure_system = read_pressure_system()
-	print('Pressure Transducer: {:.2f} C {:.2f} C {:.2f} C'.format(pressure_system), end='')
+	print('Pressure Transducer: {:.2f} atm {:.2f} atm {:.2f} atm'.format(*pressure_system))
 	return
+while True:
+	pressure_system = read_pressure_system()
+	time.sleep(0.5)
 
 # returns value of each sensor in downlinking format
 def read_sensors():
@@ -143,10 +136,6 @@ def read_sensors():
 	#read and downlink ambient temperature data
 	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
-
-	#read and downlink temperature transducer data
-	# temperature_system = read_temperature_system()
-	# temp_trans_downlink = ['SE','TT','{:.2f}'.format(temperature_system)]
 
 	return [pres_downlink,hum_downlink,temp_downlink]
 

@@ -29,9 +29,9 @@ def main(downlink_queue,data_directory):
 		if timer >= env_delay:
 			# gets list of downlink formatted data
 			data_set = sensors.read_sensors()
-				# downlinks each set of data
-				for data in data_set:
-					downlink_queue.put(data)
+			# downlinks each set of data
+			for data in data_set:
+				downlink_queue.put(data)
 			# takes picture on cam 0 and 2
 			cameras.takePicture(data_directory)
 			# resets timer

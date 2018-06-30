@@ -95,7 +95,7 @@ while running:
 		current_time = time.time()
 
 		# STAGE 1: ASCENT
-		if stage == 1: 
+		if stage == 1:
 
 			# if time to start cycle
 			if (current_time-stage_start_time) >= cycle_start_delay:

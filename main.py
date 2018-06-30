@@ -1,25 +1,9 @@
-#######################################################################
-# Purpose:
-#	- To continuously check the pressure sensors
-#	- To take in the uplink commands
-#	- Control the feedback of the pressure
-# Inputs:
-#	- Pressure and temperature sensors
-#	- Motor, heaters, pressure system
-#	- Uplink
-# Outputs:
-#	- State (6 states)
-#	- Uplink (only for camera use)
-# Tasks:
-#	- Check if main is okay logically
-#	- Motor code --> DC brushless
-#	- Make the downlink horizontal
-#	- Motor ON - Torqued only
+##################################################################
+# Miura 2: Main Thread (main.py)
 # Created: 5/1/2018
-# Modified: 6/14/2018
-# Miura2 - main.py
-#######################################################################
-# Imports:
+# Modified: 6/30/2018
+# Purpose: Control pressurization cycles, uplink, and downlink
+##################################################################
 import os
 import threading
 import time
@@ -35,7 +19,6 @@ import cameras
 import motor
 #import lights
 from helpers import changeStage, switchSolenoid
-#######################################################################
 
 # important variables for operation
 cycle_start_delay = 10
@@ -43,6 +26,7 @@ inflation_time = 180
 sustention_time = 180
 retraction_time = 60
 deflation_time = 60
+main_delay = 0.1
 
 # main thread has started
 print('Main thread initialized...')
@@ -62,7 +46,7 @@ while os.path.exists('datalogs/log{}'.format(file_index)):
 data_directory = 'datalogs/log{}'.format(file_index)
 os.mkdir(data_directory)
 
-# Set up the log file, initialize as empty
+# set up the log file, initialize as empty
 log_filename = '{}/mission.log'.format(data_directory)
 open(log_filename, 'w+').close()
 
@@ -88,9 +72,6 @@ serial.flushInput()
 utility_thread = threading.Thread(name = 'util', target = utility.main, args = (downlink_queue,data_directory), daemon = True)
 utility_thread.start()
 
-# delay for main thread
-main_delay = 0.5
-
 # sets variables for main loop operation
 running = True
 manual = False
@@ -98,199 +79,236 @@ solenoid_1_enabled = True
 solenoid_2_enabled = True
 current_solenoid = 1
 current_cycle = 1
-stage, stage_start_time  = changeStage(1)
+stage, stage_start_time, tasks_completed  = changeStage(1)
 
 # pressure check loop
 while running:
-	#Start the uplink/downlink
-	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled)
-	downlink.main(serial, downlink_queue, log_filename, stage, current_cycle)
 
-	#Track the current time
-	current_time = time.time()
+	# uplink and downlink
+	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed)
+	downlink.main(serial, downlink_queue, log_filename, stage, current_cycle)
 
 	# checks if in manual mode
 	if not manual:
-		#if it is stage 1 (ascent) ...
-		#	- Turn off still and video cameras
-		#	- Do not run any of the pressure checks
-		#	- Turn on heaters
-		#	- Lights OFF
-		if stage == 1: #ascent stage 1
-			#Turn on heaters
-			#heater.solenoid_heater(True)
-			#heater.payload_heater(True)
 
-			#Turn off Cameras
-			#cameras.stillCameras()
-			#cameras.videoCamera()
+		# get current time
+		current_time = time.time()
 
-			solenoid.openExhaust()
+		# STAGE 1: ASCENT
+		if stage == 1: 
 
-			#conditionals ...
-			#	- after 4 hours into flight
+			# if time to start cycle
 			if (current_time-stage_start_time) >= cycle_start_delay:
-				stage, stage_start_time = changeStage(2)
 
-		#if it is stage 2 (inflation) ...
-		#	- Starts when stage 1 or 5 is completed
-		#	- Open solenoid valve
-		#	- Motor given NO power
-		#	- Close exhaust valve
-		#	- Video and still cameras ON
-		#	- Lights ON
-		#	- Stops ...
-		#		- when pressure has reached the maximum capacity
-		#		- When the inflation timer has been reached 
-		elif stage == 2: #inflating // stage 2
+				# switch to stage 2
+				stage, stage_start_time, tasks_completed = changeStage(2)
+				continue
 
-			# do one time tasks for new cycle
-			if current_time - stage_start_time < main_delay:
-				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled)
+			# perform one time tasks
+			if !tasks_completed:
+
+				# heaters on
+				#heater.solenoid_heater(True)
+				#heater.payload_heater(True)
+
+				# open exhaust
+				solenoid.openExhaust()
+
+				# close both pressurize
+				solenoid.closePressurize(1)
+				solenoid.closePressurize(2)
+
+				# mark tasks at completed
+				tasks_completed = True
+
+		# STAGE 2: INFLATION
+		elif stage == 2:
+
+			# read pressure to check for end of inflation
+			tank1,tank2,main = sensors.read_pressure_system()
+
+			# if pressure exceeds 10 psi
+			if main >= 10:
+				# switch to emergency stage
+				stage, stage_start_time, tasks_completed = changeStage(6)
+
+			# if pressure reaches 7.5 psi or reaches maximum inflation time
+			elif main >= 7.5 or (current_time-stage_start_time) >= inflation_time:
+
+				# close current pressurize valve
+				solenoid.closePressurize(current_solenoid)
+
+				# switch to stage 3
+			 	stage, stage_start_time, tasks_completed = changeStage(3)
+			 	continue
+
+			# perform one time tasks
+			if !tasks_completed:
+
+				# switch active solenoid
+				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
+
+				# lights on
+				#lights.lights_on()
+
+				# start video
 				cameras.takeVideo(data_directory)
 
-			#Lights ON
-			#lights.lights_on()
+				# close exhaust valve
+				solenoid.closeExhaust()
 
-			#Read pressure
-			ta1,ta2,value2 = sensors.read_pressure_system()
+				# open current pressurize valve (and turn motor off)
+				solenoid.openPressurize(current_solenoid)
 
-			#Close exhaust valve
-			solenoid.closeExhaust()
+				# mark tasks as completed
+				tasks_completed = True
 
-			#Open solenoid valve and Motor OFF
-			solenoid.openPressurize(current_solenoid)
 
-			#Video and still Cameras ON
-			#cameras.stillCameras()
-			#cameras.videoCamera()
-
-			#EMERGENCY CONDITION (STAGE 6)
-			if ta2 >= 0.8: #atm
-				stage == 6
-			# Conditionals:
-			#	-if pressure is 0.55 or greater
-			#	-if 1 min goes by
-			elif ta2 >= 0.55 or (current_time-stage_start_time) >= inflation_time: #atm
-			 	stage, stage_start_time = changeStage(3)
-			 	solenoid.closePressurize(1)
-
-		#if it is stage 3 (inflated) ...
-		#	- Starts when inflation is completed
-		#	- Close solenoid valve
-		#	- Close Exhaust valve
-		#	- Motor given NO power
-		#	- Still Cameras ON // video camera OFF
-		#	- Stops when the inflated timer is done
-		#	- Lights ON
+		# STAGE 3: INFLATED
 		elif stage == 3:
-			#Lights ON
-			#lights.lights_on()
 
-			#read pressure
-			ta1,ta2,value3 = sensors.read_pressure_system()
+			# read pressure to check for emergency
+			tank1,tank2,main = sensors.read_pressure_system()
 
-			#close solenoid valve and motor OFF
-			solenoid.closePressurize(current_solenoid)
+			# if pressure exceeds 10 psi
+			if main >= 10:
+				# switch to emergency stage
+				stage, stage_start_time, tasks_completed = changeStage(6)
 
-			#close exhaust
-			solenoid.closeExhaust()
+			# if sustention time has passed
+			elif (current_time-stage_start_time) >= sustention_time:
 
-			#EMERGENCY CONDITION (STAGE 6)
-			if ta2 >= 0.8: #atm
-	            		stage == 6
-			#Conditionals ...
-			#	-After 10 min has been passed
-			#
-			elif (current_time-stage_start_time) >= sustention_time or value3 <= 0.3:
-	         		stage, stage_start_time = changeStage(4)
+				# switch to stage 4
+			 	stage, stage_start_time, tasks_completed = changeStage(4)
+			 	continue
 
-		#if it is stage 4 (deflating) ...
-		#	- Starts when inflated timer has been completed
-		#	- Close Solenoid valve
-		#	- Open Exhaust valve
-		#	- Motor ON
-		#	- Video and Still Cameras ON
-		#	- Stops when motor has fully retracted
-		#	- Lights ON
+			# perform one time tasks
+			if !tasks_completed:
+
+				# lights on
+				#lights.lights_on()
+
+				# close both pressurize
+				solenoid.closePressurize(1)
+				solenoid.closePressurize(2)
+
+				# close exhaust
+				solenoid.closeExhaust()
+
+				# mark tasks as completed
+				tasks_completed = True
+
+		# STAGE 4: DEFLATING
 		elif stage == 4:
-			#Lights ON
-			#lights.lights_on()
 
-			# do one time tasks for new deflation
-			if current_time - stage_start_time < main_delay:
+			# read pressure to check for emergency
+			tank1,tank2,main = sensors.read_pressure_system()
+
+			# if pressure exceeds 10 psi
+			if main >= 10:
+				# switch to emergency stage
+				stage, stage_start_time, tasks_completed = changeStage(6)
+
+			# if retraction time has passed
+			elif (stage_start_time - current_time) >= retraction_time:
+
+				# switch to stage 5
+			 	stage, stage_start_time, tasks_completed = changeStage(5)
+			 	continue
+
+			# perform one time tasks
+			if !tasks_completed:
+
+				# lights on
+				#lights.lights_on()
+
+				# start video
 				cameras.takeVideo(data_directory)
 
+				# close both pressurize
+				solenoid.closePressurize(1)
+				solenoid.closePressurize(2)
 
-			#read pressure from tranducer
-			ta1,ta2,value4 = sensors.read_pressure_system()
+				# open exhaust valve
+				solenoid.openExhaust()
 
-			#Close solenoid valve
-			solenoid.closePressurize(current_solenoid)
+				# start motor thread
+				motor_thread = threading.Thread(name = 'motor', target = motor.main, args = (), daemon = True)
+				motor_thread.start()
 
-			#open exhaust and motor ON
-			solenoid.openExhaust()
+				# mark tasks as completed
+				tasks_completed = True
 
-			#Motor ON
-			motor_thread = threading.Thread(name = 'motor', target = motor.main, args = (), daemon = True)
-			motor_thread.start()
-
-			#EMERGENCY CONDITION (STAGE 6)
-			if ta2 >= 0.8: #atm
-	            		stage == 6
-			#Conditionals ...
-			#	-once motor completes the theoretical revs around
-			#	-1 min has passed
-			#	-pressure exceeds 0.55 or lower than 0.3
-			elif (stage_start_time - current_time) >= retraction_time and value4 <= 0.1:
-	        		stage, stage_start_time = changeStage(5)
-
-		#if it is stage 5 (deflated) ...
-		#	- Starts when deflation is completed
-		#	- Close Solenoid Valve
-		#	- Close Exhaust valve
-		#	- Motor ON, but not moving (only torqued)
-		#	- Still Cameras ON // video camera OFF
-		#	- Stops when deflated timer is done
-		#	- Lights ON
+		# STAGE 5: DEFLATED
 		elif stage == 5:
-			#Lights ON
-			#lights.lights_on()
 
-			#Close solenoid valve
-			solenoid.closePressurize(current_solenoid)
+			# read pressure to check for emergency
+			tank1,tank2,main = sensors.read_pressure_system()
 
-			#Close exhaust valve
-			solenoid.closeExhaust()
+			# if pressure exceeds 10 psi
+			if main >= 10:
+				# switch to emergency stage
+				stage, stage_start_time, tasks_completed = changeStage(6)
 
-			#EMERGENCY CONDITION (STAGE 6)
-			if value5 >= 0.8: #atm
-	        		stage == 6
-			#Conditionals ...
-			#	-when 3 minutes passes by
+			# if deflation time has passed
 			elif (stage_start_time - current_time) >= deflation_time:
-	        		stage, stage_start_time = changeStage(2)
+
+				#let the celebration begin
+	        	#lights.epilepsy() & omxplayer -o local example.mp3
+
+			 	# downlink cycle complete
+			 	downlink_queue.put(['CY','CP','{}'.format(current_cycle)])
+
+			 	# increment current cycle
 				current_cycle += 1
-	        		#let the celebration begin
-	        		#lights.epilepsy() & omxplayer -o local example.mp3
 
-		#If it is stage 6 (emergency) ...
-		#	- Starts when pressure > 0.8 atms
-		#	- Close Solenoid Valve
-		#	- Open Exhaust Valve
-		#	- Motor OFF
-		#	- Camera ON
-		#	- Stops when pressure becomes less than 0.8 atm (stable)
-		#	- Lights ON
+				# switch to stage 2
+			 	stage, stage_start_time, tasks_completed = changeStage(2)
+			 	continue
+
+			# perform one time tasks
+			if !tasks_completed:
+
+				# lights on
+				#lights.lights_on()
+
+				# close both pressurize
+				solenoid.closePressurize(1)
+				solenoid.closePressurize(2)
+
+				# close exhaust valve
+				solenoid.closeExhaust()
+
+				# mark tasks as completed
+				tasks_completed = True
+
+		# STAGE 6: EMERGENCY
 		elif stage == 6: #atm
-			#Lights ON
-			#lights.lights_on()
 
-			#Close solenoid valve
-			solenoid.closePressurize(current_solenoid)
+			# perform one time tasks
+			if !tasks_completed:
 
-			#Open exhaust valve
-			solenoid.openExhaust()
+				# lights on
+				#lights.lights_on()
 
-	#check data every 0.5 seconds
+				# close both pressurize
+				solenoid.closePressurize(1)
+				solenoid.closePressurize(2)
+
+				# open exhaust valve
+				solenoid.openExhaust()
+
+				# downlink cycle emergency
+			 	downlink_queue.put(['CY','EM','{}'.format(current_cycle)])
+
+			 	# increment current cycle
+				current_cycle += 1
+
+				# put in manual mode
+				manual = True
+
+				# mark tasks as completed
+				tasks_completed = True
+
+	# restart loop after time delay
 	time.sleep(main_delay)

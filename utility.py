@@ -4,7 +4,6 @@
 # Modified: 5/30/2018
 # Purpose: Downlink data and write to log file
 ##################################################################
-
 import time
 import sensors
 import cameras

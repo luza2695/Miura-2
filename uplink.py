@@ -4,7 +4,6 @@
 # Modified: 6/7/2018
 # Purpose: Accept uplink commands
 ##################################################################
-
 import time
 import serial
 import sys
@@ -26,7 +25,7 @@ serial = serial.Serial(port=current_port,
             bytesize=serial.EIGHTBITS,
             timeout=1)
 
-def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled):
+def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed):
     if serial.inWaiting(): # reads uplink command
         #heading = serial.read() # start of heading
         #start = serial.read() # start of text
@@ -44,19 +43,18 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
                 pass
 
             elif command == b'\x02': # manual mode
-                #Manual mode ON
                 manual = True
                 downlink_queue.put(['MA','MN',1])
 
             elif command == b'\x03': # continue automation mode
-                # Manual mode OFF
                 manual = False
+                if stage == 6: # restart if it was in emergency mode
+                    stage, stage_start_time, tasks_completed = changeStage(2)
                 downlink_queue.put(['MA','MN',0])
 
             elif command == b'\x04': # restart automation mode
-                #Manual mode OFF
                 manual = False
-                stage, stage_start_time = changeStage(2)
+                stage, stage_start_time, tasks_completed = changeStage(2)
                 downlink_queue.put(['MA','AU',1])
 
             elif command == b'\x05': # retract motor
@@ -162,5 +160,5 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
         else:
             print('invalid target')
 
-    return manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled
+    return manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed
 

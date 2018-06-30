@@ -4,7 +4,6 @@
 # Modified: 6/4/2018
 # Purpose: Receive and print downlinked data
 ##################################################################
-
 import serial
 import time
 import glob

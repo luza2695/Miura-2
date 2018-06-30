@@ -1,14 +1,13 @@
 ##################################################################
-# Miura 2: Motor Code (sensors.py)
+# Miura 2: Motor Code (motor.py)
 # Created: 5/30/2018
 # Modified: 6/20/2018
-# Purpose: Defines functions to initialize, turn on, and turn off the motor
+# Purpose: Function to run motor
 ##################################################################
 
 from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_StepperMotor
 import time
 import atexit
-import RPi.GPIO as GPIO
 
 mh = Adafruit_MotorHAT()
 

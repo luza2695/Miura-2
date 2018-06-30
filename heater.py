@@ -1,13 +1,9 @@
-##############################################################################
-# Purpose:
-#	- Be able to control the heaters individually with GPIO pins
-#	- Four heaters: payload, exhaust valve, solenoid 1, solenoid 2
-#	- 2 functions: 1) payload 2) solenoid 1, solenoid 2, exhaust valve
+##################################################################
+# Miura 2: Heater Functions (heater.py)
 # Created: 5/30/2018
 # Modified: 6/20/2018
-# Miura2 -  heater.py
-# Creator: Lucas Zardini
-##############################################################################
+# Purpose: Control individual heaters throughout payload
+##################################################################
 import RPi.GPIO as GPIO
 import time
 

@@ -2,27 +2,22 @@
 # Miura 2: Sensor Code (sensors.py)
 # Created: 5/30/2018
 # Modified: 6/20/2018
-# Purpose: Defines functions to take sensor data
+# Purpose: Functions to take sensor data
 ##################################################################
-
 import os
 import glob
 import time
 import smbus
 import RPi.GPIO as GPIO
 import Adafruit_ADS1x15
-#import board
-#import busio
-#import digitalio
-#import adafruit_max31865
 
 # i2c sensor ids
 pres_id = 0x60
-#hum_id = 0x40
+hum_id = 0x40
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 0
+num_temp = 9
 
 # pressure sensors setup
 bus.write_byte_data(pres_id, 0x26, 0x39)
@@ -31,12 +26,11 @@ bus.write_byte_data(pres_id, 0x26, 0x39)
 #bus.write_byte(0x40,0xE5)
 
 # automatically finds temp sensor addresses
-#device_file = []
-#base_dir = '/sys/bus/w1/devices/'
-
-#for i in range(0,num_temp):
-#	device_folder = glob.glob(base_dir + '28*')[i]
-#	device_file.append(device_folder + '/w1_slave')
+device_file = []
+base_dir = '/sys/bus/w1/devices/'
+for i in range(0,num_temp):
+	device_folder = glob.glob(base_dir + '28*')[i]
+	device_file.append(device_folder + '/w1_slave')
 
 # reads external pressure sensor
 def read_pressure():
@@ -69,20 +63,10 @@ def read_temp():
 			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
-# Temperature Transducer
-# Initialize SPI bus and sensor.
-# def read_temperature_system():
-# 	spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
-# 	cs = digitalio.DigitalInOut(board.D5)  # Chip select of the MAX31865 board.
-# 	ensor = adafruit_max31865.MAX31865(spi, cs)
-# 	temperature_system = sensor.temperature
-# 	return temperature_system
-
-#16 bit for the ADC
-#input solenoid 1
+# initializes adc 
 adc = Adafruit_ADS1x15.ADS1115()
 
-#Gains
+# sets gain
 # - 2/3 = +/- 6.144V
 # - 1 = +/- 4.096V
 # - 2 = +/- 2.048V
@@ -104,19 +88,18 @@ def read_pressure_system():
 # prints value of each sensor
 def print_sensors():
 	print('Reading...')
+
 	#print ambient pressure data
 	pressure = read_pressure()
 	print('Pressure: {:.3f} kPa '.format(pressure))
+
 	#print ambient humidity data
 	#humidity = read_humid()
 	#print('Humidity: {:.3f} %% '.format(humidity))
+
 	#print ambient temperature data
 	#temperature = read_temp()
 	#print('Temperature: {:.3f} C  {:.3f} C  {:.3f} C  {:.3f} C'.format(*temperature), end='')
-
-	#print temperature transducer data
-	#temperature_system = read_temperature_system()
-	#print('Temperature Transducer: {:.3f} %% '.format(temperature_system), end='')
 
 	#print pressure transducer data
 	pressure_system = read_pressure_system()
@@ -130,8 +113,8 @@ def read_sensors():
 	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 
 	#read and downlink ambient humidity data
-	humidity = read_humid()
-	hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
+	#humidity = read_humid()
+	#hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 
 	#read and downlink ambient temperature data
 	temperature = read_temp()
@@ -145,8 +128,3 @@ def read_transducers():
 	pressure_system = read_pressure_system()
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return pres_trans_downlink
-
-
-while True:
-	print_sensors()
-	time.sleep(0.5)

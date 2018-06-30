@@ -4,7 +4,6 @@
 # Modified: 6/20/2018
 # Purpose: Control solenoids for pressurization process
 ##################################################################
-
 import RPi.GPIO as GPIO
 import time
 
@@ -41,14 +40,4 @@ def openExhaust():
 
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
-
-#closePressurize(1)
-#openExhaust()
-# def burp():
-# 	burp_rate = 0.05
-# 	for i in range(0,50):
-# 		GPIO.output(exhaust_pin, True)
-# 		time.sleep(burp_rate)
-# 		GPIO.output(exhaust_pin, False)
-# 		time.sleep(burp_rate)
 

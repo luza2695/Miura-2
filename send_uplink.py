@@ -4,7 +4,6 @@
 # Modified: 5/29/2018
 # Purpose: Send Uplink Commands to Pi
 ##################################################################
-
 import serial
 import time
 import glob

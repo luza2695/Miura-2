@@ -1,13 +1,9 @@
-##############################################################################
-# Purpose:
-#	- Includes functions of the three cameras
-#	- 2 for pictures, one for video (quick shutter)
-# Created: 6/1/2018
-# Modified: 6/11/2018
-# Miura 2 - cameras.py
-# Lucas Zardini
-##############################################################################
-#imports
+##################################################################
+# Miura 2: Camera Functions (cameras.py)
+# Created: 3/13/2018
+# Modified: 6/10/2018
+# Purpose: Functions to take pictures and videos
+##################################################################
 import os
 import time
 

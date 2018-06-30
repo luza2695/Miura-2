@@ -97,7 +97,8 @@ manual = False
 solenoid_1_enabled = True
 solenoid_2_enabled = True
 current_solenoid = 1
-stage, stage_start_time = changeStage(1)
+current_cycle = 1
+stage, stage_start_time  = changeStage(1)
 
 print("Begin Cycles")
 # pressure check loop
@@ -152,7 +153,7 @@ while running:
 
 			#Lights ON
 			#lights.lights_on()
-			
+
 			#Read pressure
 			ta1,ta2,value2 = sensors.read_pressure_system()
 
@@ -231,7 +232,7 @@ while running:
 
 			#open exhaust and motor ON
 			solenoid.openExhaust()
-			
+
 			#Motor ON
 			motor_thread = threading.Thread(name = 'motor', target = motor.main, args = (), daemon = True)
 			motor_thread.start()
@@ -271,6 +272,7 @@ while running:
 			#	-when 3 minutes passes by
 			elif (stage_start_time - current_time) >= deflation_time:
 	        		stage, stage_start_time = changeStage(2)
+				current_cycle += 1
 	        		#let the celebration begin
 	        		#lights.epilepsy() & omxplayer -o local example.mp3
 

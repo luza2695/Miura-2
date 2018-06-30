@@ -140,7 +140,7 @@ while running:
 
 				# switch to stage 3
 				stage, stage_start_time, tasks_completed = changeStage(3)
-			 	continue
+				continue
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -179,8 +179,8 @@ while running:
 			elif (current_time-stage_start_time) >= sustention_time:
 
 				# switch to stage 4
-			 	stage, stage_start_time, tasks_completed = changeStage(4)
-			 	continue
+				stage, stage_start_time, tasks_completed = changeStage(4)
+				continue
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -213,8 +213,8 @@ while running:
 			elif (stage_start_time - current_time) >= retraction_time:
 
 				# switch to stage 5
-			 	stage, stage_start_time, tasks_completed = changeStage(5)
-			 	continue
+				stage, stage_start_time, tasks_completed = changeStage(5)
+				continue
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -263,8 +263,8 @@ while running:
 				current_cycle += 1
 
 				# switch to stage 2
-			 	stage, stage_start_time, tasks_completed = changeStage(2)
-			 	continue
+				stage, stage_start_time, tasks_completed = changeStage(2)
+				continue
 
 			# perform one time tasks
 			if (not tasks_completed):

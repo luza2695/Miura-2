@@ -139,7 +139,7 @@ while running:
 				solenoid.closePressurize(current_solenoid)
 
 				# switch to stage 3
-			 	stage, stage_start_time, tasks_completed = changeStage(3)
+				stage, stage_start_time, tasks_completed = changeStage(3)
 			 	continue
 
 			# perform one time tasks

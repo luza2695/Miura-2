@@ -256,10 +256,10 @@ while running:
 				#let the celebration begin
 	        	#lights.epilepsy() & omxplayer -o local example.mp3
 
-			 	# downlink cycle complete
-			 	downlink_queue.put(['CY','CP','{}'.format(current_cycle)])
+				# downlink cycle complete
+				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])
 
-			 	# increment current cycle
+				# increment current cycle
 				current_cycle += 1
 
 				# switch to stage 2
@@ -299,9 +299,9 @@ while running:
 				solenoid.openExhaust()
 
 				# downlink cycle emergency
-			 	downlink_queue.put(['CY','EM','{}'.format(current_cycle)])
+				downlink_queue.put(['CY','EM','{}'.format(current_cycle)])
 
-			 	# increment current cycle
+				# increment current cycle
 				current_cycle += 1
 
 				# put in manual mode

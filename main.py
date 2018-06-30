@@ -105,7 +105,7 @@ while running:
 				continue
 
 			# perform one time tasks
-			if !tasks_completed:
+			if (not tasks_completed):
 
 				# heaters on
 				#heater.solenoid_heater(True)
@@ -143,7 +143,7 @@ while running:
 			 	continue
 
 			# perform one time tasks
-			if !tasks_completed:
+			if (not tasks_completed):
 
 				# switch active solenoid
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
@@ -183,7 +183,7 @@ while running:
 			 	continue
 
 			# perform one time tasks
-			if !tasks_completed:
+			if (not tasks_completed):
 
 				# lights on
 				#lights.lights_on()
@@ -217,7 +217,7 @@ while running:
 			 	continue
 
 			# perform one time tasks
-			if !tasks_completed:
+			if (not tasks_completed):
 
 				# lights on
 				#lights.lights_on()
@@ -267,7 +267,7 @@ while running:
 			 	continue
 
 			# perform one time tasks
-			if !tasks_completed:
+			if (not tasks_completed):
 
 				# lights on
 				#lights.lights_on()
@@ -286,7 +286,7 @@ while running:
 		elif stage == 6: #atm
 
 			# perform one time tasks
-			if !tasks_completed:
+			if (not tasks_completed):
 
 				# lights on
 				#lights.lights_on()

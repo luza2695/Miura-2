@@ -106,8 +106,8 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
                             solenoid.closeExhaust()
                             downlink_queue.put(['SO','EX','CL'])
 
-                            else:
-                                print('invalid command')
+                        else:
+                            print('invalid command')
 
                     elif target == b'\x03': # pressure system enabling control
 

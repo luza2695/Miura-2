@@ -21,7 +21,7 @@ import motor
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 10 # 3600*3 # (3 hours)
+cycle_start_delay = 15 # 3600*3 # (3 hours)
 inflation_time = 120 # (2 minutes)
 sustention_time = 180 # 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
@@ -133,7 +133,7 @@ while running:
 				stage, stage_start_time, tasks_completed = changeStage(6)
 
 			# if pressure reaches 7.5 psi or reaches maximum inflation time
-			elif main >= 7.5 or (current_time-stage_start_time) >= inflation_time:
+			elif main >= 5 or (current_time-stage_start_time) >= inflation_time:
 
 				# close current pressurize valve
 				solenoid.closePressurize(current_solenoid)

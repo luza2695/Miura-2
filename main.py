@@ -21,11 +21,11 @@ import motor
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 10
-inflation_time = 180
-sustention_time = 180
-retraction_time = 60
-deflation_time = 60
+cycle_start_delay = 10 # 3600*3 # (3 hours)
+inflation_time = 120 # (2 minutes)
+sustention_time = 180 # 600 # (10 minutes)
+retraction_time = 180 # (3 minutes)
+deflation_time = 1800 # (30 minutes)
 main_delay = 0.1
 
 # main thread has started
@@ -175,12 +175,21 @@ while running:
 				# switch to emergency stage
 				stage, stage_start_time, tasks_completed = changeStage(6)
 
-			# if sustention time has passed
-			elif (current_time-stage_start_time) >= sustention_time:
+			# if in the first 10 cycles
+			elif current_cycle <= 10:
+				# if sustention time has passed
+				if (current_time-stage_start_time) >= sustention_time:
+					# switch to stage 4
+					stage, stage_start_time, tasks_completed = changeStage(4)
+					continue
 
-				# switch to stage 4
-				stage, stage_start_time, tasks_completed = changeStage(4)
-				continue
+			# if after the 10th cycle
+			elif current_cycle > 10:
+				# if pressure drops below 4.4 psi
+				if main < 4.4:
+					# switch to stage 4
+					stage, stage_start_time, tasks_completed = changeStage(4)
+					continue
 
 			# perform one time tasks
 			if (not tasks_completed):

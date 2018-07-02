@@ -31,22 +31,23 @@ commands = {
 	'0x01 0x05':'Retract Motor',
 	'0x01 0x06':'Take Picture',
 	'0x01 0x07':'Reboot Pi',
+
 	'0x02 0x01':'Open Solenoid Valve 1',
 	'0x02 0x02':'Close Solenoid Valve 1',
 	'0x02 0x03':'Open Solenoid Valve 2',
 	'0x02 0x04':'Close Solenoid Valve 2',
 	'0x02 0x05':'Open Exhaust Value',
 	'0x02 0x06':'Close Exhaust Valve',
+
 	'0x03 0x01':'Disable Valve 1',
 	'0x03 0x02':'Enable Valve 1',
 	'0x03 0x03':'Disable Valve 2',
 	'0x03 0x04':'Enable Valve 2',
+
 	'0x04 0x01':'Turn On Solenoid Heaters',
 	'0x04 0x02':'Turn Off Solenoid Heaters',
-	'0x04 0x03':'Turn On Payload Heaters',
-	'0x04 0x04':'Turn Off Payload Heaters',
-	'0x04 0x05':'Turn On Regulator Heaters',
-	'0x04 0x06':'Turn Off Regulator Heaters'
+	'0x04 0x03':'Turn On Regulator Heaters',
+	'0x04 0x04':'Turn Off Regulator Heaters'
 }
 
 # prompts user for valid command
@@ -67,9 +68,19 @@ while (not complete):
 	elif (command_string[0:2] != '0x') or (command_string[4:7] != ' 0x') or (len(command_string) != 9):
 		print('Invalid Command')
 	else:
+		heading = bytes(0x1)
+		start = bytes(0x2)
 		target = bytes([int(command_string[0:4],16)])
 		command = bytes([int(command_string[5:9],16)])
+		end = bytes(0x3)
+		cr = bytes(0xD)
+		lf = bytes(0xA)
+		serial.write(heading)
+		serial.write(start)
 		serial.write(target)
 		serial.write(command)
+		serial.write(end)
+		serial.write(cr)
+		serial.write(lf)
 
-	time.sleep(0.25)
+	time.sleep(0.2)

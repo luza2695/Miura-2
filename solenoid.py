@@ -9,7 +9,7 @@ import time
 
 pressurize_pin1 = 12
 pressurize_pin2 = 15
-exhaust_pin = 16
+exhaust_pin = 15 #16
 motor_driver_pin = 18
 
 GPIO.setwarnings(False)
@@ -19,6 +19,7 @@ GPIO.setup(pressurize_pin1, GPIO.OUT)
 GPIO.setup(pressurize_pin2, GPIO.OUT)
 GPIO.setup(exhaust_pin, GPIO.OUT)
 GPIO.setup(motor_driver_pin, GPIO.OUT)
+GPIO.output(motor_driver_pin, False)
 
 def openPressurize(solenoid_id):
 	GPIO.output(motor_driver_pin, False)
@@ -40,4 +41,3 @@ def openExhaust():
 
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
-

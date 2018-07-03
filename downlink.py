@@ -8,7 +8,7 @@ import serial
 import time
 from zlib import adler32
 
-def main(serial, downlink_queue, log_filename, stage, current_cycle)x:
+def main(serial, downlink_queue, log_filename, stage, current_cycle):
 	if not downlink_queue.empty():
 		message = downlink_queue.get() # gets message from downlink queue
 		sender, data_type, data = message[0], message[1], str(message[2]) # isolates into sender of message, data type, and the data

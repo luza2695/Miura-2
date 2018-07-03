@@ -63,7 +63,7 @@ def read_temp():
 			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
-# initializes adc 
+# initializes adc
 adc = Adafruit_ADS1x15.ADS1115()
 
 # sets gain
@@ -90,8 +90,8 @@ def print_sensors():
 	print('Reading...')
 
 	#print ambient pressure data
-	pressure = read_pressure()
-	print('Pressure: {:.3f} kPa '.format(pressure))
+	#pressure = read_pressure()
+	#print('Pressure: {:.3f} kPa '.format(pressure))
 
 	#print ambient humidity data
 	#humidity = read_humid()
@@ -120,7 +120,7 @@ def read_sensors():
 	#temperature = read_temp()
 	#temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
 
-	return [pres_downlink,hum_downlink,temp_downlink]
+	return [] #[pres_downlink,hum_downlink,temp_downlink]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():

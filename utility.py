@@ -20,7 +20,7 @@ def main(downlink_queue,data_directory):
 	timer = 0
 	while True:
 		# gets and downlinks pressure system data
-		pres_data = read_transducers()
+		pres_data = sensors.read_transducers()
 		downlink_queue.put(pres_data)
 
 		# executes every five seconds

@@ -77,7 +77,7 @@ running = True
 manual = False
 solenoid_1_enabled = True
 solenoid_2_enabled = True
-current_solenoid = 1
+current_solenoid = 2
 current_cycle = 1
 stage, stage_start_time, tasks_completed  = changeStage(1)
 
@@ -152,7 +152,7 @@ while running:
 				#lights.lights_on()
 
 				# start video
-				cameras.takeVideo(data_directory)
+				#cameras.takeVideo(data_directory)
 
 				# close exhaust valve
 				solenoid.closeExhaust()

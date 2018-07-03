@@ -4,26 +4,28 @@
 # Modified: 6/20/2018
 # Purpose: Function to run motor
 ##################################################################
-
-from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_StepperMotor
 import time
 import atexit
 
-mh = Adafruit_MotorHAT()
-
-def turnOffMotors():
-	mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
-
-atexit.register(turnOffMotors)
-
-myStepper = mh.getStepper(200, 1)
-myStepper.setSpeed(70)
-
 def main():
+	from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_StepperMotor
+
+	mh = Adafruit_MotorHAT()
+
+	myStepper = mh.getStepper(200, 1)
+	myStepper.setSpeed(70)
+
 	myStepper.step(7500, Adafruit_MotorHAT.BACKWARD,  Adafruit_MotorHAT.DOUBLE)
 	return
 
 def test():
+	from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_StepperMotor
+
+	mh = Adafruit_MotorHAT()
+
+	myStepper = mh.getStepper(200, 1)
+	myStepper.setSpeed(70)
+
 	counter = 0
 	while True:
 		myStepper.step(100, Adafruit_MotorHAT.BACKWARD,  Adafruit_MotorHAT.DOUBLE)

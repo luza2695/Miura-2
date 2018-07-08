@@ -5,9 +5,8 @@
 # Purpose: Control individual heaters throughout payload
 ##################################################################
 import RPi.GPIO as GPIO
-import time
 
-solenoid_heater_pin = 37
+solenoid_heater_pin = 22
 regulator_heater_pin = 40
 
 GPIO.setwarnings(False)
@@ -20,8 +19,7 @@ def solenoid_heater(state):
 	GPIO.output(solenoid_heater_pin,state)
 	return
 
-# Turns regular heater on or off
+# Turns regulator heater on or off
 def regulator_heater(state):
 	GPIO.output(regulator_heater_pin,state)
 	return
-

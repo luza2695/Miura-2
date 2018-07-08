@@ -26,7 +26,7 @@ inflation_time = 120 # (2 minutes)
 sustention_time = 30 # 600 # (10 minutes)
 retraction_time = 140 # (3 minutes)
 deflation_time = 30 # (30 minutes)
-main_delay = 0.1
+main_delay = 0.2
 
 # main thread has started
 print('Main thread initialized...')
@@ -128,8 +128,7 @@ while running:
 
 				# heaters on
 				heater.solenoid_heater(True)
-				heater.payload_heater(True)
-				#heater.regulator_heater(True)
+				heater.regulator_heater(True)
 
 				# open exhaust
 				solenoid.openExhaust()

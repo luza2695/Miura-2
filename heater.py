@@ -8,20 +8,13 @@
 import RPi.GPIO as GPIO
 import time
 
-payload_heater_pin = 22
 solenoid_heater_pin = 37
 regulator_heater_pin = 40
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(payload_heater_pin, GPIO.OUT)
 GPIO.setup(solenoid_heater_pin, GPIO.OUT)
 GPIO.setup(regulator_heater_pin, GPIO.OUT)
-
-# turns payload heater on or off
-def payload_heater(state):
-	GPIO.output(payload_heater_pin,state)
-	return
 
 # Turns solenoid heater on or off
 def solenoid_heater(state):

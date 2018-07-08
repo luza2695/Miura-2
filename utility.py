@@ -31,8 +31,8 @@ def main(downlink_queue,data_directory):
 			# downlinks each set of data
 			for data in data_set:
 				downlink_queue.put(data)
-			# takes picture on cam 0 and 2
-			cameras.takePicture(data_directory)
+			# takes picture on cam 0 and 1
+			#cameras.takePicture(data_directory)
 			# resets timer
 			timer = 0
 		time.sleep(data_delay)

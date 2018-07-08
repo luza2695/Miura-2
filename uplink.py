@@ -52,7 +52,7 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
                             manual = False
                             if stage == 6: # restart if it was in emergency mode
                                 stage, stage_start_time, tasks_completed = changeStage(2)
-                                downlink_queue.put(['MA','MN',0])
+                            downlink_queue.put(['MA','MN',0])
 
                         elif command == b'\x04': # restart automation mode
                             manual = False
@@ -150,7 +150,6 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 
                         else:
                             print('invalid command')
-
                     else:
                         print('invalid target')
                 else:

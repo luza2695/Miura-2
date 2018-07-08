@@ -17,10 +17,10 @@ hum_id = 0x40
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 4
+num_temp = 5
 
 # pressure sensors setup
-#bus.write_byte_data(pres_id, 0x26, 0x00)
+bus.write_byte_data(pres_id, 0x26, 0x00)
 
 # humidity sensors setup
 #bus.write_byte(0x40,0xE5)
@@ -53,9 +53,7 @@ def read_temp():
 	temp_c = ()
 	for i in range(0,num_temp):
 		f = open(device_file[i], 'r')
-		start = time.time()
 		lines = f.readlines()
-		#print(time.time() - start)
 		f.close()
 		equals_pos = lines[1].find('t=')
 		if equals_pos != -1:
@@ -90,16 +88,16 @@ def print_sensors():
 	print('Reading...')
 
 	#print ambient pressure data
-	#pressure = read_pressure()
-	#print('Pressure: {:.3f} kPa '.format(pressure))
+	pressure = read_pressure()
+	print('Pressure: {:.3f} kPa '.format(pressure))
 
 	#print ambient humidity data
 	#humidity = read_humid()
 	#print('Humidity: {:.3f} %% '.format(humidity))
 
 	#print ambient temperature data
-	#temperature = read_temp()
-	#print('Temperature: {:.3f} C  {:.3f} C  {:.3f} C  {:.3f} C'.format(*temperature), end='')
+	temperature = read_temp()
+	print('Temperature: {:.3f} C  {:.3f} C  {:.3f} C  {:.3f} C'.format(*temperature))
 
 	#print pressure transducer data
 	pressure_system = read_pressure_system()
@@ -109,8 +107,8 @@ def print_sensors():
 # returns value of each sensor in downlinking format
 def read_sensors():
 	#read and downlink ambient pressure data
-	#pressure = read_pressure()
-	#pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
+	pressure = read_pressure()
+	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 
 	#read and downlink ambient humidity data
 	#humidity = read_humid()
@@ -120,7 +118,7 @@ def read_sensors():
 	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
-	return [temp_downlink]
+	return [pres_downlink,temp_downlink]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():
@@ -128,6 +126,3 @@ def read_transducers():
 	pressure_system = read_pressure_system()
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return pres_trans_downlink
-#while True:
-#	print_sensors()
-#	time.sleep(1)

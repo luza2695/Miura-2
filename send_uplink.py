@@ -60,7 +60,6 @@ for key, value in zip(commands.keys(),commands.values()):
 complete = False
 
 while (not complete):
-	time.sleep(0.5)
 	command_string = input('\nEnter Command: ')
 
 	if not any(command_string in command for command in commands.keys()):
@@ -68,13 +67,13 @@ while (not complete):
 	elif (command_string[0:2] != '0x') or (command_string[4:7] != ' 0x') or (len(command_string) != 9):
 		print('Invalid Command')
 	else:
-		heading = bytes(0x1)
-		start = bytes(0x2)
+		heading = b'\x01'
+		start = b'\x02'
 		target = bytes([int(command_string[0:4],16)])
 		command = bytes([int(command_string[5:9],16)])
-		end = bytes(0x3)
-		cr = bytes(0xD)
-		lf = bytes(0xA)
+		end = b'\x03'
+		cr = b'\x0D'
+		lf = b'\x0A'
 		serial.write(heading)
 		serial.write(start)
 		serial.write(target)

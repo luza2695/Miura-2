@@ -36,13 +36,13 @@ start_time = time.strftime('%m_%d_%Y_%H:%M:%S')
 
 # creates log file
 try: # checks log directory exists
-    os.mkdir('datalogs')
+	os.mkdir('datalogs')
 except FileExistsError:
-    # This directory should exist, just making sure
-    pass
+	# This directory should exist, just making sure
+	pass
 file_index = 0
 while os.path.exists('datalogs/log{}'.format(file_index)):
-    file_index += 1
+	file_index += 1
 data_directory = 'datalogs/log{}'.format(file_index)
 os.mkdir(data_directory)
 
@@ -146,10 +146,10 @@ while running:
 			# perform one time tasks
 			if (not tasks_completed):
 
-                                # heaters on
+				# heaters on
 				heater.solenoid_heater(False)
 				heater.payload_heater(False)
-                                #heater.regulator_heater(False)
+				#heater.regulator_heater(False)
 
 				# switch active solenoid
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
@@ -269,7 +269,7 @@ while running:
 			elif (current_time - stage_start_time) >= deflation_time:
 
 			#let the celebration begin
-	        	#lights.epilepsy() & omxplayer -o local example.mp3
+				#lights.epilepsy() & omxplayer -o local example.mp3
 
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])

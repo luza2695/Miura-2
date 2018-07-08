@@ -42,5 +42,3 @@ def openExhaust():
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
 
-#openExhaust()
-

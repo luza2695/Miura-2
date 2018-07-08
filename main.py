@@ -187,8 +187,7 @@ while running:
 
 				# heaters on
 				heater.solenoid_heater(False)
-				heater.payload_heater(False)
-				#heater.regulator_heater(False)
+				heater.regulator_heater(False)
 
 				# switch active solenoid
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)

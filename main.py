@@ -17,7 +17,7 @@ import sensors
 import solenoid
 import cameras
 import motor
-#import lights
+import lights
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
@@ -99,6 +99,19 @@ while running:
 		# STAGE 1: ASCENT
 		if stage == 1:
 
+			# read pressure to check for end of inflation
+			tank1,tank2,main = sensors.read_pressure_system()
+
+			# if pressure exceeds 10 psi
+			if main >= 10:
+				emergency_counter += 1
+				if emergency_counter >= 10:
+					# switch to emergency stage
+					stage, stage_start_time, tasks_completed = changeStage(6)
+					emergency_counter = 0
+			else:
+				emergency_counter = 0
+
 			# if time to start cycle
 			if (current_time-stage_start_time) >= cycle_start_delay:
 
@@ -140,15 +153,32 @@ while running:
 			else:
 				emergency_counter = 0
 
-			# if pressure reaches 7.5 psi or reaches maximum inflation time
-			elif main >= 1.5  or (current_time-stage_start_time) >= inflation_time:
+			# if reaches maximum inflation time
+			elif (current_time-stage_start_time) >= inflation_time:
 
 				# close current pressurize valve
 				solenoid.closePressurize(current_solenoid)
+				pressurization_counter = 0
 
 				# switch to stage 3
 				stage, stage_start_time, tasks_completed = changeStage(3)
 				continue
+
+			# if pressure reaches 7.5 psi
+			elif main >= 1.5:
+				pressurization_counter += 1
+				if pressurization_counter >= 5:
+					# close current pressurize valve
+					solenoid.closePressurize(current_solenoid)
+					pressurization_counter = 0
+
+					# switch to stage 3
+					stage, stage_start_time, tasks_completed = changeStage(3)
+					continue
+			else:
+				pressurization_counter = 0
+
+
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -184,22 +214,15 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-                        if main >= 10:
-                                emergency_counter += 1
-                                if emergency_counter >= 10:
-                                        # switch to emergency stage
-                                        stage, stage_start_time, tasks_completed = changeStage(6)
-                                        emergency_counter = 0  
-                        else:
-                                emergency_counter = 0# if pressure exceeds 10 psi
-                        if main >= 10:
-                                emergency_counter += 1
-                                if emergency_counter >= 10:
-                                        # switch to emergency stage
-                                        stage, stage_start_time, tasks_completed = changeStage(6)
-                                        emergency_counter = 0  
-                        else:
-                                emergency_counter = 0# if pressure exceeds 10 psi
+			if main >= 10:
+				emergency_counter += 1
+				if emergency_counter >= 10:
+					# switch to emergency stage
+					stage, stage_start_time, tasks_completed = changeStage(6)
+					emergency_counter = 0
+			else:
+				emergency_counter = 0
+
 			# if in the first 10 cycles
 			elif current_cycle <= 10:
 				# if sustention time has passed
@@ -212,9 +235,14 @@ while running:
 			elif current_cycle > 10:
 				# if pressure drops below 4.4 psi
 				if main < 4.4:
-					# switch to stage 4
-					stage, stage_start_time, tasks_completed = changeStage(4)
-					continue
+					pressurization_counter += 1
+					if pressurization_counter >= 5:
+						# switch to stage 4
+						stage, stage_start_time, tasks_completed = changeStage(4)
+						pressurization_counter = 0
+						continue
+				else:
+					pressurization_counter = 0
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -240,8 +268,13 @@ while running:
 
 			# if pressure exceeds 10 psi
 			if main >= 10:
-				# switch to emergency stage
-				stage, stage_start_time, tasks_completed = changeStage(6)
+				emergency_counter += 1
+				if emergency_counter >= 10:
+					# switch to emergency stage
+					stage, stage_start_time, tasks_completed = changeStage(6)
+					emergency_counter = 0
+			else:
+				emergency_counter = 0
 
 			# if retraction time has passed
 			elif (current_time - stage_start_time) >= retraction_time:
@@ -281,8 +314,13 @@ while running:
 
 			# if pressure exceeds 10 psi
 			if main >= 10:
-				# switch to emergency stage
-				stage, stage_start_time, tasks_completed = changeStage(6)
+				emergency_counter += 1
+				if emergency_counter >= 10:
+					# switch to emergency stage
+					stage, stage_start_time, tasks_completed = changeStage(6)
+					emergency_counter = 0
+			else:
+				emergency_counter = 0
 
 			# if deflation time has passed
 			elif (current_time - stage_start_time) >= deflation_time:

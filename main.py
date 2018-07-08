@@ -17,11 +17,11 @@ import sensors
 import solenoid
 import cameras
 import motor
-import lights
+#import lights
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 10  # 3600*3 # (3 hours)
+cycle_start_delay = 60  # 3600*3 # (3 hours)
 inflation_time = 120 # (2 minutes)
 sustention_time = 30 # 600 # (10 minutes)
 retraction_time = 140 # (3 minutes)
@@ -85,6 +85,10 @@ stage, stage_start_time, tasks_completed  = changeStage(1)
 
 # pressure check loop
 while running:
+
+	# read and downlink transducer data
+	transducer_data = sensors.read_transducers()
+	downlink_queue.put(transducer_data)
 
 	# uplink and downlink
 	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed)
@@ -150,9 +154,6 @@ while running:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
-			else:
-				emergency_counter = 0
-
 			# if reaches maximum inflation time
 			elif (current_time-stage_start_time) >= inflation_time:
 
@@ -165,7 +166,8 @@ while running:
 				continue
 
 			# if pressure reaches 7.5 psi
-			elif main >= 1.5:
+			elif main >= 7.5:
+				emergency_counter = 0
 				pressurization_counter += 1
 				if pressurization_counter >= 5:
 					# close current pressurize valve
@@ -176,6 +178,7 @@ while running:
 					stage, stage_start_time, tasks_completed = changeStage(3)
 					continue
 			else:
+				emergency_counter = 0
 				pressurization_counter = 0
 
 
@@ -220,8 +223,6 @@ while running:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
-			else:
-				emergency_counter = 0
 
 			# if in the first 10 cycles
 			elif current_cycle <= 10:
@@ -243,6 +244,8 @@ while running:
 						continue
 				else:
 					pressurization_counter = 0
+			else:
+				emergency_counter = 0
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -273,8 +276,6 @@ while running:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
-			else:
-				emergency_counter = 0
 
 			# if retraction time has passed
 			elif (current_time - stage_start_time) >= retraction_time:
@@ -282,6 +283,8 @@ while running:
 				# switch to stage 5
 				stage, stage_start_time, tasks_completed = changeStage(5)
 				continue
+			else:
+				emergency_counter = 0
 
 			# perform one time tasks
 			if (not tasks_completed):
@@ -319,13 +322,11 @@ while running:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
-			else:
-				emergency_counter = 0
 
 			# if deflation time has passed
 			elif (current_time - stage_start_time) >= deflation_time:
 
-			#let the celebration begin
+				#let the celebration begin
 				#lights.epilepsy() & omxplayer -o local example.mp3
 
 				# downlink cycle complete
@@ -337,6 +338,8 @@ while running:
 				# switch to stage 2
 				stage, stage_start_time, tasks_completed = changeStage(2)
 				continue
+			else:
+				emergency_counter = 0
 
 			# perform one time tasks
 			if (not tasks_completed):

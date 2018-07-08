@@ -19,20 +19,18 @@ def main(downlink_queue,data_directory):
 	downlink_queue.put(['UT','BU', 0])
 	timer = 0
 	while True:
-		# gets and downlinks pressure system data
-		pres_data = sensors.read_transducers()
-		downlink_queue.put(pres_data)
-
 		# executes every five seconds
 		timer = timer + data_delay
 		if timer >= env_delay:
 			# gets list of downlink formatted data
+			sensor_timer = time.time()
 			data_set = sensors.read_sensors()
+			sensor_timer = time.time() - sensor_timer
 			# downlinks each set of data
 			for data in data_set:
 				downlink_queue.put(data)
 			# takes picture on cam 0 and 1
-			#cameras.takePicture(data_directory)
+			cameras.takePicture(data_directory)
 			# resets timer
-			timer = 0
+			timer = sensor_timer
 		time.sleep(data_delay)

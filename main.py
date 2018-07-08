@@ -79,6 +79,8 @@ solenoid_1_enabled = True
 solenoid_2_enabled = True
 current_solenoid = 2
 current_cycle = 1
+pressurization_counter = 0
+emergency_counter = 0
 stage, stage_start_time, tasks_completed  = changeStage(1)
 
 # pressure check loop
@@ -130,11 +132,16 @@ while running:
 
 			# if pressure exceeds 10 psi
 			if main >= 10:
-				# switch to emergency stage
-				stage, stage_start_time, tasks_completed = changeStage(6)
+				emergency_counter += 1
+				if emergency_counter >= 10:
+					# switch to emergency stage
+					stage, stage_start_time, tasks_completed = changeStage(6)
+					emergency_counter = 0
+			else:
+				emergency_counter = 0
 
 			# if pressure reaches 7.5 psi or reaches maximum inflation time
-			elif main >= 6  or (current_time-stage_start_time) >= inflation_time:
+			elif main >= 1.5  or (current_time-stage_start_time) >= inflation_time:
 
 				# close current pressurize valve
 				solenoid.closePressurize(current_solenoid)
@@ -177,10 +184,22 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-			if main >= 10:
-				# switch to emergency stage
-				stage, stage_start_time, tasks_completed = changeStage(6)
-
+                        if main >= 10:
+                                emergency_counter += 1
+                                if emergency_counter >= 10:
+                                        # switch to emergency stage
+                                        stage, stage_start_time, tasks_completed = changeStage(6)
+                                        emergency_counter = 0  
+                        else:
+                                emergency_counter = 0# if pressure exceeds 10 psi
+                        if main >= 10:
+                                emergency_counter += 1
+                                if emergency_counter >= 10:
+                                        # switch to emergency stage
+                                        stage, stage_start_time, tasks_completed = changeStage(6)
+                                        emergency_counter = 0  
+                        else:
+                                emergency_counter = 0# if pressure exceeds 10 psi
 			# if in the first 10 cycles
 			elif current_cycle <= 10:
 				# if sustention time has passed

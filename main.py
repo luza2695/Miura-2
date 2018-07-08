@@ -70,7 +70,7 @@ serial = serial.Serial(port=current_port,
 serial.flushInput()
 
 # setting up functions to run at exit
-atexit.register(motors.turnOffMotors)
+atexit.register(motor.turnOffMotors)
 atexit.register(sensors.cleanup)
 
 # start utilty thread

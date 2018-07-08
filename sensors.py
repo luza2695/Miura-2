@@ -30,6 +30,7 @@ device_file = []
 base_dir = '/sys/bus/w1/devices/'
 for i in range(0,num_temp):
 	device_folder = glob.glob(base_dir + '28*')[i]
+	print(device_folder)
 	device_file.append(device_folder + '/w1_slave')
 
 # cleans up gpio outputs
@@ -120,7 +121,7 @@ def read_sensors():
 
 	#read and downlink ambient temperature data
 	temperature = read_temp()
-	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
 	return [temp_downlink]
 

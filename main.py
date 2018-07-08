@@ -12,7 +12,7 @@ import serial
 import utility
 import uplink
 import downlink
-#import heater
+import heater
 import sensors
 import solenoid
 import cameras
@@ -21,11 +21,11 @@ import motor
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 15 # 3600*3 # (3 hours)
+cycle_start_delay = 10  # 3600*3 # (3 hours)
 inflation_time = 120 # (2 minutes)
-sustention_time = 180 # 600 # (10 minutes)
-retraction_time = 180 # (3 minutes)
-deflation_time = 1800 # (30 minutes)
+sustention_time = 30 # 600 # (10 minutes)
+retraction_time = 140 # (3 minutes)
+deflation_time = 30 # (30 minutes)
 main_delay = 0.1
 
 # main thread has started
@@ -108,8 +108,9 @@ while running:
 			if (not tasks_completed):
 
 				# heaters on
-				#heater.solenoid_heater(True)
-				#heater.payload_heater(True)
+				heater.solenoid_heater(True)
+				heater.payload_heater(True)
+				#heater.regulator_heater(True)
 
 				# open exhaust
 				solenoid.openExhaust()
@@ -133,7 +134,7 @@ while running:
 				stage, stage_start_time, tasks_completed = changeStage(6)
 
 			# if pressure reaches 7.5 psi or reaches maximum inflation time
-			elif main >= 5 or (current_time-stage_start_time) >= inflation_time:
+			elif main >= 6  or (current_time-stage_start_time) >= inflation_time:
 
 				# close current pressurize valve
 				solenoid.closePressurize(current_solenoid)
@@ -144,6 +145,11 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
+
+                                # heaters on
+				heater.solenoid_heater(False)
+				heater.payload_heater(False)
+                                #heater.regulator_heater(False)
 
 				# switch active solenoid
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
@@ -219,7 +225,7 @@ while running:
 				stage, stage_start_time, tasks_completed = changeStage(6)
 
 			# if retraction time has passed
-			elif (stage_start_time - current_time) >= retraction_time:
+			elif (current_time - stage_start_time) >= retraction_time:
 
 				# switch to stage 5
 				stage, stage_start_time, tasks_completed = changeStage(5)
@@ -232,7 +238,7 @@ while running:
 				#lights.lights_on()
 
 				# start video
-				cameras.takeVideo(data_directory)
+				#cameras.takeVideo(data_directory)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -260,9 +266,9 @@ while running:
 				stage, stage_start_time, tasks_completed = changeStage(6)
 
 			# if deflation time has passed
-			elif (stage_start_time - current_time) >= deflation_time:
+			elif (current_time - stage_start_time) >= deflation_time:
 
-				#let the celebration begin
+			#let the celebration begin
 	        	#lights.epilepsy() & omxplayer -o local example.mp3
 
 				# downlink cycle complete

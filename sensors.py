@@ -17,10 +17,10 @@ hum_id = 0x40
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 9
+num_temp = 4
 
 # pressure sensors setup
-#bus.write_byte_data(pres_id, 0x26, 0x39)
+#bus.write_byte_data(pres_id, 0x26, 0x00)
 
 # humidity sensors setup
 #bus.write_byte(0x40,0xE5)
@@ -28,9 +28,9 @@ num_temp = 9
 # automatically finds temp sensor addresses
 device_file = []
 base_dir = '/sys/bus/w1/devices/'
-#for i in range(0,num_temp):
-#	device_folder = glob.glob(base_dir + '28*')[i]
-#	device_file.append(device_folder + '/w1_slave')
+for i in range(0,num_temp):
+	device_folder = glob.glob(base_dir + '28*')[i]
+	device_file.append(device_folder + '/w1_slave')
 
 # reads external pressure sensor
 def read_pressure():
@@ -55,7 +55,7 @@ def read_temp():
 		f = open(device_file[i], 'r')
 		start = time.time()
 		lines = f.readlines()
-		print(time.time() - start)
+		#print(time.time() - start)
 		f.close()
 		equals_pos = lines[1].find('t=')
 		if equals_pos != -1:
@@ -117,10 +117,10 @@ def read_sensors():
 	#hum_downlink = ['SE','HU','{:.2f}'.format(humidity)]
 
 	#read and downlink ambient temperature data
-	#temperature = read_temp()
-	#temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(0,0,0,0)]
+	temperature = read_temp()
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
-	return [] #[pres_downlink,hum_downlink,temp_downlink]
+	return [temp_downlink]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():
@@ -128,3 +128,6 @@ def read_transducers():
 	pressure_system = read_pressure_system()
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return pres_trans_downlink
+#while True:
+#	print_sensors()
+#	time.sleep(1)

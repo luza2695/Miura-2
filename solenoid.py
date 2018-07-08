@@ -9,7 +9,7 @@ import time
 
 pressurize_pin1 = 12
 pressurize_pin2 = 15
-exhaust_pin = 15 #16
+exhaust_pin = 16
 motor_driver_pin = 18
 
 GPIO.setwarnings(False)
@@ -41,3 +41,6 @@ def openExhaust():
 
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
+
+#openExhaust()
+

@@ -32,6 +32,10 @@ for i in range(0,num_temp):
 	device_folder = glob.glob(base_dir + '28*')[i]
 	device_file.append(device_folder + '/w1_slave')
 
+# cleans up gpio outputs
+def cleanup():
+	GPIO.cleanup()
+
 # reads external pressure sensor
 def read_pressure():
 	data = bus.read_i2c_block_data(pres_id, 0x00, 4)

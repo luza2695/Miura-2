@@ -18,6 +18,7 @@ import solenoid
 import cameras
 import motor
 #import lights
+import atexit
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
@@ -67,6 +68,10 @@ serial = serial.Serial(port=current_port,
 
 # clears the serial communication channel
 serial.flushInput()
+
+# setting up functions to run at exit
+atexit.register(motors.turnOffMotors)
+atexit.register(sensors.cleanup)
 
 # start utilty thread
 utility_thread = threading.Thread(name = 'util', target = utility.main, args = (downlink_queue,data_directory), daemon = True)

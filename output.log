@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/home/pi/Miura-2/main.py", line 13, in <module>
+    import uplink
+  File "/home/pi/Miura-2/uplink.py", line 74
+    elif command == b'\x08' # emergency stop (ONLY USE FOR TESTING REALLY REALLY BAD)
+                                                                                    ^
+TabError: inconsistent use of tabs and spaces in indentation

@@ -31,6 +31,7 @@ commands = {
 	'0x01 0x05':'Retract Motor',
 	'0x01 0x06':'Take Picture',
 	'0x01 0x07':'Reboot Pi',
+	'0x01 0x08':'Emergency Stop (WILL NOT BE ABLE TO RESTART UNLESS SSH OR POWER CYCLE)',
 
 	'0x02 0x01':'Open Solenoid Valve 1',
 	'0x02 0x02':'Close Solenoid Valve 1',

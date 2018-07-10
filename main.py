@@ -22,11 +22,11 @@ import atexit
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 60  # 3600*3 # (3 hours)
+cycle_start_delay = 60 #1200 # 10800 # (3 hours)
 inflation_time = 120 # (2 minutes)
-sustention_time = 600 # (10 minutes)
-retraction_time = 140 # (3 minutes)
-deflation_time = 30 # (30 minutes)
+sustention_time = 20 # 600 # (10 minutes)
+retraction_time = 180 # (3 minutes)
+deflation_time = 20 # (30 minutes)
 main_delay = 0.2
 
 # main thread has started
@@ -130,11 +130,6 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
-
-				# heaters on
-				heater.solenoid_heater(True)
-				heater.regulator_heater(True)
-
 				# open exhaust
 				solenoid.openExhaust()
 
@@ -144,6 +139,16 @@ while running:
 
 				# mark tasks at completed
 				tasks_completed = True
+
+			# checks heater temperatures
+			temp_data = sensors.read_temp()
+			# solenoid control
+			if temp_data[0] > 30 or temp_data[2] > 30 or temp_data[7] > 30:
+				heater.solenoid_heater(False)
+			else:
+				heater.solenoid_heater(True)
+			# regulator control
+			heater.regulator_heater(True)
 
 		# STAGE 2: INFLATION
 		elif stage == 2:

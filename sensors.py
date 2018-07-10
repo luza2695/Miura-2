@@ -17,10 +17,10 @@ hum_id = 0x40
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 7
+num_temp = 8
 
 # pressure sensors setup
-#bus.write_byte_data(pres_id, 0x26, 0x00)
+bus.write_byte_data(pres_id, 0x26, 0x00)
 
 # humidity sensors setup
 #bus.write_byte(0x40,0xE5)
@@ -30,7 +30,6 @@ device_file = []
 base_dir = '/sys/bus/w1/devices/'
 for i in range(0,num_temp):
 	device_folder = glob.glob(base_dir + '28*')[i]
-	print(device_folder)
 	device_file.append(device_folder + '/w1_slave')
 
 # cleans up gpio outputs
@@ -40,6 +39,7 @@ def cleanup():
 # reads external pressure sensor
 def read_pressure():
 	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
+	print(data[1],data[2],data[3])
 	pres = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
 	pressure = (pres) / 4000
 	return pressure
@@ -94,15 +94,15 @@ def print_sensors():
 
 	#print ambient pressure data
 	pressure = read_pressure()
-	print('Pressure: {:.3f} kPa '.format(pressure))
+	print('Pressure: {:.2f} kPa '.format(pressure))
 
 	#print ambient humidity data
 	#humidity = read_humid()
-	#print('Humidity: {:.3f} %% '.format(humidity))
+	#print('Humidity: {:.2f} %% '.format(humidity))
 
 	#print ambient temperature data
 	temperature = read_temp()
-	print('Temperature: {:.3f} C  {:.3f} C  {:.3f} C  {:.3f} C'.format(*temperature))
+	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature))
 
 	#print pressure transducer data
 	pressure_system = read_pressure_system()
@@ -112,8 +112,8 @@ def print_sensors():
 # returns value of each sensor in downlinking format
 def read_sensors():
 	#read and downlink ambient pressure data
-	#pressure = read_pressure()
-	#pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
+	pressure = read_pressure()
+	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 
 	#read and downlink ambient humidity data
 	#humidity = read_humid()
@@ -121,9 +121,9 @@ def read_sensors():
 
 	#read and downlink ambient temperature data
 	temperature = read_temp()
-	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
-	return [temp_downlink]
+	return [pres_downlink,temp_downlink]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():

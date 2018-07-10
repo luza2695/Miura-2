@@ -21,18 +21,11 @@ myStepper = mh.getStepper(200, 1)  # 200 steps/rev, motor port #1
 myStepper.setSpeed(70)             # 70 RPM
 
 def main():
-	myStepper.step(7000, Adafruit_MotorHAT.FORWARD,  Adafruit_MotorHAT.DOUBLE)
+	myStepper.step(7700, Adafruit_MotorHAT.BACKWARD,  Adafruit_MotorHAT.DOUBLE)
 	turnOffMotors()
 	return
 
 def test():
-	from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_StepperMotor
-
-	mh = Adafruit_MotorHAT()
-
-	myStepper = mh.getStepper(200, 1)
-	myStepper.setSpeed(70)
-
 	counter = 0
 	while True:
 		myStepper.step(100, Adafruit_MotorHAT.BACKWARD,  Adafruit_MotorHAT.DOUBLE)

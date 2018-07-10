@@ -71,8 +71,9 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 							subprocess.Popen('sudo reboot', shell=True)
 							downlink_queue.put(['MA','RE',0])
 
-			elif command == b'\x08' # emergency stop (ONLY USE FOR TESTING REALLY REALLY BAD)
+						elif command == b'\x08': # emergency stop (ONLY USE FOR TESTING REALLY REALLY BAD)
 							subprocess.Popen('sudo killall python3', shell=True)
+
 						else:
 							print('invalid command')
 

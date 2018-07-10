@@ -22,11 +22,11 @@ import atexit
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 60 #1200 # 10800 # (3 hours)
+cycle_start_delay = 1200 # 10800 # (3 hours)
 inflation_time = 120 # (2 minutes)
-sustention_time = 20 # 600 # (10 minutes)
+sustention_time = 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
-deflation_time = 20 # (30 minutes)
+deflation_time = 300 # (30 minutes)
 main_delay = 0.2
 
 # main thread has started

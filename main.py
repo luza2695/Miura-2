@@ -86,14 +86,18 @@ current_solenoid = 2
 current_cycle = 1
 pressurization_counter = 0
 emergency_counter = 0
+transducer_downlink_counter = 0
 stage, stage_start_time, tasks_completed  = changeStage(1)
 
 # pressure check loop
 while running:
 
-	# read and downlink transducer data
-	transducer_data = sensors.read_transducers()
-	downlink_queue.put(transducer_data)
+	# downlink transducer data every 5 loops
+	transducer_downlink_counter += 1
+	if transducer_downlink_counter >= 5:
+	        transducer_data = sensors.read_transducers()
+		downlink_queue.put(transducer_data)
+		transducer_downlink_counter = 0
 
 	# uplink and downlink
 	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed)

@@ -22,7 +22,7 @@ import atexit
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 1200 # 10800 # (3 hours)
+cycle_start_delay = 10800 # 10800 # (3 hours)
 inflation_time = 120 # (2 minutes)
 sustention_time = 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
@@ -95,7 +95,7 @@ while running:
 	# downlink transducer data every 5 loops
 	transducer_downlink_counter += 1
 	if transducer_downlink_counter >= 5:
-	        transducer_data = sensors.read_transducers()
+		transducer_data = sensors.read_transducers()
 		downlink_queue.put(transducer_data)
 		transducer_downlink_counter = 0
 
@@ -147,12 +147,15 @@ while running:
 			# checks heater temperatures
 			temp_data = sensors.read_temp()
 			# solenoid control
-			if temp_data[0] > 30 or temp_data[2] > 30 or temp_data[7] > 30:
+			if temp_data[0] > 30 or temp_data[1] > 30 or temp_data[2] > 30:
 				heater.solenoid_heater(False)
 			else:
 				heater.solenoid_heater(True)
 			# regulator control
-			heater.regulator_heater(True)
+			if temp_data[3] > 30 or temp_data[4] > 30:
+				heater.regulator_heater(False)
+			else:
+				heater.regulator_heater(True)
 
 		# STAGE 2: INFLATION
 		elif stage == 2:

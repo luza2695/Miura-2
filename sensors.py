@@ -26,11 +26,11 @@ bus.write_byte_data(pres_id, 0x26, 0x00)
 #bus.write_byte(0x40,0xE5)
 
 # automatically finds temp sensor addresses
-device_file = []
-base_dir = '/sys/bus/w1/devices/'
-for i in range(0,num_temp):
-	device_folder = glob.glob(base_dir + '28*')[i]
-	device_file.append(device_folder + '/w1_slave')
+device_file = ['/sys/bus/w1/devices/28-000009958138/w1_slave','/sys/bus/w1/devices/28-000009957683/w1_slave','/sys/bus/w1/devices/28-000009958549/w1_slave','/sys/bus/w1/devices/28-0000099577b3/w1_slave','/sys/bus/w1/devices/28-00000995861d/w1_slave','/sys/bus/w1/devices/28-0000099566dc/w1_slave','/sys/bus/w1/devices/28-000009957c5d/w1_slave','/sys/bus/w1/devices/28-00000995853b/w1_slave']
+#base_dir = '/sys/bus/w1/devices/'
+#for i in range(0,num_temp):
+#	device_folder = glob.glob(base_dir + '28*')[i]
+#	device_file.append(device_folder + '/w1_slave')
 
 # cleans up gpio outputs
 def cleanup():
@@ -112,8 +112,8 @@ def print_sensors():
 # returns value of each sensor in downlinking format
 def read_sensors():
 	#read and downlink ambient pressure data
-	pressure = read_pressure()
-	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
+	#pressure = read_pressure()
+	pres_downlink = ['SE','PR','{:.2f}'.format(0)] #pressure)]
 
 	#read and downlink ambient humidity data
 	#humidity = read_humid()

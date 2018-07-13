@@ -16,10 +16,28 @@ import heater
 import sensors
 import solenoid
 import cameras
+import RPi.GPIO as GPIO
 import motor
 #import lights
 import atexit
 from helpers import changeStage, switchSolenoid
+
+#Indicator LED Startup
+stage_1 = 38
+stage_2 = 35
+stage_3 = 36
+stage_4 = 33
+stage_5 = 32
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+
+GPIO.setup(stage_1, GPIO.OUT)
+GPIO.setup(stage_2, GPIO.OUT)
+GPIO.setup(stage_3, GPIO.OUT)
+GPIO.setup(stage_4, GPIO.OUT)
+GPIO.setup(stage_5, GPIO.OUT)
+
 
 # important variables for operation
 cycle_start_delay = 10800 # 10800 # (3 hours)
@@ -130,12 +148,16 @@ while running:
 
 				# switch to stage 2
 				stage, stage_start_time, tasks_completed = changeStage(2)
+				GPIO.output(stage_1, False)
 				continue
 
 			# perform one time tasks
 			if (not tasks_completed):
 				# open exhaust
 				solenoid.openExhaust()
+
+				#Turn on LED for stage 1
+				GPIO.output(stage_1, True)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -179,6 +201,7 @@ while running:
 
 				# switch to stage 3
 				stage, stage_start_time, tasks_completed = changeStage(3)
+				GPIO.output(stage_2, False)
 				continue
 
 			# if pressure reaches 7.5 psi
@@ -201,6 +224,9 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
+
+				#Turn on LED for stage 2
+				GPIO.output(stage_2, True)
 
 				# heaters on
 				heater.solenoid_heater(False)
@@ -245,6 +271,7 @@ while running:
 				if (current_time-stage_start_time) >= sustention_time:
 					# switch to stage 4
 					stage, stage_start_time, tasks_completed = changeStage(4)
+					GPIO.output(stage_3, False)
 					continue
 
 			# if after the 10th cycle
@@ -267,6 +294,9 @@ while running:
 
 				# lights on
 				#lights.lights_on()
+
+				#turn on LED for stage 3
+				GPIO.output(stage_3, True)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -297,6 +327,7 @@ while running:
 
 				# switch to stage 5
 				stage, stage_start_time, tasks_completed = changeStage(5)
+				GPIO.output(stage_4, False)
 				continue
 			else:
 				emergency_counter = 0
@@ -309,6 +340,9 @@ while running:
 
 				# start video
 				#cameras.takeVideo(data_directory)
+
+				#Turn on LED to stage 4
+				GPIO.output(stage_4, True)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -352,6 +386,7 @@ while running:
 
 				# switch to stage 2
 				stage, stage_start_time, tasks_completed = changeStage(2)
+				GPIO.output(stage_5, False)
 				continue
 			else:
 				emergency_counter = 0
@@ -361,6 +396,9 @@ while running:
 
 				# lights on
 				#lights.lights_on()
+
+				#Turn LED FOR STAGE 5
+				GPIO.output(stage_5, True)
 
 				# close both pressurize
 				solenoid.closePressurize(1)

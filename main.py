@@ -45,7 +45,9 @@ inflation_time = 120 # (2 minutes)
 sustention_time = 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
 deflation_time = 300 # (30 minutes)
-main_delay = 0.2
+main_delay = 0.2 # seconds
+emergency_pressure = 15 # psi
+standard_pressure = 7.5 # psi
 
 # main thread has started
 print('Main thread initialized...')
@@ -134,9 +136,9 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-			if main >= 10:
+			if main >= emergency_pressure:
 				emergency_counter += 1
-				if emergency_counter >= 10:
+				if emergency_counter >= 5:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
@@ -186,9 +188,9 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-			if main >= 10:
+			if main >= emergency_pressure:
 				emergency_counter += 1
-				if emergency_counter >= 10:
+				if emergency_counter >= 5:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
@@ -205,10 +207,10 @@ while running:
 				continue
 
 			# if pressure reaches 7.5 psi
-			elif main >= 7.5:
+			elif main >= standard_pressure:
 				emergency_counter = 0
 				pressurization_counter += 1
-				if pressurization_counter >= 5:
+				if pressurization_counter >= 3:
 					# close current pressurize valve
 					solenoid.closePressurize(current_solenoid)
 					pressurization_counter = 0
@@ -258,9 +260,9 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-			if main >= 10:
+			if main >= emergency_pressure:
 				emergency_counter += 1
-				if emergency_counter >= 10:
+				if emergency_counter >= 5:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
@@ -315,9 +317,9 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-			if main >= 10:
+			if main >= emergency_pressure:
 				emergency_counter += 1
-				if emergency_counter >= 10:
+				if emergency_counter >= 5:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0
@@ -365,9 +367,9 @@ while running:
 			tank1,tank2,main = sensors.read_pressure_system()
 
 			# if pressure exceeds 10 psi
-			if main >= 10:
+			if main >= emergency_pressure:
 				emergency_counter += 1
-				if emergency_counter >= 10:
+				if emergency_counter >= 5:
 					# switch to emergency stage
 					stage, stage_start_time, tasks_completed = changeStage(6)
 					emergency_counter = 0

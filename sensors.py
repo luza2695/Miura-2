@@ -20,7 +20,7 @@ bus = smbus.SMBus(1)
 num_temp = 8
 
 # pressure sensors setup
-bus.write_byte_data(pres_id, 0x26, 0x00)
+bus.write_byte_data(pres_id, 0x26, 0x39)
 
 # humidity sensors setup
 #bus.write_byte(0x40,0xE5)
@@ -41,7 +41,7 @@ def read_pressure():
 	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
 	print(data[1],data[2],data[3])
 	pres = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
-	pressure = (pres) / 4000
+	pressure = (pres / 4.0) / 1000.0
 	return pressure
 
 # reads external humidity
@@ -67,7 +67,7 @@ def read_temp():
 	return temp_c
 
 # initializes adc
-adc = Adafruit_ADS1x15.ADS1115()
+#adc = Adafruit_ADS1x15.ADS1115()
 
 # sets gain
 # - 2/3 = +/- 6.144V
@@ -101,8 +101,8 @@ def print_sensors():
 	#print('Humidity: {:.2f} %% '.format(humidity))
 
 	#print ambient temperature data
-	temperature = read_temp()
-	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature))
+	#temperature = read_temp()
+	#print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature))
 
 	#print pressure transducer data
 	pressure_system = read_pressure_system()
@@ -123,7 +123,7 @@ def read_sensors():
 	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
-	return [pres_downlink,temp_downlink]
+	return [pres_downlink ,temp_downlink]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():

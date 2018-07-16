@@ -248,7 +248,7 @@ while running:
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				# start video
 				#cameras.takeVideo(data_directory)
@@ -305,7 +305,7 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				#turn on LED for stage 3
 				GPIO.output(stage_3, True)
@@ -351,7 +351,7 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				# start video
 				#cameras.takeVideo(data_directory)
@@ -394,7 +394,9 @@ while running:
 			elif (current_time - stage_start_time) >= deflation_time:
 
 				#let the celebration begin
-				#lights.epilepsy() & omxplayer -o local example.mp3
+				lights.epilepsy()
+				
+				# & omxplayer -o local example.mp3
 
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])
@@ -413,7 +415,7 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				#Turn LED FOR STAGE 5
 				GPIO.output(stage_5, True)
@@ -438,7 +440,7 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				#Turn LED FOR STAGE 5
 				GPIO.output(emergency_pressure_led, True)

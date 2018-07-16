@@ -66,6 +66,45 @@ def read_temp():
 			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
+
+def emergency_temperature(num, temp_data):
+	for i in range(0, num):
+
+		#solenoid 1 temperature ranges
+		if temp_data[0] <= -20 and temp_data[0] >= 80:
+			temp_emergency_downlink = ['EM','TE','1', '{:.2f}'.format(*temp_data[0])]
+
+		#solenoid 2 temperature ranges
+		elif temp_data[1] <= -20 and temp_data[1] >= 80:
+			temp_emergency_downlink = ['EM','TE','2', '{:.2f}'.format(*temp_data[1])]
+
+		#solenoid 3 temperature ranges
+		elif temp_data[2] <= -20 and temp_data[2] >= 80:
+			temp_emergency_downlink = ['EM','TE','3', '{:.2f}'.format(*temp_data[2])]
+
+		#Regulator 1 temperature ranges
+		elif temp_data[3] <= 0 and temp_data[3] >= 40:
+			temp_emergency_downlink = ['EM','TE','4', '{:.2f}'.format(*temp_data[3])]
+
+		#Regulator 2 temperature ranges
+		elif temp_data[4] <= 0 and temp_data[4] >= 40:
+			temp_emergency_downlink = ['EM','TE','5', '{:.2f}'.format(*temp_data[4])]
+
+		#30 - 5v buck temperature ranges
+		elif temp_data[5] <= -40 and temp_data[5] >= 60
+			temp_emergency_downlink = ['EM','TE','6', '{:.2f}'.format(*temp_data[5])]
+
+		#Habitat temperature ranges
+		elif temp_data[6] <= -50 and temp_data[6] >= 100:
+			temp_emergency_downlink = ['EM','TE','7', '{:.2f}'.format(*temp_data[6])]
+
+		#motor temperature ranges
+		elif temp_data[8] <= -40 and temp_data[8] >= 60:
+			temp_emergency_downlink = ['EM','TE','9', '{:.2f}'.format(*temp_data[8])]
+
+		return temp_emergency_downlink
+
+
 # initializes adc
 #adc = Adafruit_ADS1x15.ADS1115()
 
@@ -112,7 +151,7 @@ def print_sensors():
 # returns value of each sensor in downlinking format
 def read_sensors():
 	#read and downlink ambient pressure data
-	#pressure = read_pressure()
+	pressure = read_pressure()
 	pres_downlink = ['SE','PR','{:.2f}'.format(0)] #pressure)]
 
 	#read and downlink ambient humidity data
@@ -123,7 +162,10 @@ def read_sensors():
 	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
-	return [pres_downlink ,temp_downlink]
+	#emergency temperature downlink
+	temp_E = emergency_downlink(num_temp, temperature)
+
+	return [pres_downlink, temp_downlink, temp_E]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():
@@ -131,3 +173,4 @@ def read_transducers():
 	pressure_system = read_pressure_system()
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return pres_trans_downlink
+

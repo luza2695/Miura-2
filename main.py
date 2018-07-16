@@ -28,6 +28,8 @@ stage_2 = 35
 stage_3 = 36
 stage_4 = 33
 stage_5 = 32
+emergency_pressure_led = 31
+emergency_temperature_led = 29
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
@@ -37,6 +39,8 @@ GPIO.setup(stage_2, GPIO.OUT)
 GPIO.setup(stage_3, GPIO.OUT)
 GPIO.setup(stage_4, GPIO.OUT)
 GPIO.setup(stage_5, GPIO.OUT)
+GPIO.setup(emergency_pressure_led, GPIO.OUT)
+GPIO.setup(emergency_temperature_led, GPIO.OUT)
 
 
 # important variables for operation
@@ -161,6 +165,9 @@ while running:
 				#Turn on LED for stage 1
 				GPIO.output(stage_1, True)
 
+				#Turn off emergency led
+				GPIO.output(emergency_pressure_led, False)
+
 				# close both pressurize
 				solenoid.closePressurize(1)
 				solenoid.closePressurize(2)
@@ -229,6 +236,9 @@ while running:
 
 				#Turn on LED for stage 2
 				GPIO.output(stage_2, True)
+
+				#Turn off emergency led
+				GPIO.output(emergency_pressure_led, False)
 
 				# heaters on
 				heater.solenoid_heater(False)
@@ -300,6 +310,9 @@ while running:
 				#turn on LED for stage 3
 				GPIO.output(stage_3, True)
 
+				#Turn off emergency led
+				GPIO.output(emergency_pressure_led, False)
+
 				# close both pressurize
 				solenoid.closePressurize(1)
 				solenoid.closePressurize(2)
@@ -345,6 +358,9 @@ while running:
 
 				#Turn on LED to stage 4
 				GPIO.output(stage_4, True)
+
+				#Turn off emergency led
+				GPIO.output(emergency_pressure_led, False)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -402,6 +418,9 @@ while running:
 				#Turn LED FOR STAGE 5
 				GPIO.output(stage_5, True)
 
+				#Turn off emergency led
+				GPIO.output(emergency_pressure_led, False)
+
 				# close both pressurize
 				solenoid.closePressurize(1)
 				solenoid.closePressurize(2)
@@ -420,6 +439,9 @@ while running:
 
 				# lights on
 				#lights.lights_on()
+
+				#Turn LED FOR STAGE 5
+				GPIO.output(emergency_pressure_led, True)
 
 				# close both pressurize
 				solenoid.closePressurize(1)

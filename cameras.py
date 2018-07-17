@@ -7,11 +7,12 @@
 import os
 import time
 
-# still cameras (cameras 0 and 2)
+# still cameras (cameras 0 and 1)
 def takePicture(data_directory):
 	timestamp = time.time()
 	os.system('fswebcam -i 0 -d /dev/video0 -b -r 1024x768 -S 10 {}/cam0_{}.jpg -q'.format(data_directory,timestamp))
 	os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 10 {}/cam1_{}.jpg -q'.format(data_directory,timestamp))
+	return
 
 # fast shutter camera (Camera 1) NEEDS FIXING
 def takeVideo(data_directory):
@@ -26,4 +27,5 @@ def takeVideo(data_directory):
 			os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 10 {}/cam1_{}_{}.jpg'.format(data_directory,start,counter))
 		counter += 1
 		time.sleep(duration/frames)
+	return
 

@@ -12,7 +12,8 @@ import solenoid
 import queue
 import heater
 import cameras
-import sensors	
+import sensors
+import subprocess
 from helpers import changeStage
 
 # sets current pi usb port

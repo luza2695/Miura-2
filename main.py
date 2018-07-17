@@ -44,7 +44,7 @@ GPIO.setup(emergency_temperature_led, GPIO.OUT)
 
 
 # important variables for operation
-cycle_start_delay = 10 # 10800 # (3 hours)
+cycle_start_delay = 3600 # 10800 # (3 hours)
 inflation_time = 120 # (2 minutes)
 sustention_time = 60 # (10 minutes)
 retraction_time = 180 # (3 minutes)

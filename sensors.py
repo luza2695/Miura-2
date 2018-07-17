@@ -102,7 +102,7 @@ def emergency_temperature(num, temp_data):
 		elif temp_data[8] <= -40 and temp_data[8] >= 60:
 			temp_emergency_downlink = ['EM','TE','9 {:.2f}'.format(*temp_data[8])]
 		else:
-			temp_emergency_downlink = []
+			temp_emergency_downlink = ['EM','TE','NOPE']
 		return temp_emergency_downlink
 
 
@@ -153,7 +153,7 @@ def print_sensors():
 def read_sensors():
 	#read and downlink ambient pressure data
 	pressure = read_pressure()
-	pres_downlink = ['SE','PR','{:.2f}'.format(0)] #pressure)]
+	pres_downlink = ['SE','PR','{:.2f}'.format(pressure)]
 
 	#read and downlink ambient humidity data
 	#humidity = read_humid()
@@ -164,9 +164,9 @@ def read_sensors():
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
 	#emergency temperature downlink
-	#temp_E = emergency_temperature(num_temp, temperature)
+	temp_E = emergency_temperature(num_temp, temperature)
 
-	return [pres_downlink, temp_downlink] #, temp_E]
+	return [pres_downlink, temp_downlink, temp_E]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():

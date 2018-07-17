@@ -7,8 +7,8 @@
 import RPi.GPIO as GPIO
 import time
 
-pressurize_pin1 = 12
-pressurize_pin2 = 15
+pressurize_pin1 = 15
+pressurize_pin2 = 12
 exhaust_pin = 16
 motor_driver_pin = 18
 

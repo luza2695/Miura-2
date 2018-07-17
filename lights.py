@@ -7,8 +7,9 @@
 import time
 import smbus
 import RPi.GPIO as GPIO
+import glob
 
-lights = 11
+lights_pin = 11
 stage_1 = 38
 stage_2 = 35
 stage_3 = 36
@@ -17,10 +18,11 @@ stage_5 = 32
 emergency_pressure_led = 31
 emergency_temperature_led = 29
 
+GPIO.cleanup()
 GPIO.setmode(GPIO.BOARD)
-GPIO.setwarning(False)
+#GPIO.setwarning(False)
 
-GPIO.setup(lights, GPIO.OUT)
+GPIO.setup(lights_pin, GPIO.OUT)
 GPIO.setup(stage_1, GPIO.OUT)
 GPIO.setup(stage_2, GPIO.OUT)
 GPIO.setup(stage_3, GPIO.OUT)
@@ -35,7 +37,7 @@ def lights_on():
 
 
 def epilepsy():
-	for x in range(0,5)
+	for x in range(0,5):
 		GPIO.output(lights, HIGH)
 		GPIO.output(stage_1, HIGH)
 		GPIO.output(stage_3, HIGH)
@@ -61,4 +63,4 @@ def epilepsy():
 		time.sleep(0.5)
 	GPIO.output(lights, HIGH)
 
-	
+lights_on()

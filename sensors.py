@@ -17,7 +17,7 @@ hum_id = 0x40
 bus = smbus.SMBus(1)
 
 # defines number of temp sensors
-num_temp = 8
+num_temp = 9
 
 # pressure sensors setup
 bus.write_byte_data(pres_id, 0x26, 0x39)
@@ -26,7 +26,7 @@ bus.write_byte_data(pres_id, 0x26, 0x39)
 #bus.write_byte(0x40,0xE5)
 
 # automatically finds temp sensor addresses
-device_file = ['/sys/bus/w1/devices/28-000009958138/w1_slave','/sys/bus/w1/devices/28-000009957683/w1_slave','/sys/bus/w1/devices/28-000009958549/w1_slave','/sys/bus/w1/devices/28-0000099577b3/w1_slave','/sys/bus/w1/devices/28-00000995861d/w1_slave','/sys/bus/w1/devices/28-0000099566dc/w1_slave','/sys/bus/w1/devices/28-000009957c5d/w1_slave','/sys/bus/w1/devices/28-00000995853b/w1_slave']
+device_file = ['/sys/bus/w1/devices/28-000009958138/w1_slave','/sys/bus/w1/devices/28-000009957683/w1_slave','/sys/bus/w1/devices/28-000009958549/w1_slave','/sys/bus/w1/devices/28-0000099577b3/w1_slave','/sys/bus/w1/devices/28-00000995861d/w1_slave','/sys/bus/w1/devices/28-0000099566dc/w1_slave','/sys/bus/w1/devices/28-000009957c5d/w1_slave','/sys/bus/w1/devices/28-00000995853b/w1_slave','/sys/bus/w1/devices/28-000009957f18/w1_slave']
 #base_dir = '/sys/bus/w1/devices/'
 #for i in range(0,num_temp):
 #	device_folder = glob.glob(base_dir + '28*')[i]
@@ -39,7 +39,7 @@ def cleanup():
 # reads external pressure sensor
 def read_pressure():
 	data = bus.read_i2c_block_data(pres_id, 0x00, 4)
-	print(data[1],data[2],data[3])
+	#print(data[1],data[2],data[3])
 	pres = ((data[1] * 65536) + (data[2] * 256) + (data[3] & 0xF0)) / 16
 	pressure = (pres / 4.0) / 1000.0
 	return pressure
@@ -91,7 +91,7 @@ def emergency_temperature(num, temp_data):
 			temp_emergency_downlink = ['EM','TE','5', '{:.2f}'.format(*temp_data[4])]
 
 		#30 - 5v buck temperature ranges
-		elif temp_data[5] <= -40 and temp_data[5] >= 60
+		elif temp_data[5] <= -40 and temp_data[5] >= 60:
 			temp_emergency_downlink = ['EM','TE','6', '{:.2f}'.format(*temp_data[5])]
 
 		#Habitat temperature ranges
@@ -100,13 +100,14 @@ def emergency_temperature(num, temp_data):
 
 		#motor temperature ranges
 		elif temp_data[8] <= -40 and temp_data[8] >= 60:
-			temp_emergency_downlink = ['EM','TE','9', '{:.2f}'.format(*temp_data[8])]
-
+			temp_emergency_downlink = ['EM','TE','9 {:.2f}'.format(*temp_data[8])]
+		else:
+			temp_emergency_downlink = []
 		return temp_emergency_downlink
 
 
 # initializes adc
-#adc = Adafruit_ADS1x15.ADS1115()
+adc = Adafruit_ADS1x15.ADS1115()
 
 # sets gain
 # - 2/3 = +/- 6.144V
@@ -140,8 +141,8 @@ def print_sensors():
 	#print('Humidity: {:.2f} %% '.format(humidity))
 
 	#print ambient temperature data
-	#temperature = read_temp()
-	#print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C'.format(*temperature))
+	temperature = read_temp()
+	print('Temperature: {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C {:.2f} C  {:.2f} C  {:.2f} C  {:.2f} C {:.2f}C'.format(*temperature))
 
 	#print pressure transducer data
 	pressure_system = read_pressure_system()
@@ -160,12 +161,12 @@ def read_sensors():
 
 	#read and downlink ambient temperature data
 	temperature = read_temp()
-	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
+	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
 	#emergency temperature downlink
-	temp_E = emergency_downlink(num_temp, temperature)
+	#temp_E = emergency_temperature(num_temp, temperature)
 
-	return [pres_downlink, temp_downlink, temp_E]
+	return [pres_downlink, temp_downlink] #, temp_E]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():
@@ -174,3 +175,4 @@ def read_transducers():
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return pres_trans_downlink
 
+#print_sensors()

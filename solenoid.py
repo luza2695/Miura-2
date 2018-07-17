@@ -42,6 +42,8 @@ def openExhaust():
 def closeExhaust():
 	GPIO.output(exhaust_pin, False)
 
-openExhaust()
-time.sleep(1)
-closeExhaust()
+#openPressurize(2)
+#time.sleep(1)
+#closePressurize(2)
+#time.sleep(3)
+#openExhaust()

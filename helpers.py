@@ -13,7 +13,7 @@ def changeStage(stage):
 
 # switches solenoid based on which are enabled or disabled
 def switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2):
-	if solenoid_1_enabled and solenoid_2_enabled and tank1>=7.5 and tank2>=7.5:
+	if solenoid_1_enabled and solenoid_2_enabled and tank1>=5 and tank2>=5:
 		if current_solenoid == 1:
 			current_solenoid = 2
 		else:

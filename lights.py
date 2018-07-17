@@ -4,10 +4,12 @@
 # Modified: 6/30/2018
 # Purpose: Functions to turn on lights and control celebration
 ##################################################################
+#import time
+#import smbus
+import RPi.GPIO as GPIO
 import time
 import smbus
-import RPi.GPIO as GPIO
-import glob
+#import glob
 
 lights_pin = 11
 stage_1 = 38
@@ -33,7 +35,7 @@ GPIO.setup(emergency_temperature_led, GPIO.OUT)
 
 # Functions
 def lights_on():
-	GPIO.output(lights, HIGH)
+	GPIO.output(lights_pin, GPIO.HIGH)
 
 
 def epilepsy():

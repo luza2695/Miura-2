@@ -27,7 +27,7 @@ GPIO.setup(emergency_temperature_led, GPIO.OUT)
 
 def lights_on():
 	GPIO.output(lights_on, True)
-	
+
 # Functions
 def epilepsy():
 	for x in range(0,2):
@@ -54,7 +54,7 @@ def epilepsy():
 
 		time.sleep(0.1)
 
-		temp = [True, False, True False]
+		temp = [True, False, True, False]
 		for i in temp:
 			GPIO.output(stage_1, i)
 			GPIO.output(stage_2, i)

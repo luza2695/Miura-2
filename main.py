@@ -9,6 +9,9 @@ import threading
 import time
 import queue
 import serial
+import RPi.GPIO as GPIO
+import atexit
+import gpiosetup
 import utility
 import uplink
 import downlink
@@ -16,32 +19,9 @@ import heater
 import sensors
 import solenoid
 import cameras
-import RPi.GPIO as GPIO
 import motor
-#import lights
-import atexit
+import lights
 from helpers import changeStage, switchSolenoid
-
-#Indicator LED Startup
-stage_1 = 38
-stage_2 = 35
-stage_3 = 36
-stage_4 = 33
-stage_5 = 32
-emergency_pressure_led = 31
-emergency_temperature_led = 29
-
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
-
-GPIO.setup(stage_1, GPIO.OUT)
-GPIO.setup(stage_2, GPIO.OUT)
-GPIO.setup(stage_3, GPIO.OUT)
-GPIO.setup(stage_4, GPIO.OUT)
-GPIO.setup(stage_5, GPIO.OUT)
-GPIO.setup(emergency_pressure_led, GPIO.OUT)
-GPIO.setup(emergency_temperature_led, GPIO.OUT)
-
 
 # important variables for operation
 cycle_start_delay = 3600 # 10800 # (3 hours)
@@ -113,12 +93,6 @@ emergency_counter = 0
 transducer_downlink_counter = 0
 stage, stage_start_time, tasks_completed  = changeStage(1)
 
-#emergenct temperature data/led setup
-num_temp = 9
-temperature_data = sensors.read_temp()
-temp_E, emergencyLED = sensors.emergency_temperature(num_temp, temperature_data)
-
-
 # pressure check loop
 while running:
 
@@ -160,7 +134,7 @@ while running:
 
 				# switch to stage 2
 				stage, stage_start_time, tasks_completed = changeStage(2)
-				#GPIO.output(stage_1, False)
+				GPIO.output(lights.stage_1, False)
 				continue
 
 			# perform one time tasks
@@ -169,16 +143,10 @@ while running:
 				solenoid.openExhaust()
 
 				#Turn on LED for stage 1
-				#GPIO.output(stage_1, True)
+				GPIO.output(lights.stage_1, True)
 
 				#Turn off emergency pressure led
-				#GPIO.output(emergency_pressure_led, False)
-
-				#Turn on or off emergency temperature LED
-				if emergencyLED == True:
-					GPIO.output(emergency_temperature_led, HIGH)
-				else:
-					GPIO.output(emergency_temperature_led, LOW)
+				GPIO.output(lights.emergency_pressure_led, False)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -186,20 +154,6 @@ while running:
 
 				# mark tasks at completed
 				tasks_completed = True
-
-			# checks heater temperatures
-			temp_data = sensors.read_temp()
-
-			# solenoid control
-			if temp_data[0] > 30 or temp_data[1] > 30 or temp_data[2] > 30:
-				heater.solenoid_heater(False)
-			else:
-				heater.solenoid_heater(True)
-			# regulator control
-			if temp_data[3] > 30 or temp_data[4] > 30:
-				heater.regulator_heater(False)
-			else:
-				heater.regulator_heater(True)
 
 		# STAGE 2: INFLATION
 		elif stage == 2:
@@ -223,7 +177,7 @@ while running:
 
 				# switch to stage 3
 				stage, stage_start_time, tasks_completed = changeStage(3)
-				#GPIO.output(stage_2, False)
+				GPIO.output(lights.stage_2, False)
 				continue
 
 			# if pressure reaches 7.5 psi
@@ -248,16 +202,10 @@ while running:
 			if (not tasks_completed):
 
 				#Turn on LED for stage 2
-				#GPIO.output(stage_2, True)
+				GPIO.output(lights.stage_2, True)
 
 				#Turn off emergency led
-				#GPIO.output(emergency_pressure_led, False)
-
-				#Turn on or off emergency temperature LED
-				if emergencyLED == True:
-					GPIO.output(emergency_temperature_led, HIGH)
-				else:
-					GPIO.output(emergency_temperature_led, LOW)
+				GPIO.output(lights.emergency_pressure_led, False)
 
 				# heaters on
 				heater.solenoid_heater(False)
@@ -267,7 +215,7 @@ while running:
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				# start video
 				#cameras.takeVideo(data_directory)
@@ -302,7 +250,7 @@ while running:
 				if (current_time-stage_start_time) >= sustention_time:
 					# switch to stage 4
 					stage, stage_start_time, tasks_completed = changeStage(4)
-					#GPIO.output(stage_3, False)
+					GPIO.output(lights.stage_3, False)
 					continue
 
 			# if after the 10th cycle
@@ -324,19 +272,13 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				#turn on LED for stage 3
-				#GPIO.output(stage_3, True)
+				GPIO.output(lights.stage_3, True)
 
 				#Turn off emergency led
-				#GPIO.output(emergency_pressure_led, False)
-
-				#Turn on or off emergency temperature LED
-				if emergencyLED == True:
-					GPIO.output(emergency_temperature_led, HIGH)
-				else:
-					GPIO.output(emergency_temperature_led, LOW)
+				GPIO.output(lights.emergency_pressure_led, False)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -367,7 +309,7 @@ while running:
 
 				# switch to stage 5
 				stage, stage_start_time, tasks_completed = changeStage(5)
-				#GPIO.output(stage_4, False)
+				GPIO.output(lights.stage_4, False)
 				continue
 			else:
 				emergency_counter = 0
@@ -376,24 +318,16 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				# start video
-				#cameras.takeVideo(data_directory)
+				cameras.takeVideo(data_directory)
 
 				#Turn on LED to stage 4
-				#GPIO.output(stage_4, True)
+				GPIO.output(lights.stage_4, True)
 
 				#Turn off emergency led
-				#GPIO.output(emergency_pressure_led, False)
-
-
-				#Turn on or off emergency temperature LED
-				if emergencyLED == True:
-					GPIO.output(emergency_temperature_led, HIGH)
-				else:
-					GPIO.output(emergency_temperature_led, LOW)
-
+				GPIO.output(lights.emergency_pressure_led, False)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -429,8 +363,6 @@ while running:
 				#let the celebration begin
 				#lights.epilepsy()
 
-				# & omxplayer -o local example.mp3
-
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])
 
@@ -439,7 +371,7 @@ while running:
 
 				# switch to stage 2
 				stage, stage_start_time, tasks_completed = changeStage(2)
-				#GPIO.output(stage_5, False)
+				GPIO.output(lights.stage_5, False)
 				continue
 			else:
 				emergency_counter = 0
@@ -448,21 +380,13 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				#Turn LED FOR STAGE 5
-				#GPIO.output(stage_5, True)
+				GPIO.output(lights.stage_5, True)
 
 				#Turn off emergency led
-				#GPIO.output(emergency_pressure_led, False)
-
-
-				#Turn on or off emergency temperature LED
-				if emergencyLED == True:
-					GPIO.output(emergency_temperature_led, HIGH)
-				else:
-					GPIO.output(emergency_temperature_led, LOW)
-				
+				GPIO.output(lights.emergency_pressure_led, False)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -481,10 +405,10 @@ while running:
 			if (not tasks_completed):
 
 				# lights on
-				#lights.lights_on()
+				lights.lights_on()
 
 				#Turn LED FOR STAGE 5
-				#GPIO.output(emergency_pressure_led, True)
+				GPIO.output(lights.emergency_pressure_led, True)
 
 				# close both pressurize
 				solenoid.closePressurize(1)

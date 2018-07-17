@@ -12,7 +12,7 @@ import cameras
 data_delay = 0.2
 
 # how often to get environmental and picture
-env_delay = 5
+env_delay = 10
 
 def main(downlink_queue,data_directory):
 	print('Utility thread initialized...')

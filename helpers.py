@@ -19,10 +19,10 @@ def switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,
 		else:
 			current_solenoid = 1
 		print('Auto change to valve {}...'.format(current_solenoid))
-	elif solenoid_1_enabled and tank1>=7.5:
+	elif solenoid_1_enabled and tank1>=5:
 		current_solenoid = 1
 		print('Valve 2 disabled. Auto change to valve {}...'.format(current_solenoid))
-	elif solenoid_2_enabled and tank2>=7.5:
+	elif solenoid_2_enabled and tank2>=5:
 		current_solenoid = 2
 		print('Valve 1 disabled. Auto change to valve {}...'.format(current_solenoid))
 	else:

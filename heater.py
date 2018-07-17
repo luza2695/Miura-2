@@ -1,4 +1,3 @@
-
 ##################################################################
 # Miura 2: Heater Functions (heater.py)
 # Created: 5/30/2018
@@ -10,8 +9,6 @@ import RPi.GPIO as GPIO
 solenoid_heater_pin = 22
 regulator_heater_pin = 40
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
 GPIO.setup(solenoid_heater_pin, GPIO.OUT)
 GPIO.setup(regulator_heater_pin, GPIO.OUT)
 

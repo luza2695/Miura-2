@@ -10,6 +10,8 @@ import time
 import smbus
 import RPi.GPIO as GPIO
 import Adafruit_ADS1x15
+import heater
+import lights
 
 # i2c sensor ids
 pres_id = 0x60
@@ -69,55 +71,66 @@ def read_temp():
 			temp_c = temp_c + (float(temp_string)/1000.0,)
 	return temp_c
 
+def heater_control(temp_data):
+	# solenoid control
+	if temp_data[0] > 30 or temp_data[1] > 30 or temp_data[2] > 30:
+		heater.solenoid_heater(False)
+	else:
+		heater.solenoid_heater(True)
+	# regulator control
+	if temp_data[3] > 30 or temp_data[4] > 30:
+		heater.regulator_heater(False)
+	else:
+		heater.regulator_heater(True)
 
-def emergency_temperature(num, temp_data):
-	for i in range(0, num):
+def emergency_temperature(temp_data):
+	#solenoid 1 temperature ranges
+	if temp_data[0] <= -20 and temp_data[0] >= 80:
+		temp_emergency_downlink = ['EM','TE','1', '{:.2f}'.format(*temp_data[0])]
+		emergencyLED = True
 
-		#solenoid 1 temperature ranges
-		if temp_data[0] <= -20 and temp_data[0] >= 80:
-			temp_emergency_downlink = ['EM','TE','1', '{:.2f}'.format(*temp_data[0])]
-			emergencyLED = True
+	#solenoid 2 temperature ranges
+	elif temp_data[1] <= -20 and temp_data[1] >= 80:
+		temp_emergency_downlink = ['EM','TE','2', '{:.2f}'.format(*temp_data[1])]
+		emergencyLED = True
 
-		#solenoid 2 temperature ranges
-		elif temp_data[1] <= -20 and temp_data[1] >= 80:
-			temp_emergency_downlink = ['EM','TE','2', '{:.2f}'.format(*temp_data[1])]
-			emergencyLED = True
+	#solenoid 3 temperature ranges
+	elif temp_data[2] <= -20 and temp_data[2] >= 80:
+		temp_emergency_downlink = ['EM','TE','3', '{:.2f}'.format(*temp_data[2])]
+		emergencyLED = True
 
-		#solenoid 3 temperature ranges
-		elif temp_data[2] <= -20 and temp_data[2] >= 80:
-			temp_emergency_downlink = ['EM','TE','3', '{:.2f}'.format(*temp_data[2])]
-			emergencyLED = True
+	#Regulator 1 temperature ranges
+	elif temp_data[3] <= 0 and temp_data[3] >= 40:
+		temp_emergency_downlink = ['EM','TE','4', '{:.2f}'.format(*temp_data[3])]
+		emergencyLED = True
 
-		#Regulator 1 temperature ranges
-		elif temp_data[3] <= 0 and temp_data[3] >= 40:
-			temp_emergency_downlink = ['EM','TE','4', '{:.2f}'.format(*temp_data[3])]
-			emergencyLED = True
+	#Regulator 2 temperature ranges
+	elif temp_data[4] <= 0 and temp_data[4] >= 40:
+		temp_emergency_downlink = ['EM','TE','5', '{:.2f}'.format(*temp_data[4])]
+		emergencyLED = True
 
-		#Regulator 2 temperature ranges
-		elif temp_data[4] <= 0 and temp_data[4] >= 40:
-			temp_emergency_downlink = ['EM','TE','5', '{:.2f}'.format(*temp_data[4])]
-			emergencyLED = True
+	#30 - 5v buck temperature ranges
+	elif temp_data[5] <= -40 and temp_data[5] >= 60:
+		temp_emergency_downlink = ['EM','TE','6', '{:.2f}'.format(*temp_data[5])]
+		emergencyLED = True
 
-		#30 - 5v buck temperature ranges
-		elif temp_data[5] <= -40 and temp_data[5] >= 60:
-			temp_emergency_downlink = ['EM','TE','6', '{:.2f}'.format(*temp_data[5])]
-			emergencyLED = True
+	#Habitat temperature ranges
+	elif temp_data[6] <= -50 and temp_data[6] >= 100:
+		temp_emergency_downlink = ['EM','TE','7', '{:.2f}'.format(*temp_data[6])]
+		emergencyLED = True
 
-		#Habitat temperature ranges
-		elif temp_data[6] <= -50 and temp_data[6] >= 100:
-			temp_emergency_downlink = ['EM','TE','7', '{:.2f}'.format(*temp_data[6])]
-			emergencyLED = True
+	#motor temperature ranges
+	elif temp_data[8] <= -40 and temp_data[8] >= 60:
+		temp_emergency_downlink = ['EM','TE','9 {:.2f}'.format(*temp_data[8])]
+		emergencyLED = True
 
-		#motor temperature ranges
-		elif temp_data[8] <= -40 and temp_data[8] >= 60:
-			temp_emergency_downlink = ['EM','TE','9 {:.2f}'.format(*temp_data[8])]
-			emergencyLED = True
+	else:
+		temp_emergency_downlink = [0,0,0]
+		emergencyLED = False
 
-		else:
-			temp_emergency_downlink = ['EM','TE','NOPE']
-			emergencyLED = False
+	GPIO.output(lights.emergency_temperature_led, emergencyLED)
 
-		return temp_emergency_downlink, emergencyLED
+	return temp_emergency_downlink
 
 
 # initializes adc
@@ -177,10 +190,16 @@ def read_sensors():
 	temperature = read_temp()
 	temp_downlink = ['SE','TE','{:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}'.format(*temperature)]
 
-	#emergency temperature downlink
-	temp_E, emergencyLED = emergency_temperature(num_temp, temperature)
+	#heater control
+	heater_control(temperature)
 
-	return [pres_downlink, temp_downlink, temp_E]
+	#emergency temperature downlink
+	temp_emergency = emergency_temperature(temperature)
+
+	if temp_emergency == [0,0,0]:
+		return [pres_downlink, temp_downlink]
+	else:
+		return [pres_downlink, temp_downlink, temp_emergency]
 
 # returns value of each system transducer in downlinking format
 def read_transducers():

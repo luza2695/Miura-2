@@ -84,10 +84,6 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 						if command == b'\x01': # open pressurization valve 1
 							print('Opening Pressurize Valve 1')
 							solenoid.openPressurize(1)
-							if pressureMain >= 7.5:
-								solenoid.closePressurize(1)
-								#naturally closed from pressurization (emergency)
-								downlink_queue.put(['SO','V1','CL'])
 							downlink_queue.put(['SO','V1','OP'])
 
 						elif command == b'\x02': # close pressurization valve 1
@@ -98,10 +94,6 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 						if command == b'\x03': # open pressurization valve 2
 							print('Opening Pressurize Valve 2')
 							solenoid.openPressurize(2)
-							if pressureMain >= 7.5:
-								solenoid.closePressurize(2)
-								#naturally closed from pressurization (emergency)
-								downlink_queue.put(['SO','V2','CL'])
 							downlink_queue.put(['SO','V2','OP'])
 
 						elif command == b'\x04': # close pressurization valve 2

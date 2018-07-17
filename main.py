@@ -142,6 +142,8 @@ while running:
 				# open exhaust
 				solenoid.openExhaust()
 
+				lights.epilepsy()
+
 				#Turn on LED for stage 1
 				GPIO.output(lights.stage_1, True)
 

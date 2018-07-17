@@ -7,7 +7,7 @@
 import RPi.GPIO as GPIO
 import time
 
-lights_on = 11
+lights_pin = 11
 stage_1 = 38
 stage_2 = 35
 stage_3 = 36
@@ -16,6 +16,7 @@ stage_5 = 32
 emergency_pressure_led = 31
 emergency_temperature_led = 29
 
+GPIO.setup(lights_pin, GPIO.OUT)
 GPIO.setup(stage_1, GPIO.OUT)
 GPIO.setup(stage_2, GPIO.OUT)
 GPIO.setup(stage_3, GPIO.OUT)
@@ -26,7 +27,7 @@ GPIO.setup(emergency_temperature_led, GPIO.OUT)
 
 
 def lights_on():
-	GPIO.output(lights_on, True)
+	GPIO.output(lights_pin, True)
 
 # Functions
 def epilepsy():

@@ -30,31 +30,29 @@ def lights_on():
 	GPIO.output(lights_pin, True)
 
 # Functions
-def epilepsy():
+def bootup():
+	delay = 0.01
 	for x in range(0,2):
-
 		GPIO.output(stage_1, True)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_1, False)
 		GPIO.output(stage_2, True)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_2, False)
 		GPIO.output(stage_3, True)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_3, False)
 		GPIO.output(stage_4, True)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_4, False)
 		GPIO.output(stage_5, True)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_5, False)
 		GPIO.output(emergency_pressure_led, True)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(emergency_pressure_led, False)
 		GPIO.output(emergency_temperature_led, True)
-
-		time.sleep(0.1)
-
+		time.sleep(delay)
 		temp = [True, False, True, False]
 		for i in temp:
 			GPIO.output(stage_1, i)
@@ -64,27 +62,27 @@ def epilepsy():
 			GPIO.output(stage_5, i)
 			GPIO.output(emergency_temperature_led, i)
 			GPIO.output(emergency_pressure_led, i)
-			time.sleep(0.5)
+			time.sleep(0.2)
 
 		GPIO.output(emergency_temperature_led, True)
 		GPIO.output(emergency_pressure_led, False)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(emergency_pressure_led, True)
 		GPIO.output(stage_5, False)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_5, True)
 		GPIO.output(stage_4, False)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_4, True)
 		GPIO.output(stage_3, False)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_3, True)
 		GPIO.output(stage_2, False)
-		time.sleep(0.1)
+		time.sleep(delay)
 		GPIO.output(stage_2, True)
 		GPIO.output(stage_1, False)
 
-		time.sleep(0.5)
+		time.sleep(0.2)
 
 		GPIO.output(stage_1, False)
 		GPIO.output(stage_2, False)
@@ -93,13 +91,52 @@ def epilepsy():
 		GPIO.output(stage_5, False)
 		GPIO.output(emergency_temperature_led, False)
 		GPIO.output(emergency_pressure_led, False)
-		
 
-
-	
-		
-
-		
+def random():
+	delay = 0.01
+	for i in range(0,10/delay):
+		number = random(0,7)
+		if number == 0:
+			GPIO.output(stage_1, True)
+			GPIO.output(stage_2, False)
+			GPIO.output(stage_3, False)
+			GPIO.output(stage_4, False)
+			GPIO.output(stage_5, False)
+			GPIO.output(emergency_temperature_led, False)
+			GPIO.output(emergency_pressure_led, False)
+		elif number == 1:
+			GPIO.output(stage_1, False)
+			GPIO.output(stage_2, True)
+			GPIO.output(stage_3, False)
+			GPIO.output(stage_4, False)
+			GPIO.output(stage_5, False)
+			GPIO.output(emergency_temperature_led, False)
+			GPIO.output(emergency_pressure_led, False)
+		elif number == 2:
+			GPIO.output(stage_1, False)
+			GPIO.output(stage_2, False)
+			GPIO.output(stage_3, True)
+			GPIO.output(stage_4, False)
+			GPIO.output(stage_5, False)
+			GPIO.output(emergency_temperature_led, False)
+			GPIO.output(emergency_pressure_led, False)
+		elif number == 5:
+			GPIO.output(stage_1, False)
+			GPIO.output(stage_2, False)
+			GPIO.output(stage_3, False)
+			GPIO.output(stage_4, False)
+			GPIO.output(stage_5, False)
+			GPIO.output(emergency_temperature_led, True)
+			GPIO.output(emergency_pressure_led, False)
+		elif number == 6:
+			GPIO.output(stage_1, False)
+			GPIO.output(stage_2, False)
+			GPIO.output(stage_3, False)
+			GPIO.output(stage_4, False)
+			GPIO.output(stage_5, False)
+			GPIO.output(emergency_temperature_led, False)
+			GPIO.output(emergency_pressure_led, True)
+		time.sleep(delay)
 		
 		
 		

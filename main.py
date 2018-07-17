@@ -24,11 +24,11 @@ import lights
 from helpers import changeStage, switchSolenoid
 
 # important variables for operation
-cycle_start_delay = 10 # 10800 # (3 hours)
+cycle_start_delay = 15*60 # 10800 # (3 hours)
 inflation_time = 120 # (2 minutes)
-sustention_time = 60 # (10 minutes)
+sustention_time = 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
-deflation_time = 30 # (30 minutes)
+deflation_time = 180 # (30 minutes)
 main_delay = 0.2 # seconds
 emergency_pressure = 15 # psi
 standard_pressure = 7.5 # psi
@@ -157,7 +157,7 @@ while running:
 				# open exhaust
 				solenoid.openExhaust()
 
-				lights.epilepsy()
+				lights.bootup()
 
 				# turn on LED for stage 1
 				GPIO.output(lights.stage_1, True)
@@ -303,7 +303,7 @@ while running:
 			if (current_time - stage_start_time) >= deflation_time:
 
 				# let the celebration begin
-				lights.epilepsy()
+				lights.random()
 
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])

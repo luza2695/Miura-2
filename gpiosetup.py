@@ -6,6 +6,5 @@
 ##################################################################
 import RPi.GPIO as GPIO
 
-GPIO.cleanup()
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)

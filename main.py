@@ -200,6 +200,8 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
+				#Turn on camera leds
+				lights.lights_on()
 
 				#Turn on LED for stage 2
 				GPIO.output(lights.stage_2, True)
@@ -214,8 +216,6 @@ while running:
 				# switch active solenoid
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
 
-				# lights on
-				lights.lights_on()
 
 				# start video
 				#cameras.takeVideo(data_directory)
@@ -270,8 +270,7 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
-
-				# lights on
+				#Turn on camera leds
 				lights.lights_on()
 
 				#turn on LED for stage 3
@@ -316,8 +315,7 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
-
-				# lights on
+				#Turn on camera leds
 				lights.lights_on()
 
 				# start video
@@ -361,7 +359,7 @@ while running:
 			elif (current_time - stage_start_time) >= deflation_time:
 
 				#let the celebration begin
-				#lights.epilepsy()
+				lights.epilepsy()
 
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])
@@ -378,8 +376,7 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
-
-				# lights on
+				#Turn on camera leds
 				lights.lights_on()
 
 				#Turn LED FOR STAGE 5
@@ -403,10 +400,6 @@ while running:
 
 			# perform one time tasks
 			if (not tasks_completed):
-
-				# lights on
-				lights.lights_on()
-
 				#Turn LED FOR STAGE 5
 				GPIO.output(lights.emergency_pressure_led, True)
 

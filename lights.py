@@ -18,9 +18,9 @@ stage_5 = 32
 emergency_pressure_led = 31
 emergency_temperature_led = 29
 
-GPIO.cleanup()
+#GPIO.cleanup()
+GPIO.setwarning(False)
 GPIO.setmode(GPIO.BOARD)
-#GPIO.setwarning(False)
 
 GPIO.setup(lights_pin, GPIO.OUT)
 GPIO.setup(stage_1, GPIO.OUT)

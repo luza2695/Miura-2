@@ -12,6 +12,7 @@ import solenoid
 import queue
 import heater
 import cameras
+import sensors	
 from helpers import changeStage
 
 # sets current pi usb port
@@ -26,6 +27,7 @@ serial = serial.Serial(port=current_port,
 			timeout=1)
 
 def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed):
+	pressureSol1, pressureSol2, pressureMain = sensors.read_pressure_system()
 	if serial.inWaiting(): # reads uplink command
 		heading = serial.read() # start of heading
 		start = serial.read() # start of text
@@ -82,6 +84,10 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 						if command == b'\x01': # open pressurization valve 1
 							print('Opening Pressurize Valve 1')
 							solenoid.openPressurize(1)
+							if pressureMain >= 7.5:
+								solenoid.closePressurize(1)
+								#naturally closed from pressurization (emergency)
+								downlink_queue.put(['SO','V1','CL'])
 							downlink_queue.put(['SO','V1','OP'])
 
 						elif command == b'\x02': # close pressurization valve 1
@@ -92,6 +98,10 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 						if command == b'\x03': # open pressurization valve 2
 							print('Opening Pressurize Valve 2')
 							solenoid.openPressurize(2)
+							if pressureMain >= 7.5:
+								solenoid.closePressurize(2)
+								#naturally closed from pressurization (emergency)
+								downlink_queue.put(['SO','V2','CL'])
 							downlink_queue.put(['SO','V2','OP'])
 
 						elif command == b'\x04': # close pressurization valve 2
@@ -101,7 +111,12 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 
 						elif command == b'\x05': # open exhaust valve
 							print('Opening Exhaust Valve')
+							#turn off input solenoids to vent out air
+							solenoid.closePressurize(1)
+							solenoid.closePressurize(2)
 							solenoid.openExhaust()
+							downlink_queue.put(['SO','V1','CL'])
+							downlink_queue.put(['SO','V2','CL'])
 							downlink_queue.put(['SO','EX','OP'])
 
 						elif command == b'\x06': # close exhaust valve

@@ -113,6 +113,12 @@ emergency_counter = 0
 transducer_downlink_counter = 0
 stage, stage_start_time, tasks_completed  = changeStage(1)
 
+#emergenct temperature data/led setup
+num_temp = 9
+temperature_data = sensors.read_temp()
+temp_E, emergencyLED = sensors.emergency_temperature(num_temp, temperature_data)
+
+
 # pressure check loop
 while running:
 
@@ -165,8 +171,14 @@ while running:
 				#Turn on LED for stage 1
 				#GPIO.output(stage_1, True)
 
-				#Turn off emergency led
+				#Turn off emergency pressure led
 				#GPIO.output(emergency_pressure_led, False)
+
+				#Turn on or off emergency temperature LED
+				if emergencyLED == True:
+					GPIO.output(emergency_temperature_led, HIGH)
+				else:
+					GPIO.output(emergency_temperature_led, LOW)
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -177,6 +189,7 @@ while running:
 
 			# checks heater temperatures
 			temp_data = sensors.read_temp()
+
 			# solenoid control
 			if temp_data[0] > 30 or temp_data[1] > 30 or temp_data[2] > 30:
 				heater.solenoid_heater(False)
@@ -239,6 +252,12 @@ while running:
 
 				#Turn off emergency led
 				#GPIO.output(emergency_pressure_led, False)
+
+				#Turn on or off emergency temperature LED
+				if emergencyLED == True:
+					GPIO.output(emergency_temperature_led, HIGH)
+				else:
+					GPIO.output(emergency_temperature_led, LOW)
 
 				# heaters on
 				heater.solenoid_heater(False)
@@ -313,6 +332,12 @@ while running:
 				#Turn off emergency led
 				#GPIO.output(emergency_pressure_led, False)
 
+				#Turn on or off emergency temperature LED
+				if emergencyLED == True:
+					GPIO.output(emergency_temperature_led, HIGH)
+				else:
+					GPIO.output(emergency_temperature_led, LOW)
+
 				# close both pressurize
 				solenoid.closePressurize(1)
 				solenoid.closePressurize(2)
@@ -361,6 +386,14 @@ while running:
 
 				#Turn off emergency led
 				#GPIO.output(emergency_pressure_led, False)
+
+
+				#Turn on or off emergency temperature LED
+				if emergencyLED == True:
+					GPIO.output(emergency_temperature_led, HIGH)
+				else:
+					GPIO.output(emergency_temperature_led, LOW)
+
 
 				# close both pressurize
 				solenoid.closePressurize(1)
@@ -422,6 +455,14 @@ while running:
 
 				#Turn off emergency led
 				#GPIO.output(emergency_pressure_led, False)
+
+
+				#Turn on or off emergency temperature LED
+				if emergencyLED == True:
+					GPIO.output(emergency_temperature_led, HIGH)
+				else:
+					GPIO.output(emergency_temperature_led, LOW)
+				
 
 				# close both pressurize
 				solenoid.closePressurize(1)

@@ -93,6 +93,9 @@ emergency_counter = 0
 transducer_downlink_counter = 0
 stage, stage_start_time, tasks_completed  = changeStage(1)
 
+# just for fun
+lights.bootup()
+
 # pressure check loop
 while running:
 
@@ -156,8 +159,6 @@ while running:
 
 				# open exhaust
 				solenoid.openExhaust()
-
-				lights.bootup()
 
 				# turn on LED for stage 1
 				GPIO.output(lights.stage_1, True)

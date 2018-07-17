@@ -31,29 +31,29 @@ def lights_on():
 
 def epilepsy():
 	for x in range(0,5):
-		GPIO.output(lights, HIGH)
-		GPIO.output(stage_1, HIGH)
-		GPIO.output(stage_3, HIGH)
-		GPIO.output(stage_5, HIGH)
-		GPIO.output(emergency_temperature_led, HIGH)
+		GPIO.output(lights_pin, True)
+		GPIO.output(stage_1, True)
+		GPIO.output(stage_3, True)
+		GPIO.output(stage_5, True)
+		GPIO.output(emergency_temperature_led, True)
 
-		GPIO.output(stage_2, LOW)
-		GPIO.output(stage_4, LOW)
-		GPIO.output(emergency_pressure_led, LOW)
-
-		time.sleep(0.5)
-
-		GPIO.output(lights,LOW)
-		GPIO.output(stage_1, LOW)
-		GPIO.output(stage_3, LOW)
-		GPIO.output(stage_5, LOW)
-		GPIO.output(emergency_temperature_led, LOW)
-
-		GPIO.output(stage_2, HIGH)
-		GPIO.output(stage_4, HIGH)
-		GPIO.output(emergency_pressure_led, HIGH)
+		GPIO.output(stage_2, False)
+		GPIO.output(stage_4, False)
+		GPIO.output(emergency_pressure_led, False)
 
 		time.sleep(0.5)
-	GPIO.output(lights, HIGH)
+
+		GPIO.output(lights_pin, False)
+		GPIO.output(stage_1, False)
+		GPIO.output(stage_3, False)
+		GPIO.output(stage_5, False)
+		GPIO.output(emergency_temperature_led, False)
+
+		GPIO.output(stage_2, True)
+		GPIO.output(stage_4, True)
+		GPIO.output(emergency_pressure_led, True)
+
+		time.sleep(0.5)
+	GPIO.output(lights_pin, True)
 
 lights_on()

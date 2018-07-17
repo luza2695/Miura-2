@@ -47,10 +47,10 @@ def epilepsy():
 		GPIO.output(stage_5, True)
 		time.sleep(0.1)
 		GPIO.output(stage_5, False)
-		GPIO.output(emergency_temperature_led, True)
-		time.sleep(0.1)
-		GPIO.output(emergency_temperature_led, False)
 		GPIO.output(emergency_pressure_led, True)
+		time.sleep(0.1)
+		GPIO.output(emergency_pressure_led, False)
+		GPIO.output(emergency_temperature_led, True)
 
 		time.sleep(0.1)
 
@@ -65,10 +65,10 @@ def epilepsy():
 			GPIO.output(emergency_pressure_led, i)
 			time.sleep(0.5)
 
-		GPIO.output(emergency_pressure_led, True)
-		GPIO.output(emergency_temperature_led, False)
-		time.sleep(0.1)
 		GPIO.output(emergency_temperature_led, True)
+		GPIO.output(emergency_pressure_led, False)
+		time.sleep(0.1)
+		GPIO.output(emergency_pressure_led, True)
 		GPIO.output(stage_5, False)
 		time.sleep(0.1)
 		GPIO.output(stage_5, True)

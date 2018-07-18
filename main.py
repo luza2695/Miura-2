@@ -207,7 +207,7 @@ while running:
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
 
 				# start video
-				camera_thread = threading.Thread(name = 'camera', target = camera.takeVideo, args = (data_directory, inflation_time), daemon = True)
+				camera_thread = threading.Thread(name = 'cameras', target = cameras.takeVideo, args = (data_directory, inflation_time), daemon = True)
 				camera_thread.start()
 
 				# close exhaust valve
@@ -284,7 +284,7 @@ while running:
 				lights.lights_on()
 
 				# start video
-				camera_thread = threading.Thread(name = 'camera', target = camera.takeVideo, args = (data_directory, retraction_time), daemon = True)
+				camera_thread = threading.Thread(name = 'cameras', target = cameras.takeVideo, args = (data_directory, retraction_time), daemon = True)
 				camera_thread.start()
 
 				# turn on LED for stage 4

@@ -25,7 +25,7 @@ from helpers import changeStage, switchSolenoid
 
 # important variables for operation
 cycle_start_delay = 15*60 # 10800 # (3 hours)
-inflation_time = 60 # (1 minutes)
+inflation_time = 120 # (2 minutes)
 sustention_time = 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
 deflation_time = 180 # (30 minutes)
@@ -128,7 +128,6 @@ while running:
 			# close both pressurize valve
 			solenoid.closePressurize(1)
 			solenoid.closePressurize(2)
-			pressurization_counter = 0
 	else:
 		pressurization_counter = 0
 
@@ -180,11 +179,12 @@ while running:
 		# STAGE 2: INFLATION
 		elif stage == 2:
 
-			# if reaches maximum inflation time
-			if (current_time-stage_start_time) >= inflation_time:
+			# if reaches maximum inflation time or fully pressurized
+			if pressurization_counter >= 3 or (current_time-stage_start_time) >= inflation_time:
 
 				# close current pressurize valve
-				solenoid.closePressurize(current_solenoid)
+				solenoid.closePressurize(1)
+				solenoid.closePressurize(2)
 				pressurization_counter = 0
 
 				# switch to stage 3

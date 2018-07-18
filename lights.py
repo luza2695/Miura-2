@@ -9,13 +9,13 @@ import time
 #import random
 
 lights_pin = 11
-stage_1 = 38
-stage_2 = 35
-stage_3 = 36
+stage_1 = 29
+stage_2 = 31
+stage_3 = 32
 stage_4 = 33
-stage_5 = 32
-emergency_pressure_led = 31
-emergency_temperature_led = 29
+stage_5 = 36
+emergency_pressure_led = 35
+emergency_temperature_led = 38
 
 GPIO.setup(lights_pin, GPIO.OUT)
 GPIO.setup(stage_1, GPIO.OUT)
@@ -29,6 +29,9 @@ GPIO.setup(emergency_temperature_led, GPIO.OUT)
 
 def lights_on():
 	GPIO.output(lights_pin, True)
+
+def switch(pin,state):
+	GPIO.output(pin,state)
 
 # Functions
 def bootup():
@@ -66,9 +69,9 @@ def bootup():
 			time.sleep(0.2)
 
 		GPIO.output(emergency_temperature_led, True)
-		GPIO.output(emergency_pressure_led, False)
 		time.sleep(delay)
 		GPIO.output(emergency_pressure_led, True)
+		GPIO.output(emergency_temperature_led, False)
 		GPIO.output(stage_5, False)
 		time.sleep(delay)
 		GPIO.output(stage_5, True)

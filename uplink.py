@@ -13,6 +13,7 @@ import queue
 import heater
 import cameras
 import sensors
+import shlex
 import subprocess
 from helpers import changeStage
 
@@ -75,7 +76,7 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 							downlink_queue.put(['MA','RE',0])
 
 						elif command == b'\x08': # emergency stop (ONLY USE FOR TESTING REALLY REALLY BAD)
-							subprocess.Popen('sudo killall python3', shell=True)
+							subprocess.run(shlex.split('sudo killall python3'))
 
 						else:
 							print('invalid command')

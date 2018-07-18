@@ -315,6 +315,7 @@ while running:
 
 				# let the celebration begin
 				#lights.random()
+				lights.bootup()
 
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])

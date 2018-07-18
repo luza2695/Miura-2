@@ -7,6 +7,7 @@
 import time
 import sensors
 import cameras
+import lights
 
 # how often to get data
 data_delay = 0.2

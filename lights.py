@@ -6,6 +6,7 @@
 ##################################################################
 import RPi.GPIO as GPIO
 import time
+#import random
 
 lights_pin = 11
 stage_1 = 38
@@ -31,7 +32,7 @@ def lights_on():
 
 # Functions
 def bootup():
-	delay = 0.01
+	delay = 0.1
 	for x in range(0,2):
 		GPIO.output(stage_1, True)
 		time.sleep(delay)
@@ -92,56 +93,48 @@ def bootup():
 		GPIO.output(emergency_temperature_led, False)
 		GPIO.output(emergency_pressure_led, False)
 
-def random():
-	delay = 0.01
-	for i in range(0,10/delay):
-		number = random(0,7)
-		if number == 0:
-			GPIO.output(stage_1, True)
-			GPIO.output(stage_2, False)
-			GPIO.output(stage_3, False)
-			GPIO.output(stage_4, False)
-			GPIO.output(stage_5, False)
-			GPIO.output(emergency_temperature_led, False)
-			GPIO.output(emergency_pressure_led, False)
-		elif number == 1:
-			GPIO.output(stage_1, False)
-			GPIO.output(stage_2, True)
-			GPIO.output(stage_3, False)
-			GPIO.output(stage_4, False)
-			GPIO.output(stage_5, False)
-			GPIO.output(emergency_temperature_led, False)
-			GPIO.output(emergency_pressure_led, False)
-		elif number == 2:
-			GPIO.output(stage_1, False)
-			GPIO.output(stage_2, False)
-			GPIO.output(stage_3, True)
-			GPIO.output(stage_4, False)
-			GPIO.output(stage_5, False)
-			GPIO.output(emergency_temperature_led, False)
-			GPIO.output(emergency_pressure_led, False)
-		elif number == 5:
-			GPIO.output(stage_1, False)
-			GPIO.output(stage_2, False)
-			GPIO.output(stage_3, False)
-			GPIO.output(stage_4, False)
-			GPIO.output(stage_5, False)
-			GPIO.output(emergency_temperature_led, True)
-			GPIO.output(emergency_pressure_led, False)
-		elif number == 6:
-			GPIO.output(stage_1, False)
-			GPIO.output(stage_2, False)
-			GPIO.output(stage_3, False)
-			GPIO.output(stage_4, False)
-			GPIO.output(stage_5, False)
-			GPIO.output(emergency_temperature_led, False)
-			GPIO.output(emergency_pressure_led, True)
-		time.sleep(delay)
-		
-		
-		
-		
-		
-
-
-
+#def random():
+#	delay = 0.1
+#	for i in range(0,100):
+#		number = random.randint(0,7)
+#		if number == 0:
+#			GPIO.output(stage_1, True)
+#			GPIO.output(stage_2, False)
+#			GPIO.output(stage_3, False)
+#			GPIO.output(stage_4, False)
+#			GPIO.output(stage_5, False)
+#			GPIO.output(emergency_temperature_led, False)
+#			GPIO.output(emergency_pressure_led, False)
+#		elif number == 1:
+#			GPIO.output(stage_1, False)
+#			GPIO.output(stage_2, True)
+#			GPIO.output(stage_3, False)
+#			GPIO.output(stage_4, False)
+#			GPIO.output(stage_5, False)
+#			GPIO.output(emergency_temperature_led, False)
+#			GPIO.output(emergency_pressure_led, False)
+#		elif number == 2:
+#			GPIO.output(stage_1, False)
+#			GPIO.output(stage_2, False)
+#			GPIO.output(stage_3, True)
+#			GPIO.output(stage_4, False)
+#			GPIO.output(stage_5, False)
+#			GPIO.output(emergency_temperature_led, False)
+#			GPIO.output(emergency_pressure_led, False)
+#		elif number == 5:
+#			GPIO.output(stage_1, False)
+#			GPIO.output(stage_2, False)
+#			GPIO.output(stage_3, False)
+#			GPIO.output(stage_4, False)
+#			GPIO.output(stage_5, False)
+#			GPIO.output(emergency_temperature_led, True)
+#			GPIO.output(emergency_pressure_led, False)
+#		elif number == 6:
+#			GPIO.output(stage_1, False)
+#			GPIO.output(stage_2, False)
+#			GPIO.output(stage_3, False)
+#			GPIO.output(stage_4, False)
+#			GPIO.output(stage_5, False)
+#			GPIO.output(emergency_temperature_led, False)
+#			GPIO.output(emergency_pressure_led, True)
+#		time.sleep(delay)

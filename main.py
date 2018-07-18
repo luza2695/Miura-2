@@ -86,6 +86,8 @@ running = True
 manual = False
 solenoid_1_enabled = True
 solenoid_2_enabled = True
+solenoid_heater_enabled = True
+regulator_heater_enabled = True
 current_solenoid = 2
 current_cycle = 1
 pressurization_counter = 0
@@ -131,7 +133,7 @@ while running:
 		pressurization_counter = 0
 
 	# uplink and downlink
-	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed)
+	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, solenoid_heater_enabled, reguator_heater_enabled, tasks_completed = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, solenoid_heater_enabled, regulator_heater_enabled, tasks_completed)
 	downlink.main(serial, downlink_queue, log_filename, stage, current_cycle)
 
 	# checks if in manual mode
@@ -304,7 +306,7 @@ while running:
 			if (current_time - stage_start_time) >= deflation_time:
 
 				# let the celebration begin
-				lights.random()
+				#lights.random()
 
 				# downlink cycle complete
 				downlink_queue.put(['CY','CP','{}'.format(current_cycle)])

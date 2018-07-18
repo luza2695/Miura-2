@@ -27,7 +27,7 @@ serial = serial.Serial(port=current_port,
 			bytesize=serial.EIGHTBITS,
 			timeout=1)
 
-def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed):
+def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, solenoid_heater_enabled, regulator_heater_enabled, tasks_completed):
 	pressureSol1, pressureSol2, pressureMain = sensors.read_pressure_system()
 	if serial.inWaiting(): # reads uplink command
 		heading = serial.read() # start of heading
@@ -147,18 +147,22 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 					elif target == b'\x04': # heater system control
 
 						if command == b'\x01': # turn on solenoid heaters
+							solenoid_heater_enabled = True
 							heater.solenoid_heater(True)
 							downlink_queue.put(['HE','SO',1])
 
 						elif command == b'\x02': # turn off solenoid heaters
+							solenoid_heater_enabled = False
 							heater.solenoid_heater(False)
 							downlink_queue.put(['HE','SO',0])
 
 						elif command == b'\x03': # turn on regulator heaters
+							regulator_heater_enabled = True
 							heater.regulator_heater(True)
 							downlink_queue.put(['HE','RG',1])
 
 						elif command == b'\x04': # turn off regulator heaters
+							regulator_heater_enabled = False
 							heater.regulator_heater(False)
 							downlink_queue.put(['HE','RG',0])
 
@@ -173,5 +177,5 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 		else:
 			print('invalid heading')
 
-	return manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, tasks_completed
+	return manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, solenoid_heater_enabled, regulator_heater_enabled, tasks_completed
 

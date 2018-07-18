@@ -71,12 +71,12 @@ def heater_control(temp_data):
 	# solenoid control
 	if temp_data[0] > 30 or temp_data[1] > 30 or temp_data[2] > 30:
 		heater.solenoid_heater(False)
-	else:
+	elif temp_data[0] < 10 or temp_data[1] < 10 or temp_data[2] < 10:
 		heater.solenoid_heater(True)
 	# regulator control
 	if temp_data[3] > 30 or temp_data[4] > 30:
 		heater.regulator_heater(False)
-	else:
+	elif temp_data[3] < 10 or temp_data[4] < 10:
 		heater.regulator_heater(True)
 
 def emergency_temperature(temp_data):
@@ -203,5 +203,3 @@ def read_transducers():
 	pressure_system = read_pressure_system()
 	pres_trans_downlink = ['SE', 'PT','{:.2f} {:.2f} {:.2f}'.format(*pressure_system)]
 	return pres_trans_downlink
-
-#print_sensors()

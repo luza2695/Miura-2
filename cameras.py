@@ -14,11 +14,10 @@ def takePicture(data_directory):
 	os.system('fswebcam -i 0 -d /dev/video1 -b -r 1024x768 -S 10 {}/cam1_{}.jpg -q'.format(data_directory,timestamp))
 	return
 
-# fast shutter camera (Camera 1) NEEDS FIXING
-def takeVideo(data_directory):
+# fast shutter camera (camera 1) 
+def takeVideo(data_directory, duration):
 	start = time.time()
 	frames = 60
-	duration = 60
 	counter = 0
 	while counter < frames:
 		if counter == 0:

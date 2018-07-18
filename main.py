@@ -25,7 +25,7 @@ from helpers import changeStage, switchSolenoid
 
 # important variables for operation
 cycle_start_delay = 15*60 # 10800 # (3 hours)
-inflation_time = 120 # (2 minutes)
+inflation_time = 60 # (1 minutes)
 sustention_time = 600 # (10 minutes)
 retraction_time = 180 # (3 minutes)
 deflation_time = 180 # (30 minutes)
@@ -132,6 +132,12 @@ while running:
 	else:
 		pressurization_counter = 0
 
+	# check if heaters are manual disabled, shut off if disabled
+	if not solenoid_heater_enabled:
+		heater.solenoid_heater(False)
+	if not regulator_heater_enabled:
+		heater.regulator_heater(False)
+
 	# uplink and downlink
 	manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, solenoid_heater_enabled, reguator_heater_enabled, tasks_completed = uplink.main(serial, downlink_queue, data_directory, manual, stage, stage_start_time, solenoid_1_enabled, solenoid_2_enabled, solenoid_heater_enabled, regulator_heater_enabled, tasks_completed)
 	downlink.main(serial, downlink_queue, log_filename, stage, current_cycle)
@@ -201,7 +207,8 @@ while running:
 				current_solenoid = switchSolenoid(current_solenoid,solenoid_1_enabled,solenoid_2_enabled,tank1,tank2)
 
 				# start video
-				#cameras.takeVideo(data_directory)
+				camera_thread = threading.Thread(name = 'camera', target = camera.takeVideo, args = (data_directory, inflation_time), daemon = True)
+				camera_thread.start()
 
 				# close exhaust valve
 				solenoid.closeExhaust()
@@ -277,7 +284,8 @@ while running:
 				lights.lights_on()
 
 				# start video
-				cameras.takeVideo(data_directory)
+				camera_thread = threading.Thread(name = 'camera', target = camera.takeVideo, args = (data_directory, retraction_time), daemon = True)
+				camera_thread.start()
 
 				# turn on LED for stage 4
 				GPIO.output(lights.stage_4, True)

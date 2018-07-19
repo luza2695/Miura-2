@@ -15,6 +15,7 @@ import cameras
 import sensors
 import shlex
 import subprocess
+import lights
 from helpers import changeStage
 
 # sets current pi usb port
@@ -46,6 +47,7 @@ def main(serial, downlink_queue, data_directory, manual, stage, stage_start_time
 						if command == b'\x01': # ping pi
 							commandTime = time.strftime('%b %m %G %H:%M:%S')
 							print('Ping Command Recieved: {}\n'.format(commandTime))
+							lights.ping_led()
 							pass
 
 						elif command == b'\x02': # manual mode

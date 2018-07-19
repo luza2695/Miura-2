@@ -91,6 +91,7 @@ regulator_heater_enabled = True
 current_solenoid = 2
 current_cycle = 1
 pressurization_counter = 0
+pressure_drop_counter = 0
 emergency_counter = 0
 transducer_downlink_counter = 0
 stage, stage_start_time, tasks_completed  = changeStage(1)
@@ -236,15 +237,15 @@ while running:
 			else:
 				# if pressure drops below 4.4 psi
 				if main < 4.4:
-					pressurization_counter += 1
-					if pressurization_counter >= 3:
+					pressure_drop_counter += 1
+					if pressure_drop_counter >= 3:
 						# switch to stage 4
 						stage, stage_start_time, tasks_completed = changeStage(4)
 						GPIO.output(lights.stage_3, False)
-						pressurization_counter = 0
+						pressure_drop_counter = 0
 						continue
 				else:
-					pressurization_counter = 0
+					pressure_drop_counter = 0
 
 			# perform one time tasks
 			if (not tasks_completed):
